@@ -1,6 +1,8 @@
 name: Feature Request
 description: Suggest a new feature or document a project's feature card
 title: "[FEATURE]: "
+projects:
+  - 42dx/1
 labels:
   - enhancement
 projects:
