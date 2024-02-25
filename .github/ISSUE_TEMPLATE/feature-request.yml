@@ -1,1 +1,62 @@
+name: Feature Request
+description: Suggest a new feature or document a project's feature card
+title: "[FEATURE]: "
+labels:
+  - enhancement
+projects:
+  - 42dx/edgio-go-sdk
+assignees:
+body:
+  - type: markdown
+    id: desc
+    attributes:
+      label: Description
+      description: |
+        **High level description stating what is to be achieved with the requested feature.**
+      placeholder: _When I need to achieve 'this', it is a complex/demanding task due to [...]_
+    validations:
+      required: true
 
+  - type: markdown
+    id: solution
+    attributes:
+      label: Proposed Solution
+      description: |
+        **A clear and concise description of what you want to happen. It is interesting to write this 'impersonating' the most beneficiated stakeholder's point of view.**
+      placeholder: _As a `<developer|manager|qa|etc>`, I want to be able to `<desired behavior>`, so that `<final goal of the feature>`._
+    validations:
+      required: true
+
+  - type: markdown
+    id: workarounds
+    attributes:
+      label: Alternatives / Workarounds
+      description: |
+        **A clear and concise description of any alternative solutions, features, jury-rigs or whatever else you may have considered to be able to achieve the proposed solution.**
+      placeholder: _I have used another package for that, but it had worse issues. also tried to implement by myself but [...]_
+    validations:
+      required: false
+
+  - type: markdown
+    id: additional
+    attributes:
+      label: Additional Context
+      description: |
+        **Add any other context, screenshots/videos or any extra info about the feature request here.**
+    validations:
+      required: false
+
+  - type: markdown
+    id: additional
+    attributes:
+      label: References
+      description: |
+        **Unordered list of reference (links) to support the implementation.**
+    validations:
+      required: false
+
+      label: Code of Conduct
+      description: By submitting this issue, you agree to follow our [Code of Conduct](https://example.com)
+      options:
+        - label: I agree to follow this project's Code of Conduct
+          required: true
