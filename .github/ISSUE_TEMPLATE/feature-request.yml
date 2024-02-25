@@ -44,10 +44,10 @@ body:
       label: Acceptance Criteria
       description: |
         **Unordered checkbox list of criteria to be checked before closing the issue as completed.**
-      placeholder: |
-        - [ ] The feature is implemented
-        - [ ] The feature is tested
-        - [ ] Binary generated
+      value: |
+        - [ ]
+        - [ ]
+        - [ ]
     validations:
       required: false
 
@@ -66,6 +66,10 @@ body:
       label: References
       description: |
         **Unordered list of reference (links) to support the implementation.**
+      value: |
+        -
+        -
+        -
     validations:
       required: false
 
