@@ -5,8 +5,7 @@ projects:
   - 42dx/1
 labels:
   - enhancement
-projects:
-  - 42dx/1
+  - triage
 body:
   - type: textarea
     id: desc
@@ -14,7 +13,8 @@ body:
       label: Description
       description: |
         **High level description stating what is to be achieved with the requested feature.**
-      placeholder: _When I need to achieve 'this', it is a complex/demanding task due to [...]_
+      placeholder: |
+        When I need to achieve 'this', it is a complex/demanding task due to [...]
     validations:
       required: true
 
