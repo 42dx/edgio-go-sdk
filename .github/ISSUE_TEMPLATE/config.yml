@@ -1,0 +1,9 @@
+blank_issues_enabled: false
+contact_links:
+  - name: General question, discussions, and support
+    url: https://github.com/42dx/edgio-go-sdk/discussions
+    about: Please ask and answer questions here.
+
+  - name: Request a feature or Report a bug
+    url: https://github.com/42dx/edgio-go-sdk/issues
+    about: Please report bugs and request features here. Remember to check if the issue already exists, and to use our issue templates/forms.
