@@ -39,6 +39,19 @@ body:
       required: false
 
   - type: textarea
+    id: criteria
+    attributes:
+      label: Acceptance Criteria
+      description: |
+        **Unordered checkbox list of criteria to be checked before closing the issue as completed.**
+      placeholder: |
+        - [ ] The feature is implemented
+        - [ ] The feature is tested
+        - [ ] Binary generated
+    validations:
+      required: false
+
+  - type: textarea
     id: additional
     attributes:
       label: Additional Context
