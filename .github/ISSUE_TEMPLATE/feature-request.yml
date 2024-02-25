@@ -6,7 +6,7 @@ projects:
 labels:
   - enhancement
 projects:
-  - 42dx/edgio-go-sdk
+  - 42dx/1
 body:
   - type: textarea
     id: desc
