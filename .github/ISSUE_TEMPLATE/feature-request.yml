@@ -7,7 +7,7 @@ projects:
   - 42dx/edgio-go-sdk
 assignees:
 body:
-  - type: markdown
+  - type: textarea
     id: desc
     attributes:
       label: Description
@@ -17,7 +17,7 @@ body:
     validations:
       required: true
 
-  - type: markdown
+  - type: textarea
     id: solution
     attributes:
       label: Proposed Solution
@@ -27,7 +27,7 @@ body:
     validations:
       required: true
 
-  - type: markdown
+  - type: textarea
     id: workarounds
     attributes:
       label: Alternatives / Workarounds
@@ -37,7 +37,7 @@ body:
     validations:
       required: false
 
-  - type: markdown
+  - type: textarea
     id: additional
     attributes:
       label: Additional Context
@@ -46,7 +46,7 @@ body:
     validations:
       required: false
 
-  - type: markdown
+  - type: textarea
     id: additional
     attributes:
       label: References
