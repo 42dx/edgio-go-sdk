@@ -1,9 +1,9 @@
 package org
 
 import (
-	"42dx/internal/utils"
-	"42dx/pkg/client"
-	"42dx/pkg/common"
+	"edgio/internal/client"
+	"edgio/internal/utils"
+	"edgio/pkg/common"
 	"net/http"
 )
 

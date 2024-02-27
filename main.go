@@ -1,9 +1,9 @@
 package main
 
 import (
-	"42dx/pkg/client"
-	"42dx/pkg/common"
-	"42dx/pkg/org"
+	"edgio/internal/client"
+	"edgio/pkg/common"
+	"edgio/pkg/org"
 	"fmt"
 	"os"
 )

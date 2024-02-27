@@ -1,8 +1,8 @@
 package client
 
 import (
-	"42dx/internal/token"
-	"42dx/pkg/common"
+	"edgio/internal/token"
+	"edgio/pkg/common"
 	"errors"
 	"fmt"
 	"os"
