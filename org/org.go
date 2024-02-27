@@ -1,20 +1,20 @@
 package org
 
 import (
+	"edgio/common"
 	"edgio/internal/client"
 	"edgio/internal/utils"
-	"edgio/pkg/common"
 	"net/http"
 )
 
 type getResultType struct {
-	Id			string 
-	Name		string 
+	Id   string
+	Name string
 }
 
 var getResult = getResultType{
-	Id:		`json:"id"`,
-	Name:	`json:"name"`,
+	Id:   `json:"id"`,
+	Name: `json:"name"`,
 }
 
 type OrgClientStruct struct {
@@ -23,14 +23,14 @@ type OrgClientStruct struct {
 
 type ClientParams struct {
 	Credentials common.Creds
-	Config client.EdgioClientConfig
+	Config      common.EdgioClientConfig
 }
 
-var baseConfig = client.EdgioClientConfig{
+var baseConfig = common.EdgioClientConfig{
 	ApiVersion: "v0.1",
-	Service:	"accounts",
-	Scope:		"organizations",
-	OrgId:		"",
+	Service:    "accounts",
+	Scope:      "organizations",
+	OrgId:      "",
 }
 
 func NewClient(params ClientParams) OrgClientStruct {
@@ -39,9 +39,9 @@ func NewClient(params ClientParams) OrgClientStruct {
 	}
 }
 
-func (c OrgClientStruct) Get(params client.UrlParams) getResultType {
-	httpClient	:= &http.Client{}
-	request, _	:= http.NewRequest(http.MethodGet, c.client.GetServiceUrl(client.UrlParams{ Path: c.client.Config.OrgId }), nil)
+func (c OrgClientStruct) Get(params common.UrlParams) getResultType {
+	httpClient := &http.Client{}
+	request, _ := http.NewRequest(http.MethodGet, c.client.GetServiceUrl(common.UrlParams{Path: c.client.Config.OrgId}), nil)
 
 	utils.GetHttpJsonResult(httpClient, request, c.client.AccessToken, &getResult)
 

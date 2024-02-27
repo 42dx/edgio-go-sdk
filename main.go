@@ -1,23 +1,22 @@
 package main
 
 import (
-	"edgio/internal/client"
-	"edgio/pkg/common"
-	"edgio/pkg/org"
+	"edgio/common"
+	"edgio/org"
 	"fmt"
 	"os"
 )
 
 func main() {
-    credentials := common.Creds{
-        Key: os.Getenv("EDGIO_CLIENT_KEY"),
-        Secret: os.Getenv("EDGIO_CLIENT_SECRET"),
-    }
+	credentials := common.Creds{
+		Key:    os.Getenv("EDGIO_CLIENT_KEY"),
+		Secret: os.Getenv("EDGIO_CLIENT_SECRET"),
+	}
 
-    orgClient := org.NewClient(org.ClientParams{
-        Credentials: credentials,
-        Config: client.EdgioClientConfig{ OrgId: os.Getenv("ORG_ID") },
-    })
+	orgClient := org.NewClient(org.ClientParams{
+		Credentials: credentials,
+		Config:      common.EdgioClientConfig{OrgId: os.Getenv("ORG_ID")},
+	})
 
-    fmt.Println(orgClient.Get(client.UrlParams{}))
+	fmt.Println(orgClient.Get(common.UrlParams{}))
 }

@@ -1,7 +1,7 @@
 package token
 
 import (
-	"edgio/pkg/common"
+	"edgio/common"
 	"encoding/json"
 	"errors"
 	"fmt"
