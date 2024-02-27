@@ -1,0 +1,168 @@
+branches:
+  - main
+  - name: beta
+    prerelease: true
+repositoryUrl: git@github.com:42dx/edgio-go-sdk.git
+tagFormat: v${version}
+plugins:
+  - - '@semantic-release/commit-analyzer'
+    - preset: conventionalcommits
+  - - '@semantic-release/release-notes-generator'
+    - preset: conventionalcommits
+      parserOpts:
+        headerPattern: '^(\w+)(?:\(([\w\$\.\-\* ]+)\))?\: (.+)$'
+        headerCorrespondence:
+          - type
+          - scope
+          - subject
+      writerOpts:
+        commitPartial: |
+          \* {{#if scope}} \*\*{{scope}}:\*\*
+          {{~/if}} {{#if subject}}
+            {{~subject}}
+          {{~else}}
+            {{~header}}
+          {{~/if}}
+
+          {{~!-- commit link --}} {{#if @root.linkReferences~}}
+            (\[{{shortHash}}\](
+            {{~#if @root.repository}}
+              {{~#if @root.host}}
+                {{~@root.host}}/
+              {{~/if}}
+              {{~#if @root.owner}}
+                {{~@root.owner}}/
+              {{~/if}}
+              {{~@root.repository}}
+            {{~else}}
+              {{~@root.repoUrl}}
+            {{~/if}}/
+            {{~@root.commit}}/{{hash}}))
+          {{~else}}
+            {{~shortHash}}
+          {{~/if}}
+
+          {{~!-- commit references --}}
+          {{~#if references~}}
+            , closes
+            {{~#each references}} {{#if @root.linkReferences~}}
+              [
+              {{~#if this.owner}}
+                {{~this.owner}}/
+              {{~/if}}
+              {{~this.repository}}#{{this.issue}}](
+              {{~#if @root.repository}}
+                {{~#if @root.host}}
+                  {{~@root.host}}/
+                {{~/if}}
+                {{~#if this.repository}}
+                  {{~#if this.owner}}
+                    {{~this.owner}}/
+                  {{~/if}}
+                  {{~this.repository}}
+                {{~else}}
+                  {{~#if @root.owner}}
+                    {{~@root.owner}}/
+                  {{~/if}}
+                    {{~@root.repository}}
+                  {{~/if}}
+              {{~else}}
+                {{~@root.repoUrl}}
+              {{~/if}}/
+              {{~@root.issue}}/{{this.issue}})
+            {{~else}}
+              {{~#if this.owner}}
+                {{~this.owner}}/
+              {{~/if}}
+              {{~this.repository}}#{{this.issue}}
+            {{~/if}}{{/each}}
+          {{~/if}}
+        footerPartial: |
+          {{#if noteGroups}}
+          {{#each noteGroups}}
+
+          ### {{title}}
+
+          {{#each notes}}
+          * {{#if commit.scope}}**{{commit.scope}}:** {{/if}}{{text}}
+          {{/each}}
+          {{/each}}
+
+          {{/if}}
+        headerPartial: |
+          ## {{#if @root.linkCompare~}}
+            [{{version}}](
+            {{~#if @root.repository~}}
+              {{~#if @root.host}}
+                {{~@root.host}}/
+              {{~/if}}
+              {{~#if @root.owner}}
+                {{~@root.owner}}/
+              {{~/if}}
+              {{~@root.repository}}
+            {{~else}}
+              {{~@root.repoUrl}}
+            {{~/if~}}
+            /compare/{{previousTag}}...{{currentTag}})
+          {{~else}}
+            {{~version}}
+          {{~/if}}
+          {{~#if title}} "{{title}}"
+          {{~/if}}
+          {{~#if date}} ({{date}})
+          {{/if}}
+        mainTemplate: |
+          {{> header}}
+
+          {{#each commitGroups}}
+
+          {{#if title}}
+          ### {{title}}
+
+          {{/if}}
+          {{#each commits}}
+          {{> commit root=@root}}
+
+          {{/each}}
+
+          {{/each}}
+          {{> footer}}
+      presetConfig:
+        types:
+          - type: feat
+            section: '⚙️ New Features'
+          - type: fix
+            section: '🐛 Bugfixes'
+          - type: perf
+            section: '📈 Performance Improvement'
+          - type: revert
+            section: '🔃 Reverted Changes'
+          - type: docs
+            hidden: true
+          - type: style
+            hidden: true
+          - type: refactor
+            hidden: true
+          - type: test
+            hidden: true
+          - type: build
+            hidden: true
+          - type: ci
+            hidden: true
+          - type: chore
+            hidden: true
+  
+  - - '@semantic-release/changelog'
+    - changelogFile: 'CHANGELOG.md'
+      changelogTitle: '# Changelog'
+  - - '@semantic-release/git'
+    - message: 'chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}'
+      assets:
+        - CHANGELOG.md
+        - README.md
+  - - '@semantic-release/github'
+    - assets:
+        - path: CHANGELOG.md
+          label: Changelog
+        - path: README.md
+          label: Readme
