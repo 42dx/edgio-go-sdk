@@ -8,7 +8,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestGetHttpJsonResult_Success(t *testing.T) {
+func TestGetHttpJsonResultSuccess(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
 		rw.Write([]byte(`{"key": "value"}`))
 	}))
@@ -26,7 +26,7 @@ func TestGetHttpJsonResult_Success(t *testing.T) {
 	assert.Equal(t, "value", (*resultModel)["key"])
 }
 
-func TestGetHttpJsonResult_Non200StatusCode(t *testing.T) {
+func TestGetHttpJsonResultNon200StatusCode(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
 		rw.WriteHeader(http.StatusNotFound)
 	}))
@@ -42,7 +42,7 @@ func TestGetHttpJsonResult_Non200StatusCode(t *testing.T) {
 	assert.Contains(t, err.Error(), "[HTTP ERROR]: Status Code: 404")
 }
 
-func TestGetHttpJsonResult_DecodeError(t *testing.T) {
+func TestGetHttpJsonResultDecodeError(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
 		rw.Write([]byte(`not a json`))
 	}))

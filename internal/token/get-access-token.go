@@ -33,7 +33,12 @@ func GetAccessToken(credentials common.Creds) (string, error) {
 	request.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 
 	resp, err := client.Do(request)
-	if err != nil || resp.StatusCode != http.StatusOK {
+
+	if err != nil {
+		return "", errors.New("[HTTP ERROR]: " + err.Error())
+	}
+
+	if resp.StatusCode != http.StatusOK {
 		msg := []string{
 			"[HTTP ERROR]: Status Code: ",
 			strconv.Itoa(resp.StatusCode),

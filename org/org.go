@@ -4,6 +4,7 @@ import (
 	"edgio/common"
 	"edgio/internal/client"
 	"edgio/internal/utils"
+	"fmt"
 	"net/http"
 )
 
@@ -34,6 +35,10 @@ var baseConfig = common.ClientConfig{
 }
 
 func NewClient(params ClientParams) (OrgClientStruct, error) {
+	fmt.Println(baseConfig)
+	fmt.Println(params.Config)
+	fmt.Println(baseConfig.Merge(params.Config))
+
 	client, err := client.New(params.Credentials, baseConfig.Merge(params.Config))
 
 	if err != nil {
@@ -43,11 +48,14 @@ func NewClient(params ClientParams) (OrgClientStruct, error) {
 	return OrgClientStruct{client}, nil
 }
 
-func (c OrgClientStruct) Get(params common.UrlParams) getResultType {
+func (c OrgClientStruct) Get(params common.UrlParams) (getResultType, error) {
 	httpClient := &http.Client{}
 	request, _ := http.NewRequest(http.MethodGet, c.client.GetServiceUrl(common.UrlParams{Path: c.client.Config.OrgId}), nil)
 
-	utils.GetHttpJsonResult(httpClient, request, c.client.AccessToken, &getResult)
+	result, err := utils.GetHttpJsonResult(httpClient, request, c.client.AccessToken, &getResult)
 
-	return getResult
+	if err != nil {
+		return getResultType{}, err
+	}
+	return *result.(*getResultType), nil
 }

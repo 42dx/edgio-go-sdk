@@ -9,6 +9,10 @@ type ClientConfig struct {
 }
 
 func (c ClientConfig) Merge(other ClientConfig) ClientConfig {
+	if other.Url != "" {
+		c.Url = other.Url
+	}
+
 	if other.ApiVersion != "" {
 		c.ApiVersion = other.ApiVersion
 	}
