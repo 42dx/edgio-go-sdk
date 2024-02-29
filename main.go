@@ -13,7 +13,7 @@ func main() {
 		Secret: os.Getenv("EDGIO_CLIENT_SECRET"),
 	}
 
-	orgClient := org.NewClient(org.ClientParams{
+	orgClient, _ := org.NewClient(org.ClientParams{
 		Credentials: credentials,
 		Config:      common.EdgioClientConfig{OrgId: os.Getenv("ORG_ID")},
 	})

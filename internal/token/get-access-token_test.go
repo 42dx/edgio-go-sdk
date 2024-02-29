@@ -1,105 +1,138 @@
 package token
 
-// import (
-// 	"errors"
-// 	"net/http"
-// 	"net/http/httptest"
-// 	"testing"
+import (
+	"edgio/common"
+	"errors"
+	"log"
+	"net/http"
+	"net/http/httptest"
+	"strings"
+	"testing"
 
-// 	"github.com/jarcoal/httpmock"
-// 	"github.com/stretchr/testify/assert"
-// )
+	"github.com/jarcoal/httpmock"
+	"github.com/stretchr/testify/assert"
+)
 
-// func TestGetAccessTokenMissingKey(t *testing.T) {
-//     server := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
-//         rw.Write([]byte(`{"access_token": "test_token"}`))
-//     }))
-//     httpmock.Activate()
+type brokenWriter struct{}
 
-//     httpmock.RegisterResponder("POST", server.URL,
-//         httpmock.NewStringResponder(200, `{"access_token": "test_token"}`))
+func (bw *brokenWriter) Write(p []byte) (n int, err error) {
+	return 0, errors.New("broken writer")
+}
 
-//     creds := EdgioCreds{
-//         Key: "test_key",
-//         Scopes: "test_scope",
-//         AuthUrl: server.URL,
-//     }
+func TestGetAccessTokenMissingKey(t *testing.T) {
+	server := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
+		rw.Write([]byte(`{"access_token": "test_token"}`))
+	}))
+	httpmock.Activate()
 
-//     _, err := GetAccessToken(creds)
+	httpmock.RegisterResponder("POST", server.URL,
+		httpmock.NewStringResponder(403, `{"access_token": "test_token"}`))
 
-//     assert.Equal(t, errors.New("Edgio client secret is missing"), err)
+	creds := common.Creds{
+		Key:     "test_key",
+		Scopes:  "test_scope",
+		AuthUrl: server.URL,
+	}
 
-//     defer server.Close()
-//     defer httpmock.DeactivateAndReset()
-// }
+	_, err := GetAccessToken(creds)
 
-// func TestGetAccessTokenMissingSecret(t *testing.T) {
-//     server := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
-//         rw.Write([]byte(`{"access_token": "test_token"}`))
-//     }))
-//     httpmock.Activate()
+	assert.Equal(t, "[AUTH ERROR]: Edgio client credentials are missing", err.Error())
 
-//     httpmock.RegisterResponder("POST", server.URL,
-//         httpmock.NewStringResponder(200, `{"access_token": "test_token"}`))
+	defer server.Close()
+	defer httpmock.DeactivateAndReset()
+}
 
-//     creds := EdgioCreds{
-//         Secret: "test_secret",
-//         Scopes: "test_scope",
-//         AuthUrl: server.URL,
-//     }
+func TestGetAccessTokenMissingSecret(t *testing.T) {
+	server := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
+		rw.Write([]byte(`{"access_token": "test_token"}`))
+	}))
+	httpmock.Activate()
 
-//     _, err := GetAccessToken(creds)
+	httpmock.RegisterResponder("POST", server.URL,
+		httpmock.NewStringResponder(403, `{"access_token": "test_token"}`))
 
-//     assert.Equal(t, errors.New("Edgio client key is missing"), err)
+	creds := common.Creds{
+		Secret:  "test_secret",
+		Scopes:  "test_scope",
+		AuthUrl: server.URL,
+	}
 
-//     defer server.Close()
-//     defer httpmock.DeactivateAndReset()
-// }
+	_, err := GetAccessToken(creds)
 
-// func TestGetAccessTokenInvalidAuthUrl(t *testing.T) {
-//     server := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
-//         rw.Write([]byte(`{"access_token": "test_token"}`))
-//     }))
-//     httpmock.Activate()
+	assert.Equal(t, "[AUTH ERROR]: Edgio client credentials are missing", err.Error())
 
-//     httpmock.RegisterResponder("POST", server.URL,
-//         httpmock.NewStringResponder(404, "Not Found"))
+	defer server.Close()
+	defer httpmock.DeactivateAndReset()
+}
 
-//     creds := EdgioCreds{
-//         Key:    "test_key",
-//         Secret: "test_secret",
-//         Scopes: "test_scope",
-//         AuthUrl: server.URL,
-//     }
+func TestGetAccessTokenInvalidAuthUrl(t *testing.T) {
+	server := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
+		rw.Write([]byte(`{"access_token": "test_token"}`))
+	}))
+	httpmock.Activate()
 
-//     _, err := GetAccessToken(creds)
+	httpmock.RegisterResponder("POST", server.URL,
+		httpmock.NewStringResponder(404, "Not Found"))
 
-//     assert.Equal(t, errors.New("[HTTP ERROR]: Status Code: 404 - Not Found"), err)
+	creds := common.Creds{
+		Key:     "test_key",
+		Secret:  "test_secret",
+		Scopes:  "test_scope",
+		AuthUrl: server.URL,
+	}
 
-//     defer server.Close()
-//     defer httpmock.DeactivateAndReset()
-// }
+	_, err := GetAccessToken(creds)
 
-// func TestGetAccessToken(t *testing.T) {
-//     server := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
-//         rw.Write([]byte(`{"access_token": "test_token"}`))
-//     }))
+	assert.Equal(t, "[HTTP ERROR]: Status Code: 404 - Not Found", err.Error())
 
-//     httpmock.Activate()
-//     httpmock.RegisterResponder("POST", server.URL,
-//     httpmock.NewStringResponder(200, `{"access_token": "test_token"}`))
+	defer server.Close()
+	defer httpmock.DeactivateAndReset()
+}
 
-//     creds := EdgioCreds{
-//         Key:    "test_key",
-//         Secret: "test_secret",
-//         Scopes: "test_scope",
-//         AuthUrl: server.URL,
-//     }
+func TestGetAccessTokenJsonUnmarshalError(t *testing.T) {
+	server := httptest.NewUnstartedServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+	}))
 
-//     token, _ := GetAccessToken(creds)
+	server.Config.ErrorLog = log.New(&brokenWriter{}, "", 0)
+	server.Start()
+	defer server.Close()
 
-//     assert.Equal(t, token, "test_token", "wrong test token")
+	creds := common.Creds{
+		Key:     "key",
+		Secret:  "secret",
+		Scopes:  "scopes",
+		AuthUrl: server.URL,
+	}
 
-//     defer server.Close()
-//     defer httpmock.DeactivateAndReset()
-// }
+	_, err := GetAccessToken(creds)
+
+	expected := "unexpected end of JSON input"
+	if err == nil || !strings.Contains(err.Error(), expected) {
+		t.Fatalf("Expected error to contain '%s' but got '%s'", expected, err.Error())
+	}
+}
+
+func TestGetAccessToken(t *testing.T) {
+	server := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
+		rw.Write([]byte(`{"access_token": "test_token"}`))
+	}))
+
+	httpmock.Activate()
+	httpmock.RegisterResponder("POST", server.URL,
+		httpmock.NewStringResponder(200, `{"access_token": "test_token"}`))
+
+	creds := common.Creds{
+		Key:     "test_key",
+		Secret:  "test_secret",
+		Scopes:  "test_scope",
+		AuthUrl: server.URL,
+	}
+
+	token, _ := GetAccessToken(creds)
+
+	assert.Equal(t, token, "test_token", "wrong test token")
+
+	defer server.Close()
+	defer httpmock.DeactivateAndReset()
+}

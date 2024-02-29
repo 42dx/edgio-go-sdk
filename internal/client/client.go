@@ -58,11 +58,17 @@ func evalConfig(config common.EdgioClientConfig) common.EdgioClientConfig {
 	return config
 }
 
-func New(creds common.Creds, config common.EdgioClientConfig) EdgioClient {
-	return EdgioClient{
-		AccessToken: token.GetAccessToken(evalCreds(creds)),
-		Config:      evalConfig(config),
+func New(creds common.Creds, config common.EdgioClientConfig) (EdgioClient, error) {
+	accessToken, err := token.GetAccessToken(evalCreds(creds))
+
+	if err != nil {
+		return EdgioClient{}, err
 	}
+
+	return EdgioClient{
+		AccessToken: accessToken,
+		Config:      evalConfig(config),
+	}, nil
 }
 
 func (c EdgioClient) GetServiceUrl(params common.UrlParams) string {

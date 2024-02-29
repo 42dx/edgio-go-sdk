@@ -33,10 +33,14 @@ var baseConfig = common.EdgioClientConfig{
 	OrgId:      "",
 }
 
-func NewClient(params ClientParams) OrgClientStruct {
-	return OrgClientStruct{
-		client: client.New(params.Credentials, baseConfig.Merge(params.Config)),
+func NewClient(params ClientParams) (OrgClientStruct, error) {
+	client, err := client.New(params.Credentials, baseConfig.Merge(params.Config))
+
+	if err != nil {
+		return OrgClientStruct{}, err
 	}
+
+	return OrgClientStruct{client}, nil
 }
 
 func (c OrgClientStruct) Get(params common.UrlParams) getResultType {
