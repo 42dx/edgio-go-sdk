@@ -1,29 +1,29 @@
 package common
 
-type EdgioClientConfig struct {
-    Url         string
-    ApiVersion  string
-    Service     string
-    Scope       string
-    OrgId       string
+type ClientConfig struct {
+	Url        string
+	ApiVersion string
+	Service    string
+	Scope      string
+	OrgId      string
 }
 
-func (c EdgioClientConfig) Merge(other EdgioClientConfig) EdgioClientConfig {
-    if other.ApiVersion != "" {
-        c.ApiVersion = other.ApiVersion
-    }
- 
-    if other.Service != "" {
-        c.Service = other.Service
-    }
- 
-    if other.Scope != "" {
-        c.Scope = other.Scope
-    }
- 
-    if other.OrgId != "" {
-        c.OrgId = other.OrgId
-    }
- 
-    return c
+func (c ClientConfig) Merge(other ClientConfig) ClientConfig {
+	if other.ApiVersion != "" {
+		c.ApiVersion = other.ApiVersion
+	}
+
+	if other.Service != "" {
+		c.Service = other.Service
+	}
+
+	if other.Scope != "" {
+		c.Scope = other.Scope
+	}
+
+	if other.OrgId != "" {
+		c.OrgId = other.OrgId
+	}
+
+	return c
 }

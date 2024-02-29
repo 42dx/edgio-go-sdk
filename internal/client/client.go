@@ -4,24 +4,20 @@ import (
 	"edgio/common"
 	"edgio/internal/token"
 	"errors"
-	"fmt"
-	"os"
 )
 
-type EdgioClient struct {
+type Client struct {
 	AccessToken string
-	Config      common.EdgioClientConfig
+	Config      common.ClientConfig
 }
 
-func evalCreds(creds common.Creds) common.Creds {
+func evalCreds(creds common.Creds) (common.Creds, error) {
 	if creds.Key == "" {
-		fmt.Println(errors.New("edgio client key is missing"))
-		os.Exit(1)
+		return common.Creds{}, errors.New("edgio client key is missing")
 	}
 
 	if creds.Secret == "" {
-		fmt.Println(errors.New("edgio client secret is missing"))
-		os.Exit(1)
+		return common.Creds{}, errors.New("edgio client secret is missing")
 	}
 
 	if creds.Scopes == "" {
@@ -32,46 +28,52 @@ func evalCreds(creds common.Creds) common.Creds {
 		creds.AuthUrl = "https://id.edgio.app/connect/token"
 	}
 
-	return creds
+	return creds, nil
 }
 
-func evalConfig(config common.EdgioClientConfig) common.EdgioClientConfig {
+func evalConfig(config common.ClientConfig) (common.ClientConfig, error) {
 	if config.Url == "" {
 		config.Url = "https://edgioapis.com"
 	}
 
 	if config.ApiVersion == "" {
-		fmt.Println(errors.New("edgio client config api version is missing"))
-		os.Exit(1)
+		return common.ClientConfig{}, errors.New("edgio client config api version is missing")
 	}
 
 	if config.Service == "" {
-		fmt.Println(errors.New("edgio client service is missing"))
-		os.Exit(1)
+		return common.ClientConfig{}, errors.New("edgio client service is missing")
 	}
 
 	if config.Scope == "" {
-		fmt.Println(errors.New("edgio client scope is missing"))
-		os.Exit(1)
+		return common.ClientConfig{}, errors.New("edgio client scope is missing")
 	}
 
-	return config
+	return config, nil
 }
 
-func New(creds common.Creds, config common.EdgioClientConfig) (EdgioClient, error) {
-	accessToken, err := token.GetAccessToken(evalCreds(creds))
-
+func New(creds common.Creds, config common.ClientConfig) (Client, error) {
+	credentials, err := evalCreds(creds)
 	if err != nil {
-		return EdgioClient{}, err
+		return Client{}, err
 	}
 
-	return EdgioClient{
+	configurations, err := evalConfig(config)
+	if err != nil {
+		return Client{}, err
+	}
+
+	accessToken, err := token.GetAccessToken(credentials)
+	if err != nil {
+		return Client{}, err
+	}
+
+	return Client{
 		AccessToken: accessToken,
-		Config:      evalConfig(config),
+		Config:      configurations,
 	}, nil
 }
 
-func (c EdgioClient) GetServiceUrl(params common.UrlParams) string {
+func (c Client) GetServiceUrl(params common.UrlParams) string {
 	if params.Path != "" {
 		params.Path = "/" + params.Path
 	}
