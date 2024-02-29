@@ -18,15 +18,15 @@ var getResult = getResultType{
 }
 
 type OrgClientStruct struct {
-	client client.EdgioClient
+	client client.Client
 }
 
 type ClientParams struct {
 	Credentials common.Creds
-	Config      common.EdgioClientConfig
+	Config      common.ClientConfig
 }
 
-var baseConfig = common.EdgioClientConfig{
+var baseConfig = common.ClientConfig{
 	ApiVersion: "v0.1",
 	Service:    "accounts",
 	Scope:      "organizations",
