@@ -1,0 +1,176 @@
+{
+    "message": {
+        "items": [
+            {
+                "name": "type",
+                "desc": "Select the type of change that you're committing:",
+                "form": "select",
+                "options": [
+                    {
+                        "name": "chore",
+                        "desc": "chore:  Changes to the build process or auxiliary tools and libraries such as documentation generation"
+                    },
+                    {
+                        "name": "docs",
+                        "desc": "docs:   Documentation only changes"
+                    },
+                    {
+                        "name": "feat",
+                        "desc": "feat:   A new feature"
+                    },
+                    {
+                        "name": "fix",
+                        "desc": "fix:    A bug fix"
+                    },
+                    {
+                        "name": "perf",
+                        "desc": "perf:   A code change that improves performance"
+                    },
+                    {
+                        "name": "ref",
+                        "desc": "ref:    A code change that neither fixes a bug nor adds a feature"
+                    },
+                    {
+                        "name": "revert",
+                        "desc": "revert: Revert to a commit"
+                    },
+                    {
+                        "name": "style",
+                        "desc": "style:  Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc)"
+                    },
+                    {
+                        "name": "test",
+                        "desc": "test:   Adding missing tests"
+                    },
+                    {
+                        "name": "wip",
+                        "desc": "wip:    Work in progress"
+                    }
+                ],
+                "required": true
+            },
+            {
+                "name": "scope",
+                "form": "select",
+                "desc": "What is the scope of this change (e.g. component name):",
+                "options": [
+                    {
+                        "name": "a-rule",
+                        "desc": "a-rule:     API Security Ruleset API"
+                    },
+                    {
+                        "name": "a-schema",
+                        "desc": "a-schema:   API Schemas API"
+                    },
+                    {
+                        "name": "acl",
+                        "desc": "acl:        Access Rules (ACLs) API"
+                    },
+                    {
+                        "name": "app-scope",
+                        "desc": "app-scope:  Security Apps API"
+                    },
+                    {
+                        "name": "bot-cfg",
+                        "desc": "bot-cfg:    Bot Managet Config API"
+                    },
+                    {
+                        "name": "bot-rule",
+                        "desc": "bot-rule:   Bot Ruleset API"
+                    },
+                    {
+                        "name": "bot",
+                        "desc": "bot:        Known Bots API"
+                    },
+                    {
+                        "name": "c-rule",
+                        "desc": "c-rule:     Custom Rules API"
+                    },
+                    {
+                        "name": "cache",
+                        "desc": "cache:      Cache API"
+                    },
+                    {
+                        "name": "cdn",
+                        "desc": "cdn:        CDN API "
+                    },
+                    {
+                        "name": "ci-cd",
+                        "desc": "ci-cd:      Automation and processes"
+                    },
+                    {
+                        "name": "client",
+                        "desc": "client:     Edgio base client"
+                    },
+                    {
+                        "name": "deployment",
+                        "desc": "deployment: Deployment API"
+                    },
+                    {
+                        "name": "e-rule",
+                        "desc": "e-rule:     Edgio Rulesets API"
+                    },
+                    {
+                        "name": "env-var",
+                        "desc": "env-var:    Environment Variables API"
+                    },
+                    {
+                        "name": "env",
+                        "desc": "env:        Environment API"
+                    },
+                    {
+                        "name": "m-role",
+                        "desc": "m-role:     Managed Rules (profiles) API"
+                    },
+                    {
+                        "name": "org",
+                        "desc": "org:        Organization API"
+                    },
+                    {
+                        "name": "property",
+                        "desc": "property:   Property API"
+                    },
+                    {
+                        "name": "r-rule",
+                        "desc": "r-rule:     Rate Rules API"
+                    },
+                    {
+                        "name": "tls",
+                        "desc": "tls:        TLS Certificates API"
+                    },
+                    {
+                        "name": "token",
+                        "desc": "token:      Edgio access token helper"
+                    },
+                    {
+                        "name": "util",
+                        "desc": "util:       Internal module utilities/helpers"
+                    }
+                ]
+            },
+            {
+                "name": "subject",
+                "desc": "Subject. Concise description of the changes. Past tense, imperative, lower case and no final dot:",
+                "form": "input",
+                "required": true
+            },
+            {
+                "name": "issue",
+                "desc": "Issue number. Number of the issue that this commit is about. Integer only (e.g. 123, 456). Input 0 if this commit refers no issue:",
+                "form": "input",
+                "required": true
+            },
+            {
+                "name": "body",
+                "desc": "Body. Motivation for the change and contrast this with previous behavior:",
+                "form": "multiline"
+            },
+            {
+                "name": "footer",
+                "desc": "Footer. Information about Breaking Changes and reference issues that this commit closes:",
+                "form": "multiline"
+            }
+        ],
+        "template": "{{.type}}{{with .scope}}({{.}}){{end}}: {{.subject}} [#{{.issue}}]{{with .body}}\n\n{{.}}{{end}}{{with .footer}}\n\n{{.}}{{end}}"
+    }
+}
