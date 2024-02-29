@@ -6,7 +6,6 @@ import (
 	"log"
 	"net/http"
 	"net/http/httptest"
-	"strings"
 	"testing"
 
 	"github.com/jarcoal/httpmock"
@@ -108,9 +107,7 @@ func TestGetAccessTokenJsonUnmarshalError(t *testing.T) {
 	_, err := GetAccessToken(creds)
 
 	expected := "unexpected end of JSON input"
-	if err == nil || !strings.Contains(err.Error(), expected) {
-		t.Fatalf("Expected error to contain '%s' but got '%s'", expected, err.Error())
-	}
+	assert.Equal(t, expected, err.Error())
 }
 
 func TestGetAccessToken(t *testing.T) {
