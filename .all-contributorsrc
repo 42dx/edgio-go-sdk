@@ -1,0 +1,35 @@
+{
+  "projectName": "edgio-go-sdk",
+  "projectOwner": "42dx",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 60,
+  "commit": true,
+  "commitConvention": "angular",
+  "contributors": [
+    {
+      "login": "rafapaulin",
+      "name": "Rafael Eduardo Paulin",
+      "avatar_url": "https://avatars.githubusercontent.com/u/13452406?v=4",
+      "profile": "https://github.com/rafapaulin",
+      "contributions": [
+        "code",
+        "design",
+        "doc",
+        "ideas",
+        "infra",
+        "maintenance",
+        "projectManagement",
+        "review",
+        "test",
+        "tool",
+        "tutorial"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "linkToUsage": false
+}
