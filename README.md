@@ -1,11 +1,14 @@
 # Edgio Go SDK
 
+This project goal is to implement a GO SDK wrapper for the [Edgio's REST API](https://docs.edg.io/rest_api). This SDK is a starting point for more advanced projects like a CLI and a [Terraform Provider](https://developer.hashicorp.com/terraform/language/providers).
+
 ## Project Standards
 
-![Static Badge](https://img.shields.io/badge/Code_Style-gofmt-blue)
+![License](https://img.shields.io/github/license/42dx/edgio-go-sdk?logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGZpbGw9Im5vbmUiIHN0cm9rZT0iI0ZGRiIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iMiIgZD0ibTMgNiAzIDFtMCAwLTMgOWE1LjAwMiA1LjAwMiAwIDAgMCA2LjAwMSAwTTYgN2wzIDlNNiA3bDYtMm02IDIgMy0xbS0zIDEtMyA5YTUuMDAyIDUuMDAyIDAgMCAwIDYuMDAxIDBNMTggN2wzIDltLTMtOS02LTJtMC0ydjJtMCAxNlY1bTAgMTZIOW0zIDBoMyIvPjwvc3ZnPg==)
 ![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/42dx/edgio-go-sdk?logo=go)
 [![semantic-release](https://img.shields.io/badge/Semantic_Release-Conventional_Commits-77f?logo=semantic-release)](https://github.com/semantic-release/semantic-release)
 [![conventional-commits](https://img.shields.io/badge/Conventional_Commits-1.0.0-blue.svg?logo=conventionalcommits)](https://conventionalcommits.org)
+![Static Badge](https://img.shields.io/badge/Code_Style-gofmt-blue)
 
 ## Project Meta Data
 
@@ -19,107 +22,242 @@
 ![GitHub milestone details](https://img.shields.io/github/milestones/progress-percent/42dx/edgio-go-sdk/1?label=MVP%20Milestone)
 ![GitHub milestone details](https://img.shields.io/github/milestones/progress-percent/42dx/edgio-go-sdk/2?label=V1%20Milestone)
 
-## Table of contents
+## Table of Contents
 
-- [Packages](#packages)
-  - [Edgio Organizations API](#package-edgio-organizations-api)
-  - [Edgio Properties API](#package-edgio-properties-api)
-  - [Edgio Environments API](#package-edgio-environments-api)
-  - [Edgio Environment Variables API](#package-edgio-environment-variables-api)
-  - [Edgio Cache API](#package-edgio-cache-api)
-  - [Edgio CDN API](#package-edgio-cdn-api)
-  - [Edgio Deployment API](#package-edgio-deployment-api)
-  - [Edgio TSL Certificates API](#package-edgio-tsl-certificates-api)
-  - [Edgio ACL API](#package-edgio-acl-api)
-  - [Edgio Secure Ruleset API](#package-edgio-secure-ruleset-api)
-  - [Edgio Schemas API](#package-edgio-schemas-api)
-  - [Rate Rules API](#package-rate-rules-api)
-  - [Bot Config API](#package-bot-config-api)
-  - [Bot Ruleset API](#package-bot-ruleset-api)
-  - [Known Bots API](#package-known-bots-api)
-  - [Custom Rules API](#package-custom-rules-api)
-  - [Managed Rules API](#package-managed-rules-api)
-  - [Edgio Ruleset API](#package-edgio-ruleset-api)
-  - [Security API](#package-security-api)
+- [Internal Packages](#internal-packages)
+  - [Client](#client)
+  - [Token](#token)
+  - [Utils](#utils)
+- [Public Packages](#public-packages)
+  - [Edgio Common Lib](#edgio-common-lib)
+  - [Edgio Organizations API](#edgio-organizations-api)
+  - [Edgio Properties API](#edgio-properties-api)
+  - [Edgio Environments API](#edgio-environments-api)
+  - [Edgio Environment Variables API](#edgio-environment-variables-api)
+  - [Edgio Cache API](#edgio-cache-api)
+  - [Edgio CDN API](#edgio-cdn-api)
+  - [Edgio Deployment API](#edgio-deployment-api)
+  - [Edgio TSL Certificates API](#edgio-tsl-certificates-api)
+  - [Edgio ACL API](#edgio-acl-api)
+  - [Edgio Secure Ruleset API](#edgio-security-ruleset-api)
+  - [Edgio Schemas API](#edgio-schemas-api)
+  - [Rate Rules API](#rate-rules-api)
+  - [Bot Config API](#bot-managers-config-api)
+  - [Bot Ruleset API](#bot-ruleset-api)
+  - [Known Bots API](#known-bots-api)
+  - [Custom Rules API](#custom-rules-api)
+  - [Managed Rules API](#managed-rules-api)
+  - [Edgio Ruleset API](#edgio-ruleset-api)
+  - [Security API](#security-apps-api)
 - [Contributors](#contributors)
 - [Changelog](#changelog)
 - [Roadmap](#roadmap)
 
-## Packages
+## Internal Packages
 
-### [PACKAGE] Edgio Organizations API
+The internal package documentation is intended to potential contributors of the repository, since they are not exposed to be directly imported. If you are a user, you shoud use our [public api-specific packages](#public-packages) to develop your application.
 
-### [PACKAGE] Edgio Properties API
+### Client
 
-[WIP]
+This package provides a base client configuration and connection to Edgio's REST API, as well as configuration validation. The public packages under `edgio` namespace uses this client under the hood to perform their API calls.
 
-### [PACKAGE] Edgio Environments API
+#### `client.New(creds common.Creds, config common.ClientConfig) (client.Client, error)`
 
-[WIP]
+This constructor validates and assing default valued (if applicable) to the provided credentials and configurations and returns a client instance with a valid access token, or an error if anything goes wrong.
 
-### [PACKAGE] Edgio Environment Variables API
+```go
+client.New(
+  common.Creds{Key: string, Secret: string, Scopes: string, AuthUrl: string},
+  common.ClientConfig{Url: string, ApiVersion: string, Service: string, Scope: string, OrgId: string}
+)
+```
 
-[WIP]
+#### `GetServiceUrl(params common.UrlParams) string`
 
-### [PACKAGE] Edgio Cache API
+This function generates the fully formatted Edgio REST API's url for the desired resource, identified by its `service`, `scope` and `apiVersion`.
 
-[WIP]
+```go
+edgioClient := client.New(
+  common.Creds{Key: "your-api-key", Secret: "your-api-secret", Scopes: "scopes"},
+  common.ClientConfig{ApiVersion: "v0.1", Service: "accounts", Scope: "properties", OrgId: "your-org-id"}
+)
 
-### [PACKAGE] Edgio CDN API
+orgPropertyUrl := edgioClient.GetServiceUrl(common.UrlParams{Path: "your-property-id"}) // https://edgioapis.com/accounts/v0.1/properties/your-property-id
+```
 
-[WIP]
+Check a more in-depth documentation of this package [here](internal/client/README.md).
 
-### [PACKAGE] Edgio Deployment API
+<p align="right"><em><a href="#table-of-contents">back to top</a></em></p/>
 
-[WIP]
+### Token
 
-### [PACKAGE] Edgio TSL Certificates API
+Check a more in-depth documentation of this package [here](internal/token/README.md).
 
-[WIP]
+<p align="right"><em><a href="#table-of-contents">back to top</a></em></p/>
 
-### [PACKAGE] Edgio ACL API
+### Utils
 
-[WIP]
+Check a more in-depth documentation of this package [here](internal/utils/README.md).
 
-### [PACKAGE] Edgio Secure Ruleset API
+<p align="right"><em><a href="#table-of-contents">back to top</a></em></p/>
 
-[WIP]
+## Public Packages
 
-### [PACKAGE] Edgio Schemas API
-
-[WIP]
-
-### [PACKAGE] Rate Rules API
-
-[WIP]
-
-### [PACKAGE] Bot Config API
-
-[WIP]
-
-### [PACKAGE] Bot Ruleset API
+### Edgio Common Lib
 
 [WIP]
 
-### [PACKAGE] Known Bots API
+<p align="right"><em><a href="#table-of-contents">back to top</a></em></p/>
+
+### Edgio Organizations API
+
+[Edgio Organizations REST API documentation reference](https://docs.edg.io/rest_api/#tag/organizations).
+
+<p align="right"><em><a href="#table-of-contents">back to top</a></em></p/>
+
+### Edgio Properties API
 
 [WIP]
 
-### [PACKAGE] Custom Rules API
+[Edgio Properties REST API documentation reference](https://docs.edg.io/rest_api/#tag/properties).
+
+<p align="right"><em><a href="#table-of-contents">back to top</a></em></p/>
+
+### Edgio Environments API
 
 [WIP]
 
-### [PACKAGE] Managed Rules API
+[Edgio Environments REST API documentation reference](https://docs.edg.io/rest_api/#tag/environments).
+
+<p align="right"><em><a href="#table-of-contents">back to top</a></em></p/>
+
+### Edgio Environment Variables API
 
 [WIP]
 
-### [PACKAGE] Edgio Ruleset API
+[Edgio Environment Variables REST API documentation reference](https://docs.edg.io/rest_api/#tag/environment-variables).
+
+<p align="right"><em><a href="#table-of-contents">back to top</a></em></p/>
+
+### Edgio Cache API
 
 [WIP]
 
-### [PACKAGE] Security API
+[Edgio Cache REST API documentation reference](https://docs.edg.io/rest_api/#tag/purge-requests).
+
+<p align="right"><em><a href="#table-of-contents">back to top</a></em></p/>
+
+### Edgio CDN API
 
 [WIP]
+
+[Edgio CDN REST API documentation reference](https://docs.edg.io/rest_api/#tag/configs).
+
+<p align="right"><em><a href="#table-of-contents">back to top</a></em></p/>
+
+### Edgio Deployment API
+
+[WIP]
+
+[Edgio Deployment REST API documentation reference](https://docs.edg.io/rest_api/#tag/deployments).
+
+<p align="right"><em><a href="#table-of-contents">back to top</a></em></p/>
+
+### Edgio TSL Certificates API
+
+[WIP]
+
+[Edgio TSL REST API documentation reference](https://docs.edg.io/rest_api/#tag/tls-certs).
+
+<p align="right"><em><a href="#table-of-contents">back to top</a></em></p/>
+
+### Edgio ACL API
+
+[WIP]
+
+[Edgio ACL REST API documentation reference](<https://docs.edg.io/rest_api/#tag/Access-Control-List-(ACL)>).
+
+<p align="right"><em><a href="#table-of-contents">back to top</a></em></p/>
+
+### Edgio Security Ruleset API
+
+[WIP]
+
+[Edgio Security RulesetREST API documentation reference](https://docs.edg.io/rest_api/#tag/API-Gateways).
+
+<p align="right"><em><a href="#table-of-contents">back to top</a></em></p/>
+
+### Edgio Schemas API
+
+[WIP]
+
+[Edgio Schemas REST API documentation reference](https://docs.edg.io/rest_api/#tag/API-Schemas).
+
+<p align="right"><em><a href="#table-of-contents">back to top</a></em></p/>
+
+### Rate Rules API
+
+[WIP]
+
+[Edgio Rate Rules REST API documentation reference](<https://docs.edg.io/rest_api/#tag/Rate-Rules-(Limits)>).
+
+<p align="right"><em><a href="#table-of-contents">back to top</a></em></p/>
+
+### Bot Managers Config API
+
+[WIP]
+
+[Edgio Managers Config REST API documentation reference](https://docs.edg.io/rest_api/#tag/Bot-Managers).
+
+<p align="right"><em><a href="#table-of-contents">back to top</a></em></p/>
+
+### Bot Ruleset API
+
+[WIP]
+
+[Edgio Bot Ruleset REST API documentation reference](https://docs.edg.io/rest_api/#tag/Bot-Rules).
+
+<p align="right"><em><a href="#table-of-contents">back to top</a></em></p/>
+
+### Known Bots API
+
+[WIP]
+
+[Edgio Known Bots REST API documentation reference](https://docs.edg.io/rest_api/#tag/Known-Bots).
+
+<p align="right"><em><a href="#table-of-contents">back to top</a></em></p/>
+
+### Custom Rules API
+
+[WIP]
+
+[Edgio Custom Rules REST API documentation reference](https://docs.edg.io/rest_api/#tag/Custom-Rules).
+
+<p align="right"><em><a href="#table-of-contents">back to top</a></em></p/>
+
+### Managed Rules API
+
+[WIP]
+
+[Edgio Managed Rules REST API documentation reference](<https://docs.edg.io/rest_api/#tag/Managed-Rules-(Profiles)>).
+
+<p align="right"><em><a href="#table-of-contents">back to top</a></em></p/>
+
+### Edgio Ruleset API
+
+[WIP]
+
+[Edgio Edgio Rulesets REST API documentation reference](https://docs.edg.io/rest_api/#tag/Edgio-Rulesets).
+
+<p align="right"><em><a href="#table-of-contents">back to top</a></em></p/>
+
+### Security Apps API
+
+[WIP]
+
+[Edgio Security Apps REST API documentation reference](<https://docs.edg.io/rest_api/#tag/Security-Applications-(Scopes)>).
+
+<p align="right"><em><a href="#table-of-contents">back to top</a></em></p/>
 
 ## Contributors
 
@@ -141,10 +279,18 @@ Kudos to all our dear contributors. Without them, nothing would have been possib
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
+Would you like to see your profile here? Take a look on our [Code of Conduct](https://github.com/42dx/.github/blob/main/CODE_OF_CONDUCT.md) and our [Contributing](https://github.com/42dx/.github/blob/main/CONTRIBUTING.md) docs, and start coding! We would be thrilled to review a PR of yours! :100:
+
+<p align="right"><em><a href="#table-of-contents">back to top</a></em></p>
+
 ## Changelog
 
 All changes made to this module since the start of development can be found either on our release list or on the [changelog](CHANGELOG.md).
 
+<p align="right"><em><a href="#table-of-contents">back to top</a></em></p/>
+
 ## Roadmap
 
 Any planned enhancement to the module will be described and tracked in our [project page](https://github.com/orgs/42dx/projects/1)
+
+<p align="right"><em><a href="#table-of-contents">back to top</a></em></p/>

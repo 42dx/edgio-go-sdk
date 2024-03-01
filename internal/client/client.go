@@ -51,6 +51,19 @@ func evalConfig(config common.ClientConfig) (common.ClientConfig, error) {
 	return config, nil
 }
 
+// New Creates a base client configuration and connection to Edgio's REST API.
+// The public packages under `edgio` namespace uses this client under the hood to perform their API calls.
+// It validates and assing default valued (if applicable) to the provided credentials and configurations and returns a client instance with a valid access token.
+// Mandatory params:
+// common.Creds.Key
+// common.Creds.Secret
+// common.ClientConfig.ApiVersion
+// common.ClientConfig.Service
+// common.ClientConfig.Scope
+// Optional params:
+// common.Creds.Scopes
+// common.Creds.AuthUrl
+// common.ClientConfig.Url
 func New(creds common.Creds, config common.ClientConfig) (Client, error) {
 	credentials, err := evalCreds(creds)
 	if err != nil {
@@ -73,6 +86,13 @@ func New(creds common.Creds, config common.ClientConfig) (Client, error) {
 	}, nil
 }
 
+// GetServiceUrl Returns the fully formatted Edgio REST API's url for the desired resource,
+// identified by its `service`, `scope` and `apiVersion`.
+// Mandatory params:
+// Since this function inherits all its configuration from the created (by the `client.New` func) client,
+// there are no mandatory parameters. All of them were already validated on the creation of the client.
+// Optional params:
+// common.UrlParams.Path
 func (c Client) GetServiceUrl(params common.UrlParams) string {
 	if params.Path != "" {
 		params.Path = "/" + params.Path
