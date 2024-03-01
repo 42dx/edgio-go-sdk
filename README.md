@@ -87,19 +87,19 @@ orgPropertyUrl := edgioClient.GetServiceUrl(common.UrlParams{Path: "your-propert
 
 Check a more in-depth documentation of this package [here](internal/client/README.md).
 
-<p align="right"><em><a href="#table-of-contents">back to top</a></em></p/>
+<p align="right"><em><a href="#table-of-contents">back to top</a></em></p>
 
 ### Token
 
 Check a more in-depth documentation of this package [here](internal/token/README.md).
 
-<p align="right"><em><a href="#table-of-contents">back to top</a></em></p/>
+<p align="right"><em><a href="#table-of-contents">back to top</a></em></p>
 
 ### Utils
 
 Check a more in-depth documentation of this package [here](internal/utils/README.md).
 
-<p align="right"><em><a href="#table-of-contents">back to top</a></em></p/>
+<p align="right"><em><a href="#table-of-contents">back to top</a></em></p>
 
 ## Public Packages
 
@@ -107,13 +107,13 @@ Check a more in-depth documentation of this package [here](internal/utils/README
 
 [WIP]
 
-<p align="right"><em><a href="#table-of-contents">back to top</a></em></p/>
+<p align="right"><em><a href="#table-of-contents">back to top</a></em></p>
 
 ### Edgio Organizations API
 
 [Edgio Organizations REST API documentation reference](https://docs.edg.io/rest_api/#tag/organizations).
 
-<p align="right"><em><a href="#table-of-contents">back to top</a></em></p/>
+<p align="right"><em><a href="#table-of-contents">back to top</a></em></p>
 
 ### Edgio Properties API
 
@@ -121,7 +121,7 @@ Check a more in-depth documentation of this package [here](internal/utils/README
 
 [Edgio Properties REST API documentation reference](https://docs.edg.io/rest_api/#tag/properties).
 
-<p align="right"><em><a href="#table-of-contents">back to top</a></em></p/>
+<p align="right"><em><a href="#table-of-contents">back to top</a></em></p>
 
 ### Edgio Environments API
 
@@ -129,7 +129,7 @@ Check a more in-depth documentation of this package [here](internal/utils/README
 
 [Edgio Environments REST API documentation reference](https://docs.edg.io/rest_api/#tag/environments).
 
-<p align="right"><em><a href="#table-of-contents">back to top</a></em></p/>
+<p align="right"><em><a href="#table-of-contents">back to top</a></em></p>
 
 ### Edgio Environment Variables API
 
@@ -137,7 +137,7 @@ Check a more in-depth documentation of this package [here](internal/utils/README
 
 [Edgio Environment Variables REST API documentation reference](https://docs.edg.io/rest_api/#tag/environment-variables).
 
-<p align="right"><em><a href="#table-of-contents">back to top</a></em></p/>
+<p align="right"><em><a href="#table-of-contents">back to top</a></em></p>
 
 ### Edgio Cache API
 
@@ -145,7 +145,7 @@ Check a more in-depth documentation of this package [here](internal/utils/README
 
 [Edgio Cache REST API documentation reference](https://docs.edg.io/rest_api/#tag/purge-requests).
 
-<p align="right"><em><a href="#table-of-contents">back to top</a></em></p/>
+<p align="right"><em><a href="#table-of-contents">back to top</a></em></p>
 
 ### Edgio CDN API
 
@@ -153,7 +153,7 @@ Check a more in-depth documentation of this package [here](internal/utils/README
 
 [Edgio CDN REST API documentation reference](https://docs.edg.io/rest_api/#tag/configs).
 
-<p align="right"><em><a href="#table-of-contents">back to top</a></em></p/>
+<p align="right"><em><a href="#table-of-contents">back to top</a></em></p>
 
 ### Edgio Deployment API
 
@@ -161,7 +161,7 @@ Check a more in-depth documentation of this package [here](internal/utils/README
 
 [Edgio Deployment REST API documentation reference](https://docs.edg.io/rest_api/#tag/deployments).
 
-<p align="right"><em><a href="#table-of-contents">back to top</a></em></p/>
+<p align="right"><em><a href="#table-of-contents">back to top</a></em></p>
 
 ### Edgio TSL Certificates API
 
@@ -169,7 +169,7 @@ Check a more in-depth documentation of this package [here](internal/utils/README
 
 [Edgio TSL REST API documentation reference](https://docs.edg.io/rest_api/#tag/tls-certs).
 
-<p align="right"><em><a href="#table-of-contents">back to top</a></em></p/>
+<p align="right"><em><a href="#table-of-contents">back to top</a></em></p>
 
 ### Edgio ACL API
 
@@ -177,7 +177,7 @@ Check a more in-depth documentation of this package [here](internal/utils/README
 
 [Edgio ACL REST API documentation reference](<https://docs.edg.io/rest_api/#tag/Access-Control-List-(ACL)>).
 
-<p align="right"><em><a href="#table-of-contents">back to top</a></em></p/>
+<p align="right"><em><a href="#table-of-contents">back to top</a></em></p>
 
 ### Edgio Security Ruleset API
 
@@ -185,7 +185,7 @@ Check a more in-depth documentation of this package [here](internal/utils/README
 
 [Edgio Security RulesetREST API documentation reference](https://docs.edg.io/rest_api/#tag/API-Gateways).
 
-<p align="right"><em><a href="#table-of-contents">back to top</a></em></p/>
+<p align="right"><em><a href="#table-of-contents">back to top</a></em></p>
 
 ### Edgio Schemas API
 
@@ -193,7 +193,7 @@ Check a more in-depth documentation of this package [here](internal/utils/README
 
 [Edgio Schemas REST API documentation reference](https://docs.edg.io/rest_api/#tag/API-Schemas).
 
-<p align="right"><em><a href="#table-of-contents">back to top</a></em></p/>
+<p align="right"><em><a href="#table-of-contents">back to top</a></em></p>
 
 ### Rate Rules API
 
@@ -201,7 +201,7 @@ Check a more in-depth documentation of this package [here](internal/utils/README
 
 [Edgio Rate Rules REST API documentation reference](<https://docs.edg.io/rest_api/#tag/Rate-Rules-(Limits)>).
 
-<p align="right"><em><a href="#table-of-contents">back to top</a></em></p/>
+<p align="right"><em><a href="#table-of-contents">back to top</a></em></p>
 
 ### Bot Managers Config API
 
@@ -209,7 +209,7 @@ Check a more in-depth documentation of this package [here](internal/utils/README
 
 [Edgio Managers Config REST API documentation reference](https://docs.edg.io/rest_api/#tag/Bot-Managers).
 
-<p align="right"><em><a href="#table-of-contents">back to top</a></em></p/>
+<p align="right"><em><a href="#table-of-contents">back to top</a></em></p>
 
 ### Bot Ruleset API
 
@@ -217,7 +217,7 @@ Check a more in-depth documentation of this package [here](internal/utils/README
 
 [Edgio Bot Ruleset REST API documentation reference](https://docs.edg.io/rest_api/#tag/Bot-Rules).
 
-<p align="right"><em><a href="#table-of-contents">back to top</a></em></p/>
+<p align="right"><em><a href="#table-of-contents">back to top</a></em></p>
 
 ### Known Bots API
 
@@ -225,7 +225,7 @@ Check a more in-depth documentation of this package [here](internal/utils/README
 
 [Edgio Known Bots REST API documentation reference](https://docs.edg.io/rest_api/#tag/Known-Bots).
 
-<p align="right"><em><a href="#table-of-contents">back to top</a></em></p/>
+<p align="right"><em><a href="#table-of-contents">back to top</a></em></p>
 
 ### Custom Rules API
 
@@ -233,7 +233,7 @@ Check a more in-depth documentation of this package [here](internal/utils/README
 
 [Edgio Custom Rules REST API documentation reference](https://docs.edg.io/rest_api/#tag/Custom-Rules).
 
-<p align="right"><em><a href="#table-of-contents">back to top</a></em></p/>
+<p align="right"><em><a href="#table-of-contents">back to top</a></em></p>
 
 ### Managed Rules API
 
@@ -241,7 +241,7 @@ Check a more in-depth documentation of this package [here](internal/utils/README
 
 [Edgio Managed Rules REST API documentation reference](<https://docs.edg.io/rest_api/#tag/Managed-Rules-(Profiles)>).
 
-<p align="right"><em><a href="#table-of-contents">back to top</a></em></p/>
+<p align="right"><em><a href="#table-of-contents">back to top</a></em></p>
 
 ### Edgio Ruleset API
 
@@ -249,7 +249,7 @@ Check a more in-depth documentation of this package [here](internal/utils/README
 
 [Edgio Edgio Rulesets REST API documentation reference](https://docs.edg.io/rest_api/#tag/Edgio-Rulesets).
 
-<p align="right"><em><a href="#table-of-contents">back to top</a></em></p/>
+<p align="right"><em><a href="#table-of-contents">back to top</a></em></p>
 
 ### Security Apps API
 
@@ -257,7 +257,7 @@ Check a more in-depth documentation of this package [here](internal/utils/README
 
 [Edgio Security Apps REST API documentation reference](<https://docs.edg.io/rest_api/#tag/Security-Applications-(Scopes)>).
 
-<p align="right"><em><a href="#table-of-contents">back to top</a></em></p/>
+<p align="right"><em><a href="#table-of-contents">back to top</a></em></p>
 
 ## Contributors
 
@@ -287,10 +287,10 @@ Would you like to see your profile here? Take a look on our [Code of Conduct](ht
 
 All changes made to this module since the start of development can be found either on our release list or on the [changelog](CHANGELOG.md).
 
-<p align="right"><em><a href="#table-of-contents">back to top</a></em></p/>
+<p align="right"><em><a href="#table-of-contents">back to top</a></em></p>
 
 ## Roadmap
 
 Any planned enhancement to the module will be described and tracked in our [project page](https://github.com/orgs/42dx/projects/1)
 
-<p align="right"><em><a href="#table-of-contents">back to top</a></em></p/>
+<p align="right"><em><a href="#table-of-contents">back to top</a></em></p>
