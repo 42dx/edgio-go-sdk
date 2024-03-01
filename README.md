@@ -110,6 +110,8 @@ Check a more in-depth documentation of this package [here](internal/utils/README
 
 ## Public Packages
 
+The public packages are the parts of the SDK that are actually intended to be used. You should be able to import just those you need for your project.
+
 ### Edgio Common Lib
 
 This package expose public interfaces, structs and other functions that could not be hosted on the internal packages, since in some cases they are required by both other internal packages and some public ones, leading to cyclic imports. Due to that, they were outsourced to their own package.
