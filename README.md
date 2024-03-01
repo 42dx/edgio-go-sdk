@@ -55,6 +55,7 @@ This project goal is to implement a GO SDK wrapper for the [Edgio's REST API](ht
     - [Managed Rules API](#managed-rules-api)
     - [Edgio Ruleset API](#edgio-ruleset-api)
     - [Security API](#security-apps-api)
+- [Tooling](#tooling)
 - [Contributors](#contributors)
 - [Changelog](#changelog)
 - [Roadmap](#roadmap)
@@ -289,6 +290,12 @@ Check a more in-depth documentation of this package [here](common/README.md).
 [Edgio Security Apps REST API documentation reference](<https://docs.edg.io/rest_api/#tag/Security-Applications-(Scopes)>).
 
 <p align="right"><em><a href="#table-of-contents">back to top</a></em></p>
+
+## Tooling
+
+There are a few tools we provide alongside with the source code to ease a little bit the burden of following a bunch of patterns and standards we set up, as well as automate some boring processes.
+
+- `comitizen`: This CLI helps with writting commit messages in a meaningful and standardized way, so that our automation process can use them to properly write our software, changelog. To use it, you just need to run `./tools/commitizen-go install` from the repository's root folder. After that, you just need to use `git cz` command instead of the standard `git commit` and follow the cli interactive steps :)
 
 ## Contributors
 
