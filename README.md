@@ -128,6 +128,8 @@ newConfig := common.ClientConfig{
 baseConfig.Merge(newConfig) // returns common.ClientConfig{Url: "a", ApiVersion: "b", Service: "b", Scope: "a", OrgId:  "a"}
 ```
 
+Check a more in-depth documentation of this package [here](common/README.md).
+
 [WIP]
 
 <p align="right"><em><a href="#table-of-contents">back to top</a></em></p>
