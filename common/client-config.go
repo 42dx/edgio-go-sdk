@@ -8,6 +8,13 @@ type ClientConfig struct {
 	OrgId      string
 }
 
+// Merge Merges the `other` ClientConfig into the default one,
+// overwriting the current values with the other's if they are not empty.
+// MAndatory params:
+// other common.ClientConfig
+// Even though `other` is mandatory, no keys are mandatory in it. If no keys are provided,
+// the default value is returned
+// Returns the merged ClientConfig.
 func (c ClientConfig) Merge(other ClientConfig) ClientConfig {
 	if other.Url != "" {
 		c.Url = other.Url

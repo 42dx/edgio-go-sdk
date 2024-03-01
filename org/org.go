@@ -4,7 +4,6 @@ import (
 	"edgio/common"
 	"edgio/internal/client"
 	"edgio/internal/utils"
-	"fmt"
 	"net/http"
 )
 
@@ -35,10 +34,6 @@ var baseConfig = common.ClientConfig{
 }
 
 func NewClient(params ClientParams) (OrgClientStruct, error) {
-	fmt.Println(baseConfig)
-	fmt.Println(params.Config)
-	fmt.Println(baseConfig.Merge(params.Config))
-
 	client, err := client.New(params.Credentials, baseConfig.Merge(params.Config))
 
 	if err != nil {

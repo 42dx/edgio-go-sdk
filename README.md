@@ -105,6 +105,29 @@ Check a more in-depth documentation of this package [here](internal/utils/README
 
 ### Edgio Common Lib
 
+This package expose public interfaces, structs and other functions that could not be hosted on the internal packages, since in some cases they are required by both other internal packages and some public ones, leading to cyclic imports. Due to that, they were outsourced to their own package.
+
+#### `common.ClientConfig.Merge(other common.ClientConfig{})`
+
+Merges the `other` ClientConfig into the default one, overwriting the current values with the other's if they are not empty.
+
+```go
+baseConfig := common.ClientConfig{
+  Url: "a",
+  ApiVersion: "a",
+  Service: "a",
+  Scope: "a",
+  OrgId: "a",
+}
+
+newConfig := common.ClientConfig{
+  ApiVersion: "b",
+  Service: "b",
+}
+
+baseConfig.Merge(newConfig) // returns common.ClientConfig{Url: "a", ApiVersion: "b", Service: "b", Scope: "a", OrgId:  "a"}
+```
+
 [WIP]
 
 <p align="right"><em><a href="#table-of-contents">back to top</a></em></p>

@@ -64,6 +64,7 @@ func evalConfig(config common.ClientConfig) (common.ClientConfig, error) {
 // common.Creds.Scopes
 // common.Creds.AuthUrl
 // common.ClientConfig.Url
+// Returns a Client instance and an error if any of the mandatory parameters are missing.
 func New(creds common.Creds, config common.ClientConfig) (Client, error) {
 	credentials, err := evalCreds(creds)
 	if err != nil {
@@ -93,6 +94,7 @@ func New(creds common.Creds, config common.ClientConfig) (Client, error) {
 // there are no mandatory parameters. All of them were already validated on the creation of the client.
 // Optional params:
 // common.UrlParams.Path
+// Returns the fully formatted Edgio REST API's url for the desired resource.
 func (c Client) GetServiceUrl(params common.UrlParams) string {
 	if params.Path != "" {
 		params.Path = "/" + params.Path
