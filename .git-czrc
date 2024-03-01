@@ -103,6 +103,10 @@
                         "desc": "client:     Edgio base client"
                     },
                     {
+                        "name": "common",
+                        "desc": "common:     Common packages"
+                    },
+                    {
                         "name": "deployment",
                         "desc": "deployment: Deployment API"
                     },
@@ -144,7 +148,7 @@
                     },
                     {
                         "name": "util",
-                        "desc": "util:       Internal module utilities/helpers"
+                        "desc": "util:       Internal package utilities/helpers"
                     }
                 ]
             },
