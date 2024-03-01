@@ -42,4 +42,4 @@ Since this function inherits all its configuration from the created (by the `cli
 
 - `common.UrlParams.Path`: Path of the resource you need. Some of the Edgio REST API's endpoint require them, some do not. You will need to check on [its docs](https://docs.edg.io/rest_api) to make sure you include this param when needed.
 
-<p align="right"><em><a href="README.md#client">back to the main README</a></em></p>
+<p align="right"><em><a href="/README.md#client">back to the main README</a></em></p>
