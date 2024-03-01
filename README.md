@@ -64,7 +64,7 @@ This project goal is to implement a GO SDK wrapper for the [Edgio's REST API](ht
 
 The internal package documentation is intended to potential contributors of the repository, since they are not exposed to be directly imported. If you are a user, you shoud use our [public api-specific packages](#public-packages) to develop your application.
 
-### Client
+### internal/client
 
 This package provides a base client configuration and connection to Edgio's REST API, as well as configuration validation. The public packages under `edgio` namespace uses this client under the hood to perform their API calls.
 
@@ -96,13 +96,13 @@ Check a more in-depth documentation of this package [here](internal/client/READM
 
 <p align="right"><em><a href="#table-of-contents">back to top</a></em></p>
 
-### Token
+### internal/token
 
 Check a more in-depth documentation of this package [here](internal/token/README.md).
 
 <p align="right"><em><a href="#table-of-contents">back to top</a></em></p>
 
-### Utils
+### internal/utils
 
 Check a more in-depth documentation of this package [here](internal/utils/README.md).
 
