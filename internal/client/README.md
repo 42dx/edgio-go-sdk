@@ -38,6 +38,11 @@ This constructor validates and assing default valued (if applicable) to the prov
 
 This function generates the fully formatted Edgio REST API's url for the desired resource, identified by its `service`, `scope` and `apiVersion`.
 
+```go
+// edgioClient returned from  client.New()
+orgPropertyUrl := edgioClient.GetServiceUrl(common.UrlParams{Path: "your-property-id"}) // https://edgioapis.com/accounts/v0.1/properties/your-property-id
+```
+
 ### `client.GetServiceUrl` Mandatory Params
 
 Since this function inherits all its configuration from the created (by the `client.New` func) client, there are no mandatory parameters. All of them were already validated on the creation of the client.

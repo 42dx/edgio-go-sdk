@@ -72,25 +72,9 @@ This package provides a base client configuration and connection to Edgio's REST
 
 This constructor validates and assing default valued (if applicable) to the provided credentials and configurations and returns a client instance with a valid access token, or an error if anything goes wrong.
 
-```go
-client.New(
-  common.Creds{Key: string, Secret: string, Scopes: string, AuthUrl: string},
-  common.ClientConfig{Url: string, ApiVersion: string, Service: string, Scope: string, OrgId: string}
-)
-```
-
 #### `GetServiceUrl(params common.UrlParams) string`
 
 This function generates the fully formatted Edgio REST API's url for the desired resource, identified by its `service`, `scope` and `apiVersion`.
-
-```go
-edgioClient := client.New(
-  common.Creds{Key: "your-api-key", Secret: "your-api-secret", Scopes: "scopes"},
-  common.ClientConfig{ApiVersion: "v0.1", Service: "accounts", Scope: "properties", OrgId: "your-org-id"}
-)
-
-orgPropertyUrl := edgioClient.GetServiceUrl(common.UrlParams{Path: "your-property-id"}) // https://edgioapis.com/accounts/v0.1/properties/your-property-id
-```
 
 Check a more in-depth documentation of this package [here](internal/client/README.md).
 
@@ -103,6 +87,12 @@ Check a more in-depth documentation of this package [here](internal/token/README
 <p align="right"><em><a href="#table-of-contents">back to top</a></em></p>
 
 ### internal/utils
+
+This package package holds some utility functions that are used to outsource some common logic from other packages to avoid repetition/ease testing.
+
+#### `utils.GetHttpJsonResult(httpClient *http.Client, request *http.Request, token string, model interface{}) (interface{}, error)`
+
+This function has mainly three related goals: 1- Process http requests; 2- treat HTTP errors in a standardized way, and; 3- Process and decode returned json data from the endpoints.
 
 Check a more in-depth documentation of this package [here](internal/utils/README.md).
 
