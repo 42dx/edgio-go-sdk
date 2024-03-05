@@ -29,9 +29,7 @@ func TestNewMissingKey(t *testing.T) {
 	}
 
 	_, err := New(creds, config)
-	if err != nil {
-		assert.Equal(t, "edgio client key is missing", err.Error(), "Error message is not as expected")
-	}
+	assert.Equal(t, "edgio client key is missing", err.Error(), "Error message is not as expected")
 }
 
 func TestNewMissingSecret(t *testing.T) {
@@ -50,9 +48,8 @@ func TestNewMissingSecret(t *testing.T) {
 	}
 
 	_, err := New(creds, config)
-	if err != nil {
-		assert.Equal(t, "edgio client secret is missing", err.Error(), "Error message is not as expected")
-	}
+
+	assert.Equal(t, "edgio client secret is missing", err.Error(), "Error message is not as expected")
 }
 
 func TestNewUseDefaultScopes(t *testing.T) {

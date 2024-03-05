@@ -90,11 +90,11 @@ func TestNewClientError(t *testing.T) {
 
 	_, err := NewClient(params)
 	if err != nil {
-		t.Fatal(err)
+		assert.Error(t, err)
+		assert.Contains(t, err.Error(), "edgio client secret is missing")
+	} else {
+		t.Fatal("error expected but not received")
 	}
-
-	assert.Error(t, err)
-	assert.Contains(t, err.Error(), "edgio client secret is missing")
 }
 
 func TestGetError(t *testing.T) {
