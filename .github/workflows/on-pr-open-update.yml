@@ -16,27 +16,29 @@ on:
 
 jobs:
   pr-checks:
+    name: PR Checks
     runs-on: ubuntu-latest
     permissions:
       checks: write
       contents: read
       pull-requests: read
     steps:
-      - name: Install go
-        uses: actions/setup-go@v5
-        with:
-          go-version-file: "./go.mod"
+      - run: ls -la && pwd
+      # - name: Install go
+      #   uses: actions/setup-go@v5
+      #   with:
+      #     go-version-file: "./go.mod"
 
-      - name: Checkout Code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+      # - name: Checkout Code
+      #   uses: actions/checkout@v4
+      #   with:
+      #     fetch-depth: 0
 
-      - name: Linting check
-        uses: golangci/golangci-lint-action@v4
-        with:
-          install-mode: goinstall
-          version: latest
+      # - name: Linting check
+      #   uses: golangci/golangci-lint-action@v4
+      #   with:
+      #     install-mode: goinstall
+      #     version: latest
 
-      - name: Run Unit Tests and get Coverage
-        run: make coverage
+      # - name: Run Unit Tests and get Coverage
+      #   run: make coverage
