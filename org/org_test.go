@@ -11,7 +11,10 @@ import (
 
 func TestNewClient(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
-		rw.Write([]byte(`{"access_token": "test_token"}`))
+		_, err := rw.Write([]byte(`{"access_token": "test_token"}`))
+		if err != nil {
+			t.Fatal(err)
+		}
 	}))
 
 	defer server.Close()
@@ -38,11 +41,17 @@ func TestNewClient(t *testing.T) {
 func TestGet(t *testing.T) {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/accounts/v0.1/organizations/some-id", func(rw http.ResponseWriter, req *http.Request) {
-		rw.Write([]byte(`{"id": "some-id", "name": "some-name"}`))
+		_, err := rw.Write([]byte(`{"id": "some-id", "name": "some-name"}`))
+		if err != nil {
+			t.Fatal(err)
+		}
 	})
 	server := httptest.NewServer(mux)
 	server2 := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
-		rw.Write([]byte(`{"access_token": "test_token"}`))
+		_, err := rw.Write([]byte(`{"access_token": "test_token"}`))
+		if err != nil {
+			t.Fatal(err)
+		}
 	}))
 
 	defer server.Close()
@@ -80,19 +89,28 @@ func TestNewClientError(t *testing.T) {
 	}
 
 	_, err := NewClient(params)
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	assert.Error(t, err)
 	assert.Contains(t, err.Error(), "edgio client secret is missing")
 }
 
-func TestGet_Error(t *testing.T) {
+func TestGetError(t *testing.T) {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/accounts/v0.1/organizations/some-id", func(rw http.ResponseWriter, req *http.Request) {
-		rw.Write([]byte(`not a json`))
+		_, err := rw.Write([]byte(`not a json`))
+		if err != nil {
+			t.Fatal(err)
+		}
 	})
 	server := httptest.NewServer(mux)
 	server2 := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
-		rw.Write([]byte(`{"access_token": "test_token"}`))
+		_, err := rw.Write([]byte(`{"access_token": "test_token"}`))
+		if err != nil {
+			t.Fatal(err)
+		}
 	}))
 
 	defer server.Close()

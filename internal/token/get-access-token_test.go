@@ -19,9 +19,18 @@ func (bw *brokenWriter) Write(p []byte) (n int, err error) {
 	return 0, errors.New("broken writer")
 }
 
+type errorReader struct{}
+
+func (er *errorReader) Read(p []byte) (n int, err error) {
+	return 0, errors.New("mocked read error")
+}
+
 func TestGetAccessTokenMissingKey(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
-		rw.Write([]byte(`{"access_token": "test_token"}`))
+		_, err := rw.Write([]byte(`{"access_token": "test_token"}`))
+		if err != nil {
+			t.Fatal(err)
+		}
 	}))
 	httpmock.Activate()
 
@@ -44,7 +53,10 @@ func TestGetAccessTokenMissingKey(t *testing.T) {
 
 func TestGetAccessTokenMissingSecret(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
-		rw.Write([]byte(`{"access_token": "test_token"}`))
+		_, err := rw.Write([]byte(`{"access_token": "test_token"}`))
+		if err != nil {
+			t.Fatal(err)
+		}
 	}))
 	httpmock.Activate()
 
@@ -67,7 +79,10 @@ func TestGetAccessTokenMissingSecret(t *testing.T) {
 
 func TestGetAccessTokenInvalidAuthUrl(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
-		rw.Write([]byte(`{"access_token": "test_token"}`))
+		_, err := rw.Write([]byte(`{"access_token": "test_token"}`))
+		if err != nil {
+			t.Fatal(err)
+		}
 	}))
 	httpmock.Activate()
 
@@ -113,7 +128,10 @@ func TestGetAccessTokenJsonUnmarshalError(t *testing.T) {
 
 func TestGetAccessToken(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
-		rw.Write([]byte(`{"access_token": "test_token"}`))
+		_, err := rw.Write([]byte(`{"access_token": "test_token"}`))
+		if err != nil {
+			t.Fatal(err)
+		}
 	}))
 
 	httpmock.Activate()
@@ -183,10 +201,4 @@ func TestGetAccessToken_ReadBodyError(t *testing.T) {
 
 	assert.Error(t, err)
 	assert.Contains(t, err.Error(), "mocked read error")
-}
-
-type errorReader struct{}
-
-func (er *errorReader) Read(p []byte) (n int, err error) {
-	return 0, errors.New("mocked read error")
 }

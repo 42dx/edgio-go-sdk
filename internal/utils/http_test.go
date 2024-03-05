@@ -10,7 +10,10 @@ import (
 
 func TestGetHttpJsonResultSuccess(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
-		rw.Write([]byte(`{"key": "value"}`))
+		_, err := rw.Write([]byte(`{"key": "value"}`))
+		if err != nil {
+			t.Fatal(err)
+		}
 	}))
 
 	defer server.Close()
@@ -44,7 +47,10 @@ func TestGetHttpJsonResultNon200StatusCode(t *testing.T) {
 
 func TestGetHttpJsonResultDecodeError(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
-		rw.Write([]byte(`not a json`))
+		_, err := rw.Write([]byte(`not a json`))
+		if err != nil {
+			t.Fatal(err)
+		}
 	}))
 
 	defer server.Close()

@@ -29,8 +29,9 @@ func TestNewMissingKey(t *testing.T) {
 	}
 
 	_, err := New(creds, config)
-
-	assert.Equal(t, "edgio client key is missing", err.Error())
+	if err != nil {
+		assert.Equal(t, "edgio client key is missing", err.Error(), "Error message is not as expected")
+	}
 }
 
 func TestNewMissingSecret(t *testing.T) {
@@ -49,26 +50,35 @@ func TestNewMissingSecret(t *testing.T) {
 	}
 
 	_, err := New(creds, config)
-
-	assert.Equal(t, "edgio client secret is missing", err.Error())
+	if err != nil {
+		assert.Equal(t, "edgio client secret is missing", err.Error(), "Error message is not as expected")
+	}
 }
 
 func TestNewUseDefaultScopes(t *testing.T) {
 	defaultScopes := "app.cache+app.cache.purge+app.waf+app.waf:edit+app.waf:read+app.accounts+app.config"
 	server := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
 		body, _ := io.ReadAll(req.Body)
-
 		bodyStr := strings.ReplaceAll(string(body), "+", "%2B")
 		params, _ := url.ParseQuery(bodyStr)
 		assert.Equal(t, defaultScopes, params.Get("scope"))
 
 		req.Body.Close()
 	}))
+	defer server.Close()
+
+	server2 := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
+		_, err := rw.Write([]byte(`{"access_token": "test_token"}`))
+		if err != nil {
+			t.Fatal(err)
+		}
+	}))
+	defer server2.Close()
 
 	creds := common.Creds{
 		Key:     "someKey",
 		Secret:  "secret",
-		AuthUrl: server.URL,
+		AuthUrl: server2.URL,
 	}
 
 	config := common.ClientConfig{
@@ -78,9 +88,10 @@ func TestNewUseDefaultScopes(t *testing.T) {
 		Scope:      "scope",
 	}
 
-	New(creds, config)
-
-	defer server.Close()
+	_, err := New(creds, config)
+	if err != nil {
+		t.Fatal(err)
+	}
 }
 
 func TestNewMissingApiVersion(t *testing.T) {
@@ -164,7 +175,10 @@ func TestNewMissingScope(t *testing.T) {
 
 func TestNewHappyPath(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
-		rw.Write([]byte(`{"access_token": "test_token"}`))
+		_, err := rw.Write([]byte(`{"access_token": "test_token"}`))
+		if err != nil {
+			t.Fatal(err)
+		}
 	}))
 
 	creds := common.Creds{
@@ -193,7 +207,10 @@ func TestNewHappyPath(t *testing.T) {
 func TestNewDefaultApiUrl(t *testing.T) {
 	defaultEdgioApiUrl := "https://edgioapis.com"
 	server := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
-		rw.Write([]byte(`{"access_token": "test_token"}`))
+		_, err := rw.Write([]byte(`{"access_token": "test_token"}`))
+		if err != nil {
+			t.Fatal(err)
+		}
 	}))
 
 	creds := common.Creds{
