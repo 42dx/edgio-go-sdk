@@ -3,6 +3,7 @@ package token
 import (
 	"edgio/common"
 	"errors"
+	"io"
 	"log"
 	"net/http"
 	"net/http/httptest"
@@ -132,4 +133,60 @@ func TestGetAccessToken(t *testing.T) {
 
 	defer server.Close()
 	defer httpmock.DeactivateAndReset()
+}
+
+func TestGetAccessToken_HttpError(t *testing.T) {
+	httpmock.Activate()
+	defer httpmock.DeactivateAndReset()
+
+	// Mocking a network error
+	httpmock.RegisterResponder("POST", "https://id.edgio.app/connect/token",
+		func(req *http.Request) (*http.Response, error) {
+			return nil, errors.New("mocked network error")
+		},
+	)
+
+	creds := common.Creds{
+		Key:     "testKey",
+		Secret:  "testSecret",
+		Scopes:  "testScopes",
+		AuthUrl: "https://id.edgio.app/connect/token",
+	}
+
+	_, err := GetAccessToken(creds)
+
+	assert.Error(t, err)
+	assert.Contains(t, err.Error(), "mocked network error")
+}
+
+func TestGetAccessToken_ReadBodyError(t *testing.T) {
+	httpmock.Activate()
+	defer httpmock.DeactivateAndReset()
+
+	// Mocking an error while reading the response body
+	httpmock.RegisterResponder("POST", "https://id.edgio.app/connect/token",
+		func(req *http.Request) (*http.Response, error) {
+			resp := httpmock.NewStringResponse(200, "mocked response")
+			resp.Body = io.NopCloser(&errorReader{})
+			return resp, nil
+		},
+	)
+
+	creds := common.Creds{
+		Key:     "testKey",
+		Secret:  "testSecret",
+		Scopes:  "testScopes",
+		AuthUrl: "https://id.edgio.app/connect/token",
+	}
+
+	_, err := GetAccessToken(creds)
+
+	assert.Error(t, err)
+	assert.Contains(t, err.Error(), "mocked read error")
+}
+
+type errorReader struct{}
+
+func (er *errorReader) Read(p []byte) (n int, err error) {
+	return 0, errors.New("mocked read error")
 }

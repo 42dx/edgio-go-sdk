@@ -123,6 +123,25 @@ func TestNewMissingService(t *testing.T) {
 	assert.Equal(t, "edgio client service is missing", err.Error())
 }
 
+func TestDefaultAuthUrl(t *testing.T) {
+	creds := common.Creds{
+		Key:    "testKey",
+		Secret: "testSecret",
+	}
+
+	expectedCreds := common.Creds{
+		Key:     "testKey",
+		Secret:  "testSecret",
+		AuthUrl: "https://id.edgio.app/connect/token",
+		Scopes:  "app.cache+app.cache.purge+app.waf+app.waf:edit+app.waf:read+app.accounts+app.config",
+	}
+
+	resultCreds, err := evalCreds(creds)
+
+	assert.NoError(t, err)
+	assert.Equal(t, expectedCreds, resultCreds)
+}
+
 func TestNewMissingScope(t *testing.T) {
 	creds := common.Creds{
 		Key:     "key",
