@@ -19,8 +19,8 @@ This project goal is to implement a GO SDK wrapper for the [Edgio's REST API](ht
 
 ## Project Status
 
-![GitHub milestone details](https://img.shields.io/github/milestones/progress-percent/42dx/edgio-go-sdk/1?label=MVP%20Milestone)
-![GitHub milestone details](https://img.shields.io/github/milestones/progress-percent/42dx/edgio-go-sdk/2?label=V1%20Milestone)
+[![GitHub milestone details](https://img.shields.io/github/milestones/progress-percent/42dx/edgio-go-sdk/1?label=MVP%20Milestone)](https://github.com/42dx/edgio-go-sdk/milestone/1)
+[![GitHub milestone details](https://img.shields.io/github/milestones/progress-percent/42dx/edgio-go-sdk/2?label=V1%20Milestone)](https://github.com/42dx/edgio-go-sdk/milestone/2)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=42dx_edgio-go-sdk&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=42dx_edgio-go-sdk)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=42dx_edgio-go-sdk&metric=coverage)](https://sonarcloud.io/summary/new_code?id=42dx_edgio-go-sdk)
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=42dx_edgio-go-sdk&metric=bugs)](https://sonarcloud.io/summary/new_code?id=42dx_edgio-go-sdk)
