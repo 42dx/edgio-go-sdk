@@ -16,12 +16,12 @@ on:
 
 jobs:
   pr-checks:
-    name: PR Checks
+    name: Code Quality & Reliability Checks
     runs-on: ubuntu-latest
     permissions:
       checks: write
       contents: read
-      pull-requests: write
+      pull-requests: read
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
