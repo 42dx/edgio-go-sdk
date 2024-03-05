@@ -11,6 +11,14 @@ type Client struct {
 	Config      common.ClientConfig
 }
 
+// evalCreds Validates and assigns default valued (if applicable) to the provided credentials.
+// Mandatory params:
+// common.Creds.Key
+// common.Creds.Secret
+// Optional params:
+// common.Creds.Scopes
+// common.Creds.AuthUrl
+// Returns a valid credentials and an error if any of the mandatory parameters are missing.
 func evalCreds(creds common.Creds) (common.Creds, error) {
 	if creds.Key == "" {
 		return common.Creds{}, errors.New("edgio client key is missing")
@@ -31,6 +39,14 @@ func evalCreds(creds common.Creds) (common.Creds, error) {
 	return creds, nil
 }
 
+// evalConfig Validates and assigns default valued (if applicable) to the provided configurations.
+// Mandatory params:
+// common.ClientConfig.ApiVersion
+// common.ClientConfig.Service
+// common.ClientConfig.Scope
+// Optional params:
+// common.ClientConfig.Url
+// Returns a valid client configuration and an error if any of the mandatory parameters are missing.
 func evalConfig(config common.ClientConfig) (common.ClientConfig, error) {
 	if config.Url == "" {
 		config.Url = "https://edgioapis.com"

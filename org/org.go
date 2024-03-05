@@ -33,9 +33,20 @@ var baseConfig = common.ClientConfig{
 	OrgId:      "",
 }
 
+// NewClient returns a new client with the provided parameters.
+// Mandatory params:
+// common.Creds.Key
+// common.Creds.Secret
+// Optional params:
+// common.Creds.Scopes
+// common.Creds.AuthUrl
+// common.ClientConfig.ApiVersion
+// common.ClientConfig.Service
+// common.ClientConfig.Scope
+// common.ClientConfig.Url
+// Returns a new client and an error if any of the mandatory parameters are missing.
 func NewClient(params ClientParams) (OrgClientStruct, error) {
 	client, err := client.New(params.Credentials, baseConfig.Merge(params.Config))
-
 	if err != nil {
 		return OrgClientStruct{}, err
 	}
@@ -43,14 +54,18 @@ func NewClient(params ClientParams) (OrgClientStruct, error) {
 	return OrgClientStruct{client}, nil
 }
 
+// Get returns the organization details.
+// Mandatory params:
+// common.UrlParams.OrgId
+// Returns the organization details and an error if any of the mandatory parameters are missing.
 func (c OrgClientStruct) Get(params common.UrlParams) (getResultType, error) {
 	httpClient := &http.Client{}
-	request, _ := http.NewRequest(http.MethodGet, c.client.GetServiceUrl(common.UrlParams{Path: c.client.Config.OrgId}), nil)
+	request, _ := http.NewRequest(http.MethodGet, c.client.GetServiceUrl(params), nil)
 
 	result, err := utils.GetHttpJsonResult(httpClient, request, c.client.AccessToken, &getResult)
-
 	if err != nil {
 		return getResultType{}, err
 	}
+
 	return *result.(*getResultType), nil
 }

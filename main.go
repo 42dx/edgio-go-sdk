@@ -9,14 +9,11 @@ import (
 
 func main() {
 	credentials := common.Creds{
-		Key:    os.Getenv("EDGIO_CLIENT_KEY"),
-		Secret: os.Getenv("EDGIO_CLIENT_SECRET"),
+		Key:    os.Getenv("EDGIO_API_CLIENT_ID"),
+		Secret: os.Getenv("EDGIO_API_CLIENT_SECRET"),
 	}
 
-	orgClient, _ := org.NewClient(org.ClientParams{
-		Credentials: credentials,
-		Config:      common.ClientConfig{OrgId: os.Getenv("ORG_ID")},
-	})
+	orgClient, _ := org.NewClient(org.ClientParams{Credentials: credentials})
 
-	fmt.Println(orgClient.Get(common.UrlParams{}))
+	fmt.Println(orgClient.Get(common.UrlParams{Path: os.Getenv("EDGIO_ORG_ID")}))
 }
