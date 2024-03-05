@@ -38,6 +38,7 @@ jobs:
         with:
           install-mode: goinstall
           version: latest
+          args: --color always > lint-report.out
 
       - name: Run Unit Tests and get Coverage
         run: make coverage
