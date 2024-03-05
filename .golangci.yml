@@ -4,6 +4,7 @@ run:
 output:
   sort-results: true
   show-stats: true
+  format: checkstyle:lint-report.out
 linters-settings:
 linters:
   enable-all: true
@@ -29,5 +30,3 @@ linters:
     - gochecknoglobals
     - forcetypeassert
     - paralleltest
-issues:
-severity:

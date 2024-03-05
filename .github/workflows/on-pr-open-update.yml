@@ -21,12 +21,20 @@ jobs:
     permissions:
       checks: write
       contents: read
-      pull-requests: read
+      pull-requests: write
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
+      - name: Clean Up SonarQube Comments
+        if: ${{ github.event.number  }}
+        uses: izhangzhihao/delete-comment@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          delete_user_name: sonarcloud[bot]
+          issue_number: ${{ github.event.number }}
 
       - name: Install go
         uses: actions/setup-go@v5
@@ -38,6 +46,7 @@ jobs:
         with:
           install-mode: goinstall
           version: latest
+          args: --out-format=checkstyle:lint-report.out
 
       - name: Run Unit Tests and get Coverage
         run: make coverage
