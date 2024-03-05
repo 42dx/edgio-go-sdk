@@ -1,4 +1,4 @@
-// package utils_test
+package utils_test
 
 // import (
 // 	"edgio/internal/utils"

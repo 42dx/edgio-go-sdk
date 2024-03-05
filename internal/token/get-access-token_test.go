@@ -1,4 +1,4 @@
-// package token_test
+package token_test
 
 // import (
 // 	"edgio/common"

@@ -1,4 +1,4 @@
-// package common_test
+package common_test
 
 // import (
 // 	"edgio/common"
