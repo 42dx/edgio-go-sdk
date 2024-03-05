@@ -38,7 +38,7 @@ jobs:
         with:
           install-mode: goinstall
           version: latest
-          args: -out-format=json:lint-report.out
+          args: --out-format=json:lint-report.out
 
       - name: Run Unit Tests and get Coverage
         run: make coverage
