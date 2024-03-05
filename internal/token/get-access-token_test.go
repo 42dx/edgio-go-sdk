@@ -28,8 +28,6 @@ func (e *errorReader) Read(_ []byte) (int, error) {
 }
 
 func TestGetAccessTokenMissingKey(t *testing.T) {
-	t.Parallel()
-
 	server := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, _ *http.Request) {
 		_, err := rw.Write([]byte(`{"access_token": "test_token"}`))
 		if err != nil {
@@ -57,8 +55,6 @@ func TestGetAccessTokenMissingKey(t *testing.T) {
 }
 
 func TestGetAccessTokenMissingSecret(t *testing.T) {
-	t.Parallel()
-
 	server := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, _ *http.Request) {
 		_, err := rw.Write([]byte(`{"access_token": "test_token"}`))
 		if err != nil {
@@ -86,8 +82,6 @@ func TestGetAccessTokenMissingSecret(t *testing.T) {
 }
 
 func TestGetAccessTokenInvalidAuthURL(t *testing.T) {
-	t.Parallel()
-
 	server := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, _ *http.Request) {
 		_, err := rw.Write([]byte(`{"access_token": "test_token"}`))
 		if err != nil {
@@ -137,8 +131,6 @@ func TestGetAccessTokenJsonUnmarshalError(t *testing.T) {
 }
 
 func TestGetAccessToken(t *testing.T) {
-	t.Parallel()
-
 	server := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, _ *http.Request) {
 		_, err := rw.Write([]byte(`{"access_token": "test_token"}`))
 		require.NoError(t, err)
@@ -188,14 +180,12 @@ func TestGetAccessTokenHttpError(t *testing.T) {
 }
 
 func TestGetAccessTokenReadBodyError(t *testing.T) {
-	t.Parallel()
-
 	httpmock.Activate()
 
 	defer httpmock.DeactivateAndReset()
 
 	// Mocking an error while reading the response body
-	httpmock.RegisterResponder("POST", "https://id.edgio.app/connect/token",
+	httpmock.RegisterResponder(http.MethodPost, "https://id.edgio.app/connect/token",
 		func(_ *http.Request) (*http.Response, error) {
 			resp := httpmock.NewStringResponse(200, "mocked response")
 			resp.Body = io.NopCloser(&errorReader{})

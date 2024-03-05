@@ -11,8 +11,6 @@ import (
 )
 
 func TestGetHTTPJSONResultSuccess(t *testing.T) {
-	t.Parallel()
-
 	server := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, _ *http.Request) {
 		_, err := rw.Write([]byte(`{"key": "value"}`))
 		if err != nil {
@@ -34,8 +32,6 @@ func TestGetHTTPJSONResultSuccess(t *testing.T) {
 }
 
 func TestGetHTTPJSONResultNon200StatusCode(t *testing.T) {
-	t.Parallel()
-
 	server := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, _ *http.Request) {
 		rw.WriteHeader(http.StatusNotFound)
 	}))
@@ -52,8 +48,6 @@ func TestGetHTTPJSONResultNon200StatusCode(t *testing.T) {
 }
 
 func TestGetHTTPJSONResultDecodeError(t *testing.T) {
-	t.Parallel()
-
 	server := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, _ *http.Request) {
 		_, err := rw.Write([]byte(`not a json`))
 		if err != nil {

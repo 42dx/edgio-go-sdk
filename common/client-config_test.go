@@ -8,8 +8,6 @@ import (
 )
 
 func TestMergeURL(t *testing.T) {
-	t.Parallel()
-
 	c1 := common.ClientConfig{URL: "http://old-url.com"}
 	c2 := common.ClientConfig{URL: "http://new-url.com"}
 
@@ -19,8 +17,6 @@ func TestMergeURL(t *testing.T) {
 }
 
 func TestMergeAPIVersion(t *testing.T) {
-	t.Parallel()
-
 	c1 := common.ClientConfig{APIVersion: "v1"}
 	c2 := common.ClientConfig{APIVersion: "v2"}
 
@@ -30,8 +26,6 @@ func TestMergeAPIVersion(t *testing.T) {
 }
 
 func TestMergeService(t *testing.T) {
-	t.Parallel()
-
 	c1 := common.ClientConfig{Service: "OldService"}
 	c2 := common.ClientConfig{Service: "NewService"}
 
@@ -41,8 +35,6 @@ func TestMergeService(t *testing.T) {
 }
 
 func TestMergeScope(t *testing.T) {
-	t.Parallel()
-
 	c1 := common.ClientConfig{Scope: "OldScope"}
 	c2 := common.ClientConfig{Scope: "NewScope"}
 
@@ -52,8 +44,6 @@ func TestMergeScope(t *testing.T) {
 }
 
 func TestMergeOrgID(t *testing.T) {
-	t.Parallel()
-
 	c1 := common.ClientConfig{OrgID: "OldOrgID"}
 	c2 := common.ClientConfig{OrgID: "NewOrgID"}
 

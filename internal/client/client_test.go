@@ -16,8 +16,6 @@ import (
 )
 
 func TestNewMissingKey(t *testing.T) {
-	t.Parallel()
-
 	creds := common.Creds{
 		Key:     "",
 		Secret:  "secret",
@@ -38,8 +36,6 @@ func TestNewMissingKey(t *testing.T) {
 }
 
 func TestNewMissingSecret(t *testing.T) {
-	t.Parallel()
-
 	creds := common.Creds{
 		Key:     "key",
 		Secret:  "",
@@ -61,8 +57,6 @@ func TestNewMissingSecret(t *testing.T) {
 }
 
 func TestNewUseDefaultScopes(t *testing.T) {
-	t.Parallel()
-
 	server := httptest.NewServer(http.HandlerFunc(func(_ http.ResponseWriter, req *http.Request) {
 		defaultScopes := "app.cache+app.cache.purge+app.waf+app.waf:edit+app.waf:read+app.accounts+app.config"
 		body, _ := io.ReadAll(req.Body)
@@ -100,8 +94,6 @@ func TestNewUseDefaultScopes(t *testing.T) {
 }
 
 func TestNewMissingAPIVersion(t *testing.T) {
-	t.Parallel()
-
 	creds := common.Creds{
 		Key:     "key",
 		Secret:  "secret",
@@ -122,8 +114,6 @@ func TestNewMissingAPIVersion(t *testing.T) {
 }
 
 func TestNewMissingService(t *testing.T) {
-	t.Parallel()
-
 	creds := common.Creds{
 		Key:     "key",
 		Secret:  "secret",
@@ -144,8 +134,6 @@ func TestNewMissingService(t *testing.T) {
 }
 
 func TestDefaultAuthURL(t *testing.T) {
-	t.Parallel()
-
 	server := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, _ *http.Request) {
 		_, err := rw.Write([]byte(`{"access_token": "test_token"}`))
 		require.NoError(t, err)
@@ -172,8 +160,6 @@ func TestDefaultAuthURL(t *testing.T) {
 }
 
 func TestNewMissingScope(t *testing.T) {
-	t.Parallel()
-
 	creds := common.Creds{
 		Key:     "key",
 		Secret:  "secret",
@@ -194,8 +180,6 @@ func TestNewMissingScope(t *testing.T) {
 }
 
 func TestNewHappyPath(t *testing.T) {
-	t.Parallel()
-
 	server := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, _ *http.Request) {
 		_, err := rw.Write([]byte(`{"access_token": "test_token"}`))
 		if err != nil {
@@ -227,8 +211,6 @@ func TestNewHappyPath(t *testing.T) {
 }
 
 func TestNewDefaultApiURL(t *testing.T) {
-	t.Parallel()
-
 	server := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, _ *http.Request) {
 		_, err := rw.Write([]byte(`{"access_token": "test_token"}`))
 		if err != nil {
@@ -256,8 +238,6 @@ func TestNewDefaultApiURL(t *testing.T) {
 }
 
 func TestGetServiceURLPathNotEmpty(t *testing.T) {
-	t.Parallel()
-
 	config := common.ClientConfig{
 		URL:        "http://example.com",
 		APIVersion: "v1",
@@ -271,8 +251,6 @@ func TestGetServiceURLPathNotEmpty(t *testing.T) {
 }
 
 func TestGetServiceURLPathEmpty(t *testing.T) {
-	t.Parallel()
-
 	config := common.ClientConfig{
 		URL:        "http://example.com",
 		APIVersion: "v1",

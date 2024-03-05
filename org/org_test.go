@@ -20,8 +20,6 @@ func (m *MockRoundTripper) RoundTrip(req *http.Request) (*http.Response, error) 
 }
 
 func TestNewClient(t *testing.T) {
-	t.Parallel()
-
 	server := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, _ *http.Request) {
 		_, err := rw.Write([]byte(`{"access_token": "test_token"}`))
 		if err != nil {
@@ -51,8 +49,6 @@ func TestNewClient(t *testing.T) {
 }
 
 func TestGet(t *testing.T) {
-	t.Parallel()
-
 	mux := http.NewServeMux()
 
 	server := httptest.NewServer(mux)
@@ -91,8 +87,6 @@ func TestGet(t *testing.T) {
 }
 
 func TestNewClientError(t *testing.T) {
-	t.Parallel()
-
 	params := org.ClientParams{
 		Credentials: common.Creds{Key: "testKey"},
 		Config:      common.ClientConfig{},
@@ -104,8 +98,6 @@ func TestNewClientError(t *testing.T) {
 }
 
 func TestGetError(t *testing.T) {
-	t.Parallel()
-
 	mux := http.NewServeMux()
 	mux.HandleFunc("/accounts/v0.1/organizations/some-id", func(rw http.ResponseWriter, _ *http.Request) {
 		_, err := rw.Write([]byte(`not a json`))
