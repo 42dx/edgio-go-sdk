@@ -40,7 +40,11 @@ func TestGetAccessTokenMissingKey(t *testing.T) {
 
 	defer httpmock.DeactivateAndReset()
 
-	httpmock.RegisterResponder(http.MethodPost, server.URL, httpmock.NewStringResponder(403, `{"access_token": "test_token"}`))
+	httpmock.RegisterResponder(
+		http.MethodPost,
+		server.URL,
+		httpmock.NewStringResponder(403, `{"access_token": "test_token"}`),
+	)
 
 	creds := common.Creds{
 		Key:     "test_key",
@@ -66,7 +70,11 @@ func TestGetAccessTokenMissingSecret(t *testing.T) {
 
 	defer httpmock.DeactivateAndReset()
 
-	httpmock.RegisterResponder(http.MethodPost, server.URL, httpmock.NewStringResponder(403, `{"access_token": "test_token"}`))
+	httpmock.RegisterResponder(
+		http.MethodPost,
+		server.URL,
+		httpmock.NewStringResponder(403, `{"access_token": "test_token"}`),
+	)
 
 	creds := common.Creds{
 		Secret:  "test_secret",
@@ -82,7 +90,11 @@ func TestGetAccessTokenMissingSecret(t *testing.T) {
 func TestGetAccessTokenInvalidAuthURL(t *testing.T) {
 	httpmock.Activate()
 
-	httpmock.RegisterResponder(http.MethodPost, "https://id.edgio.app/invalid", httpmock.NewStringResponder(404, "Not Found"))
+	httpmock.RegisterResponder(
+		http.MethodPost,
+		"https://id.edgio.app/invalid",
+		httpmock.NewStringResponder(404, "Not Found"),
+	)
 
 	defer httpmock.DeactivateAndReset()
 
@@ -127,7 +139,11 @@ func TestGetAccessToken(t *testing.T) {
 
 	httpmock.Activate()
 
-	httpmock.RegisterResponder(http.MethodPost, server.URL, httpmock.NewStringResponder(200, `{"access_token": "test_token"}`))
+	httpmock.RegisterResponder(
+		http.MethodPost,
+		server.URL,
+		httpmock.NewStringResponder(200, `{"access_token": "test_token"}`),
+	)
 
 	creds := common.Creds{
 		Key:     "test_key",
@@ -149,7 +165,9 @@ func TestGetAccessTokenHttpError(t *testing.T) {
 
 	defer httpmock.DeactivateAndReset()
 
-	httpmock.RegisterResponder(http.MethodPost, "https://id.edgio.app/connect/token",
+	httpmock.RegisterResponder(
+		http.MethodPost,
+		"https://id.edgio.app/connect/token",
 		func(_ *http.Request) (*http.Response, error) {
 			return nil, errors.New("mocked network error")
 		},
@@ -173,7 +191,9 @@ func TestGetAccessTokenReadBodyError(t *testing.T) {
 	defer httpmock.DeactivateAndReset()
 
 	// Mocking an error while reading the response body
-	httpmock.RegisterResponder(http.MethodPost, "https://id.edgio.app/connect/token",
+	httpmock.RegisterResponder(
+		http.MethodPost,
+		"https://id.edgio.app/connect/token",
 		func(_ *http.Request) (*http.Response, error) {
 			resp := httpmock.NewStringResponse(200, "mocked response")
 			resp.Body = io.NopCloser(&errorReader{})

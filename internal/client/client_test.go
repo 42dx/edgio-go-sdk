@@ -136,7 +136,10 @@ func TestNewMissingService(t *testing.T) {
 func TestGetTokenErr(t *testing.T) {
 	httpmock.Activate()
 
-	httpmock.RegisterResponder(http.MethodPost, "https://id.edgio.app/connect/token", httpmock.NewStringResponder(403, "forbidden"))
+	httpmock.RegisterResponder(
+		http.MethodPost, "https://id.edgio.app/connect/token",
+		httpmock.NewStringResponder(403, "forbidden"),
+	)
 
 	defer httpmock.DeactivateAndReset()
 
@@ -161,7 +164,11 @@ func TestGetTokenErr(t *testing.T) {
 func TestDefaultAuthURL(t *testing.T) {
 	httpmock.Activate()
 
-	httpmock.RegisterResponder(http.MethodPost, "https://id.edgio.app/connect/token", httpmock.NewStringResponder(200, `{"access_token": "test_token"}`))
+	httpmock.RegisterResponder(
+		http.MethodPost,
+		"https://id.edgio.app/connect/token",
+		httpmock.NewStringResponder(200, `{"access_token": "test_token"}`),
+	)
 
 	defer httpmock.DeactivateAndReset()
 
