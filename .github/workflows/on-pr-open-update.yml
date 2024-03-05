@@ -32,7 +32,7 @@ jobs:
         if: ${{ github.event.number  }}
         uses: izhangzhihao/delete-comment@master
         with:
-          github_token: ${{ secrets.SONAR_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           delete_user_name: sonarcloud[bot]
           issue_number: ${{ github.event.number }}
 
