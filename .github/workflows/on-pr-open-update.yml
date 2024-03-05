@@ -1,0 +1,42 @@
+name: On PR Open/Update
+
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - main
+      - beta
+  pull_request:
+    branches:
+      - main
+      - beta
+
+jobs:
+  pr-checks:
+    runs-on: ubuntu-latest
+    permissions:
+      checks: write
+      contents: read
+      pull-requests: read
+    steps:
+      - name: Install go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: "./go.mod"
+
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Linting check
+        uses: golangci/golangci-lint-action@v4
+        with:
+          install-mode: goinstall
+          version: latest
+
+      - name: Run Unit Tests and get Coverage
+        run: make coverage
