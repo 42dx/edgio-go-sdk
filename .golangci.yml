@@ -4,7 +4,7 @@ run:
 output:
   sort-results: true
   show-stats: true
-  format: json:lint-report.out
+  format: checkstyle:lint-report.out
 linters-settings:
 linters:
   enable-all: true
