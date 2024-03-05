@@ -76,7 +76,7 @@ This constructor validates and assing default valued (if applicable) to the prov
 
 This function generates the fully formatted Edgio REST API's url for the desired resource, identified by its `service`, `scope` and `apiVersion`.
 
-Check a more in-depth documentation of this package [here](internal/client/README.md).
+Check a more in-depth documentation of thw `internal/client` package [here](internal/client/README.md).
 
 <p align="right"><em><a href="#table-of-contents">back to top</a></em></p>
 
@@ -88,7 +88,7 @@ The main goal of this package is to hold any logic related to the aquisition/ref
 
 This func outsources the process of getting an auth token from Edgio's Auth service. It assumes Edgio's standard auth endpoint as a default URL, but that can be overwritten by your own, in the event of an enterprise/self-hosted app.
 
-Check a more in-depth documentation of this package [here](internal/token/README.md).
+Check a more in-depth documentation of the `internal/token` package [here](internal/token/README.md).
 
 <p align="right"><em><a href="#table-of-contents">back to top</a></em></p>
 
@@ -100,7 +100,7 @@ This package package holds some utility functions that are used to outsource som
 
 This function has mainly three related goals: 1- Process http requests; 2- treat HTTP errors in a standardized way, and; 3- Process and decode returned json data from the endpoints.
 
-Check a more in-depth documentation of this package [here](internal/utils/README.md).
+Check a more in-depth documentation of the `internal/utils` package [here](internal/utils/README.md).
 
 <p align="right"><em><a href="#table-of-contents">back to top</a></em></p>
 
@@ -108,7 +108,7 @@ Check a more in-depth documentation of this package [here](internal/utils/README
 
 The public packages are the parts of the SDK that are actually intended to be used. You should be able to import just those you need for your project.
 
-### Edgio Common Lib
+### edgio/common
 
 This package expose public interfaces, structs and other functions that could not be hosted on the internal packages, since in some cases they are required by both other internal packages and some public ones, leading to cyclic imports. Due to that, they were outsourced to their own package.
 
@@ -116,32 +116,25 @@ This package expose public interfaces, structs and other functions that could no
 
 Merges the `other` ClientConfig into the default one, overwriting the current values with the other's if they are not empty.
 
-```go
-baseConfig := common.ClientConfig{
-  Url: "a",
-  ApiVersion: "a",
-  Service: "a",
-  Scope: "a",
-  OrgId: "a",
-}
-
-newConfig := common.ClientConfig{
-  ApiVersion: "b",
-  Service: "b",
-}
-
-baseConfig.Merge(newConfig) // returns common.ClientConfig{Url: "a", ApiVersion: "b", Service: "b", Scope: "a", OrgId:  "a"}
-```
-
-Check a more in-depth documentation of this package [here](common/README.md).
-
-[WIP]
+Check a more in-depth documentation of the edgio/common package [here](common/README.md).
 
 <p align="right"><em><a href="#table-of-contents">back to top</a></em></p>
 
-### Edgio Organizations API
+### edgio/org
 
-[Edgio Organizations REST API documentation reference](https://docs.edg.io/rest_api/#tag/organizations).
+This package groups Edgio Organization specific funcs.
+
+#### `org.NewClient(params ClientParams) (OrgClientStruct, error)`
+
+This func returns a new client with the provided parameters, with an access token already set, and the default edgio params values for service, scope and API version (which can be overwritten if needed) to interact with your application's orgs.
+
+#### `org.Get(params common.UrlParams) (getResultType, error)`
+
+This func returns the relevant organization details (name and id).
+
+Check a more in-depth documentation of the `edgio/org` package [here](org/README.md).
+
+**Reference**: [Edgio Organizations REST API documentation reference](https://docs.edg.io/rest_api/#tag/organizations).
 
 <p align="right"><em><a href="#table-of-contents">back to top</a></em></p>
 
