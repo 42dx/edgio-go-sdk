@@ -133,18 +133,41 @@ func TestNewMissingService(t *testing.T) {
 	assert.Equal(t, "edgio client service is missing", err.Error())
 }
 
-func TestDefaultAuthURL(t *testing.T) {
-	server := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, _ *http.Request) {
-		_, err := rw.Write([]byte(`{"access_token": "test_token"}`))
-		require.NoError(t, err)
-	}))
-	defer server.Close()
+func TestGetTokenErr(t *testing.T) {
+	httpmock.Activate()
+
+	httpmock.RegisterResponder(http.MethodPost, "https://id.edgio.app/connect/token", httpmock.NewStringResponder(403, "forbidden"))
+
 	defer httpmock.DeactivateAndReset()
 
 	creds := common.Creds{
-		Key:     "testKey",
-		Secret:  "testSecret",
-		AuthURL: server.URL,
+		Key:    "testKey",
+		Secret: "testSecret",
+	}
+
+	config := common.ClientConfig{
+		URL:        "http://example.com",
+		APIVersion: "v1",
+		Service:    "service",
+		Scope:      "org",
+	}
+
+	_, err := client.New(creds, config)
+
+	require.Error(t, err)
+	assert.Equal(t, "[HTTP ERROR]: Status Code: 403 - Forbidden", err.Error())
+}
+
+func TestDefaultAuthURL(t *testing.T) {
+	httpmock.Activate()
+
+	httpmock.RegisterResponder(http.MethodPost, "https://id.edgio.app/connect/token", httpmock.NewStringResponder(200, `{"access_token": "test_token"}`))
+
+	defer httpmock.DeactivateAndReset()
+
+	creds := common.Creds{
+		Key:    "testKey",
+		Secret: "testSecret",
 	}
 
 	config := common.ClientConfig{

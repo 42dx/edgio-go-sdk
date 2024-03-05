@@ -40,8 +40,7 @@ func TestGetAccessTokenMissingKey(t *testing.T) {
 
 	defer httpmock.DeactivateAndReset()
 
-	httpmock.RegisterResponder(http.MethodPost, server.URL,
-		httpmock.NewStringResponder(403, `{"access_token": "test_token"}`))
+	httpmock.RegisterResponder(http.MethodPost, server.URL, httpmock.NewStringResponder(403, `{"access_token": "test_token"}`))
 
 	creds := common.Creds{
 		Key:     "test_key",
@@ -67,8 +66,7 @@ func TestGetAccessTokenMissingSecret(t *testing.T) {
 
 	defer httpmock.DeactivateAndReset()
 
-	httpmock.RegisterResponder("POST", server.URL,
-		httpmock.NewStringResponder(403, `{"access_token": "test_token"}`))
+	httpmock.RegisterResponder(http.MethodPost, server.URL, httpmock.NewStringResponder(403, `{"access_token": "test_token"}`))
 
 	creds := common.Creds{
 		Secret:  "test_secret",
@@ -82,31 +80,22 @@ func TestGetAccessTokenMissingSecret(t *testing.T) {
 }
 
 func TestGetAccessTokenInvalidAuthURL(t *testing.T) {
-	server := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, _ *http.Request) {
-		_, err := rw.Write([]byte(`{"access_token": "test_token"}`))
-		if err != nil {
-			t.Fatal(err)
-		}
-	}))
-
 	httpmock.Activate()
 
-	httpmock.RegisterResponder("POST", server.URL,
-		httpmock.NewStringResponder(404, "Not Found"))
+	httpmock.RegisterResponder(http.MethodPost, "https://id.edgio.app/invalid", httpmock.NewStringResponder(404, "Not Found"))
+
+	defer httpmock.DeactivateAndReset()
 
 	creds := common.Creds{
 		Key:     "test_key",
 		Secret:  "test_secret",
 		Scopes:  "test_scope",
-		AuthURL: server.URL,
+		AuthURL: "https://id.edgio.app/invalid",
 	}
 
 	_, err := token.GetAccessToken(creds)
 	require.Error(t, err)
 	assert.Equal(t, "[HTTP ERROR]: Status Code: 404 - Not Found", err.Error())
-
-	defer server.Close()
-	defer httpmock.DeactivateAndReset()
 }
 
 func TestGetAccessTokenJsonUnmarshalError(t *testing.T) {
@@ -138,8 +127,7 @@ func TestGetAccessToken(t *testing.T) {
 
 	httpmock.Activate()
 
-	httpmock.RegisterResponder("POST", server.URL,
-		httpmock.NewStringResponder(200, `{"access_token": "test_token"}`))
+	httpmock.RegisterResponder(http.MethodPost, server.URL, httpmock.NewStringResponder(200, `{"access_token": "test_token"}`))
 
 	creds := common.Creds{
 		Key:     "test_key",
