@@ -28,6 +28,14 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Clean Up SonarQube Comments
+        if: ${{ github.event.number  }}
+        uses: izhangzhihao/delete-comment@master
+        with:
+          github_token: ${{ secrets.SONAR_TOKEN }}
+          delete_user_name: sonarcloud[bot]
+          issue_number: ${{ github.event.number }}
+
       - name: Install go
         uses: actions/setup-go@v5
         with:
