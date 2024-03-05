@@ -1,0 +1,33 @@
+run:
+  skip-files:
+    - "main.go"
+output:
+  sort-results: true
+  show-stats: true
+linters-settings:
+linters:
+  enable-all: true
+  disable:
+    - maligned
+    - golint
+    - varcheck
+    - scopelint
+    - deadcode
+    - structcheck
+    - interfacer
+    - ifshort
+    - exhaustivestruct
+    - nosnakecase
+    - exhaustruct
+    - gci
+    - depguard
+    - goerr113
+    - tagliatelle
+    - wrapcheck
+    - unconvert
+    - noctx
+    - gochecknoglobals
+    - forcetypeassert
+    - paralleltest
+issues:
+severity:

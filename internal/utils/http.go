@@ -8,14 +8,19 @@ import (
 	"strings"
 )
 
-// GetHttpJsonResult returns the result of an HTTP request in JSON format.
+// GetHTTPJSONResult returns the result of an HTTP request in JSON format.
 // Mandatory params:
 // httpClient *http.Client
 // request *http.Request
 // token string
 // model interface{}
 // Returns the result of an HTTP request in JSON format and an error if the request fails.
-func GetHttpJsonResult(httpClient *http.Client, request *http.Request, token string, model interface{}) (interface{}, error) {
+func GetHTTPJSONResult(
+	httpClient *http.Client,
+	request *http.Request,
+	token string,
+	model interface{},
+) (interface{}, error) {
 	request.Header.Add("Authorization", token)
 
 	resp, err := httpClient.Do(request)
@@ -29,6 +34,7 @@ func GetHttpJsonResult(httpClient *http.Client, request *http.Request, token str
 
 		return nil, errors.New(strings.Join(msg, ""))
 	}
+	defer resp.Body.Close()
 
 	err = json.NewDecoder(resp.Body).Decode(model)
 	if err != nil {

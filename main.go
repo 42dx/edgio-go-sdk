@@ -15,5 +15,5 @@ func main() {
 
 	orgClient, _ := org.NewClient(org.ClientParams{Credentials: credentials})
 
-	fmt.Println(orgClient.Get(common.UrlParams{Path: os.Getenv("EDGIO_ORG_ID")}))
+	fmt.Println(orgClient.Get(common.URLParams{Path: os.Getenv("EDGIO_ORG_ID")}))
 }

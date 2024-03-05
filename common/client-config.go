@@ -1,11 +1,11 @@
 package common
 
 type ClientConfig struct {
-	Url        string
-	ApiVersion string
+	URL        string
+	APIVersion string
 	Service    string
 	Scope      string
-	OrgId      string
+	OrgID      string
 }
 
 // Merge Merges the `other` ClientConfig into the default one,
@@ -16,12 +16,12 @@ type ClientConfig struct {
 // the default value is returned
 // Returns the merged ClientConfig.
 func (c ClientConfig) Merge(other ClientConfig) ClientConfig {
-	if other.Url != "" {
-		c.Url = other.Url
+	if other.URL != "" {
+		c.URL = other.URL
 	}
 
-	if other.ApiVersion != "" {
-		c.ApiVersion = other.ApiVersion
+	if other.APIVersion != "" {
+		c.APIVersion = other.APIVersion
 	}
 
 	if other.Service != "" {
@@ -32,8 +32,8 @@ func (c ClientConfig) Merge(other ClientConfig) ClientConfig {
 		c.Scope = other.Scope
 	}
 
-	if other.OrgId != "" {
-		c.OrgId = other.OrgId
+	if other.OrgID != "" {
+		c.OrgID = other.OrgID
 	}
 
 	return c

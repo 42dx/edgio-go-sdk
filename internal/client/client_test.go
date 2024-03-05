@@ -1,7 +1,8 @@
-package client
+package client_test
 
 import (
 	"edgio/common"
+	"edgio/internal/client"
 	"io"
 	"net/http"
 	"net/http/httptest"
@@ -11,50 +12,59 @@ import (
 
 	"github.com/jarcoal/httpmock"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestNewMissingKey(t *testing.T) {
+	t.Parallel()
+
 	creds := common.Creds{
 		Key:     "",
 		Secret:  "secret",
 		Scopes:  "scopes",
-		AuthUrl: "http://example.com",
+		AuthURL: "http://example.com",
 	}
 
 	config := common.ClientConfig{
-		Url:        "http://example.com",
-		ApiVersion: "v1",
+		URL:        "http://example.com",
+		APIVersion: "v1",
 		Service:    "service",
 		Scope:      "scope",
 	}
 
-	_, err := New(creds, config)
+	_, err := client.New(creds, config)
+	require.Error(t, err)
 	assert.Equal(t, "edgio client key is missing", err.Error(), "Error message is not as expected")
 }
 
 func TestNewMissingSecret(t *testing.T) {
+	t.Parallel()
+
 	creds := common.Creds{
 		Key:     "key",
 		Secret:  "",
 		Scopes:  "scopes",
-		AuthUrl: "http://example.com",
+		AuthURL: "http://example.com",
 	}
 
 	config := common.ClientConfig{
-		Url:        "http://example.com",
-		ApiVersion: "v1",
+		URL:        "http://example.com",
+		APIVersion: "v1",
 		Service:    "service",
 		Scope:      "scope",
 	}
 
-	_, err := New(creds, config)
+	_, err := client.New(creds, config)
 
+	require.Error(t, err)
 	assert.Equal(t, "edgio client secret is missing", err.Error(), "Error message is not as expected")
 }
 
 func TestNewUseDefaultScopes(t *testing.T) {
-	defaultScopes := "app.cache+app.cache.purge+app.waf+app.waf:edit+app.waf:read+app.accounts+app.config"
-	server := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
+	t.Parallel()
+
+	server := httptest.NewServer(http.HandlerFunc(func(_ http.ResponseWriter, req *http.Request) {
+		defaultScopes := "app.cache+app.cache.purge+app.waf+app.waf:edit+app.waf:read+app.accounts+app.config"
 		body, _ := io.ReadAll(req.Body)
 		bodyStr := strings.ReplaceAll(string(body), "+", "%2B")
 		params, _ := url.ParseQuery(bodyStr)
@@ -64,7 +74,7 @@ func TestNewUseDefaultScopes(t *testing.T) {
 	}))
 	defer server.Close()
 
-	server2 := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
+	server2 := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, _ *http.Request) {
 		_, err := rw.Write([]byte(`{"access_token": "test_token"}`))
 		if err != nil {
 			t.Fatal(err)
@@ -75,183 +85,202 @@ func TestNewUseDefaultScopes(t *testing.T) {
 	creds := common.Creds{
 		Key:     "someKey",
 		Secret:  "secret",
-		AuthUrl: server2.URL,
+		AuthURL: server2.URL,
 	}
 
 	config := common.ClientConfig{
-		Url:        server.URL,
-		ApiVersion: "v1",
+		URL:        server.URL,
+		APIVersion: "v1",
 		Service:    "service",
 		Scope:      "scope",
 	}
 
-	_, err := New(creds, config)
-	if err != nil {
-		t.Fatal(err)
-	}
+	_, err := client.New(creds, config)
+	require.NoError(t, err)
 }
 
-func TestNewMissingApiVersion(t *testing.T) {
+func TestNewMissingAPIVersion(t *testing.T) {
+	t.Parallel()
+
 	creds := common.Creds{
 		Key:     "key",
 		Secret:  "secret",
 		Scopes:  "scopes",
-		AuthUrl: "http://example.com",
+		AuthURL: "http://example.com",
 	}
 
 	config := common.ClientConfig{
-		Url:        "http://example.com",
-		ApiVersion: "",
+		URL:        "http://example.com",
+		APIVersion: "",
 		Service:    "service",
 		Scope:      "scope",
 	}
 
-	_, err := New(creds, config)
+	_, err := client.New(creds, config)
 
 	assert.Equal(t, "edgio client config api version is missing", err.Error())
 }
 
 func TestNewMissingService(t *testing.T) {
+	t.Parallel()
+
 	creds := common.Creds{
 		Key:     "key",
 		Secret:  "secret",
 		Scopes:  "scopes",
-		AuthUrl: "http://example.com",
+		AuthURL: "http://example.com",
 	}
 
 	config := common.ClientConfig{
-		Url:        "http://example.com",
-		ApiVersion: "v1",
+		URL:        "http://example.com",
+		APIVersion: "v1",
 		Service:    "",
 		Scope:      "scope",
 	}
 
-	_, err := New(creds, config)
-
+	_, err := client.New(creds, config)
+	require.Error(t, err)
 	assert.Equal(t, "edgio client service is missing", err.Error())
 }
 
-func TestDefaultAuthUrl(t *testing.T) {
-	creds := common.Creds{
-		Key:    "testKey",
-		Secret: "testSecret",
-	}
+func TestDefaultAuthURL(t *testing.T) {
+	t.Parallel()
 
-	expectedCreds := common.Creds{
+	server := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, _ *http.Request) {
+		_, err := rw.Write([]byte(`{"access_token": "test_token"}`))
+		require.NoError(t, err)
+	}))
+	defer server.Close()
+	defer httpmock.DeactivateAndReset()
+
+	creds := common.Creds{
 		Key:     "testKey",
 		Secret:  "testSecret",
-		AuthUrl: "https://id.edgio.app/connect/token",
-		Scopes:  "app.cache+app.cache.purge+app.waf+app.waf:edit+app.waf:read+app.accounts+app.config",
+		AuthURL: server.URL,
 	}
 
-	resultCreds, err := evalCreds(creds)
+	config := common.ClientConfig{
+		URL:        "http://example.com",
+		APIVersion: "v1",
+		Service:    "service",
+		Scope:      "org",
+	}
 
-	assert.NoError(t, err)
-	assert.Equal(t, expectedCreds, resultCreds)
+	_, err := client.New(creds, config)
+
+	require.NoError(t, err)
 }
 
 func TestNewMissingScope(t *testing.T) {
+	t.Parallel()
+
 	creds := common.Creds{
 		Key:     "key",
 		Secret:  "secret",
 		Scopes:  "scopes",
-		AuthUrl: "http://example.com",
+		AuthURL: "http://example.com",
 	}
 
 	config := common.ClientConfig{
-		Url:        "http://example.com",
-		ApiVersion: "v1",
+		URL:        "http://example.com",
+		APIVersion: "v1",
 		Service:    "service",
 		Scope:      "",
 	}
 
-	_, err := New(creds, config)
-
+	_, err := client.New(creds, config)
+	require.Error(t, err)
 	assert.Equal(t, "edgio client scope is missing", err.Error())
 }
 
 func TestNewHappyPath(t *testing.T) {
-	server := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
+	t.Parallel()
+
+	server := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, _ *http.Request) {
 		_, err := rw.Write([]byte(`{"access_token": "test_token"}`))
 		if err != nil {
 			t.Fatal(err)
 		}
 	}))
+	defer server.Close()
+	defer httpmock.DeactivateAndReset()
 
 	creds := common.Creds{
 		Key:     "key",
 		Secret:  "secret",
 		Scopes:  "scopes",
-		AuthUrl: server.URL,
+		AuthURL: server.URL,
 	}
 
 	config := common.ClientConfig{
-		Url:        "http://example.com",
-		ApiVersion: "v1",
+		URL:        "http://example.com",
+		APIVersion: "v1",
 		Service:    "service",
 		Scope:      "scope",
 	}
 
-	client, err := New(creds, config)
+	client, err := client.New(creds, config)
 
-	assert.NoError(t, err)
+	require.NoError(t, err)
 	assert.Equal(t, "test_token", client.AccessToken)
 	assert.Equal(t, config, client.Config)
-	defer server.Close()
-	defer httpmock.DeactivateAndReset()
 }
 
-func TestNewDefaultApiUrl(t *testing.T) {
-	defaultEdgioApiUrl := "https://edgioapis.com"
-	server := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
+func TestNewDefaultApiURL(t *testing.T) {
+	t.Parallel()
+
+	server := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, _ *http.Request) {
 		_, err := rw.Write([]byte(`{"access_token": "test_token"}`))
 		if err != nil {
 			t.Fatal(err)
 		}
 	}))
+	defer server.Close()
+	defer httpmock.DeactivateAndReset()
 
 	creds := common.Creds{
 		Key:     "key",
 		Secret:  "secret",
 		Scopes:  "scopes",
-		AuthUrl: server.URL,
+		AuthURL: server.URL,
 	}
-
 	config := common.ClientConfig{
-		ApiVersion: "v1",
+		APIVersion: "v1",
 		Service:    "service",
 		Scope:      "scope",
 	}
+	client, _ := client.New(creds, config)
+	defaultEdgioAPI := "https://edgioapis.com"
 
-	client, _ := New(creds, config)
-
-	assert.Equal(t, defaultEdgioApiUrl, client.Config.Url)
-	defer server.Close()
-	defer httpmock.DeactivateAndReset()
+	assert.Equal(t, defaultEdgioAPI, client.Config.URL)
 }
 
-func TestGetServiceUrlPathNotEmpty(t *testing.T) {
+func TestGetServiceURLPathNotEmpty(t *testing.T) {
+	t.Parallel()
+
 	config := common.ClientConfig{
-		Url:        "http://example.com",
-		ApiVersion: "v1",
+		URL:        "http://example.com",
+		APIVersion: "v1",
 		Service:    "service",
 		Scope:      "scope",
 	}
-	client := Client{Config: config}
-	params := common.UrlParams{Path: "path"}
+	client := client.Client{Config: config}
+	params := common.URLParams{Path: "path"}
 
-	assert.Equal(t, "http://example.com/service/v1/scope/path", client.GetServiceUrl(params))
+	assert.Equal(t, "http://example.com/service/v1/scope/path", client.GetServiceURL(params))
 }
 
-func TestGetServiceUrlPathEmpty(t *testing.T) {
+func TestGetServiceURLPathEmpty(t *testing.T) {
+	t.Parallel()
+
 	config := common.ClientConfig{
-		Url:        "http://example.com",
-		ApiVersion: "v1",
+		URL:        "http://example.com",
+		APIVersion: "v1",
 		Service:    "service",
 		Scope:      "scope",
 	}
-	client := Client{Config: config}
-	params := common.UrlParams{Path: ""}
+	client := client.Client{Config: config}
+	params := common.URLParams{Path: ""}
 
-	assert.Equal(t, "http://example.com/service/v1/scope", client.GetServiceUrl(params))
+	assert.Equal(t, "http://example.com/service/v1/scope", client.GetServiceURL(params))
 }

@@ -72,7 +72,7 @@ This package provides a base client configuration and connection to Edgio's REST
 
 This constructor validates and assing default valued (if applicable) to the provided credentials and configurations and returns a client instance with a valid access token, or an error if anything goes wrong.
 
-#### `utils.GetServiceUrl(params common.UrlParams) string`
+#### `utils.GetServiceURL(params common.URLParams) string`
 
 This function generates the fully formatted Edgio REST API's url for the desired resource, identified by its `service`, `scope` and `apiVersion`.
 
@@ -124,11 +124,11 @@ Check a more in-depth documentation of the edgio/common package [here](common/RE
 
 This package groups Edgio Organization specific funcs.
 
-#### `org.NewClient(params ClientParams) (OrgClientStruct, error)`
+#### `org.NewClient(params ClientParams) (ClientStruct, error)`
 
 This func returns a new client with the provided parameters, with an access token already set, and the default edgio params values for service, scope and API version (which can be overwritten if needed) to interact with your application's orgs.
 
-#### `org.Get(params common.UrlParams) (getResultType, error)`
+#### `org.Get(params common.URLParams) (getResultType, error)`
 
 This func returns the relevant organization details (name and id).
 

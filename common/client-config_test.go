@@ -1,32 +1,39 @@
-package common
+package common_test
 
 import (
+	"edgio/common"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
 
-func TestMergeUrl(t *testing.T) {
-	c1 := ClientConfig{Url: "http://old-url.com"}
-	c2 := ClientConfig{Url: "http://new-url.com"}
+func TestMergeURL(t *testing.T) {
+	t.Parallel()
+
+	c1 := common.ClientConfig{URL: "http://old-url.com"}
+	c2 := common.ClientConfig{URL: "http://new-url.com"}
 
 	result := c1.Merge(c2)
 
-	assert.Equal(t, "http://new-url.com", result.Url)
+	assert.Equal(t, "http://new-url.com", result.URL)
 }
 
-func TestMergeApiVersion(t *testing.T) {
-	c1 := ClientConfig{ApiVersion: "v1"}
-	c2 := ClientConfig{ApiVersion: "v2"}
+func TestMergeAPIVersion(t *testing.T) {
+	t.Parallel()
+
+	c1 := common.ClientConfig{APIVersion: "v1"}
+	c2 := common.ClientConfig{APIVersion: "v2"}
 
 	result := c1.Merge(c2)
 
-	assert.Equal(t, "v2", result.ApiVersion)
+	assert.Equal(t, "v2", result.APIVersion)
 }
 
 func TestMergeService(t *testing.T) {
-	c1 := ClientConfig{Service: "OldService"}
-	c2 := ClientConfig{Service: "NewService"}
+	t.Parallel()
+
+	c1 := common.ClientConfig{Service: "OldService"}
+	c2 := common.ClientConfig{Service: "NewService"}
 
 	result := c1.Merge(c2)
 
@@ -34,19 +41,23 @@ func TestMergeService(t *testing.T) {
 }
 
 func TestMergeScope(t *testing.T) {
-	c1 := ClientConfig{Scope: "OldScope"}
-	c2 := ClientConfig{Scope: "NewScope"}
+	t.Parallel()
+
+	c1 := common.ClientConfig{Scope: "OldScope"}
+	c2 := common.ClientConfig{Scope: "NewScope"}
 
 	result := c1.Merge(c2)
 
 	assert.Equal(t, "NewScope", result.Scope)
 }
 
-func TestMergeOrgId(t *testing.T) {
-	c1 := ClientConfig{OrgId: "OldOrgId"}
-	c2 := ClientConfig{OrgId: "NewOrgId"}
+func TestMergeOrgID(t *testing.T) {
+	t.Parallel()
+
+	c1 := common.ClientConfig{OrgID: "OldOrgID"}
+	c2 := common.ClientConfig{OrgID: "NewOrgID"}
 
 	result := c1.Merge(c2)
 
-	assert.Equal(t, "NewOrgId", result.OrgId)
+	assert.Equal(t, "NewOrgID", result.OrgID)
 }

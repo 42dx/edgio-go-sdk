@@ -13,7 +13,7 @@ credentials = common.Creds{
   Key: "some-clinet-key",
   Secret: "some-clinet-secret",
   Scopes: "some-scopes",
-  AuthUrl: "optional-auth-url",
+  AuthURL: "optional-auth-url",
 }
 
 token.GetAccessToken(credentials) // returns the access token in plain text
@@ -30,7 +30,7 @@ token.GetAccessToken(credentials) // returns the access token in plain text
 - `credentials common.Creds`
   - `common.Creds.Scopes`: Edgio REST API Client scopes requested by the client. Different APIs needs different scopes. Refer to the [REST API docs](https://docs.edg.io/rest_api) to figure which ones you need.
     - Default value: `app.cache+app.cache.purge+app.waf+app.waf:edit+app.waf:read+app.accounts+app.config` (all scopes).
-  - `common.Creds.AuthUrl`: Edgio REST API auth url. You will probably never need to change this, but we included the option just in case (e. g.: future enterprise self-hosted option).
+  - `common.Creds.AuthURL`: Edgio REST API auth url. You will probably never need to change this, but we included the option just in case (e. g.: future enterprise self-hosted option).
     - Default value: `https://id.edgio.app/connect/token` (Edgio's default auth API url).
 
 <p align="right"><em><a href="../../#token">back to the main README</a></em></p>

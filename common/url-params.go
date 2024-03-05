@@ -1,6 +1,6 @@
 package common
 
-type UrlParams struct {
+type URLParams struct {
 	Path  string
 	Query string
 }

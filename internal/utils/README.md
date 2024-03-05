@@ -11,7 +11,7 @@ type resultType struct { Id string }
 var result = resultType{ Id: `json:"id"` }
 
 httpClient := &http.Client{}
-request, _ := http.NewRequest(http.MethodGet, client.GetServiceUrl(common.UrlParams{ Path: "some-org-id" }), nil)
+request, _ := http.NewRequest(http.MethodGet, client.GetServiceURL(common.URLParams{ Path: "some-org-id" }), nil)
 
 result, err := utils.GetHttpJsonResult(httpClient, request, "some-access-token", &result)
 ```

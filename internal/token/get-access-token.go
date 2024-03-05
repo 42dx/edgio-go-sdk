@@ -11,7 +11,7 @@ import (
 	"strings"
 )
 
-var result struct {
+var Result struct {
 	AccessToken string `json:"access_token"`
 }
 
@@ -21,13 +21,13 @@ var result struct {
 // common.Creds.Secret
 // Optional params:
 // common.Creds.Scopes
-// common.Creds.AuthUrl
+// common.Creds.AuthURL
 // Returns an access token and an error if any of the mandatory parameters are missing.
 func GetAccessToken(credentials common.Creds) (string, error) {
 	client := &http.Client{}
 	data := url.Values{}
 
-	if credentials.Key == "" || credentials.Secret == "" || credentials.Scopes == "" || credentials.AuthUrl == "" {
+	if credentials.Key == "" || credentials.Secret == "" || credentials.Scopes == "" || credentials.AuthURL == "" {
 		return "", errors.New("[AUTH ERROR]: Edgio client credentials are missing")
 	}
 
@@ -37,13 +37,14 @@ func GetAccessToken(credentials common.Creds) (string, error) {
 	data.Set("scope", credentials.Scopes)
 
 	urlString, _ := url.QueryUnescape(data.Encode())
-	request, _ := http.NewRequest(http.MethodPost, credentials.AuthUrl, strings.NewReader(urlString))
+	request, _ := http.NewRequest(http.MethodPost, credentials.AuthURL, strings.NewReader(urlString))
 	request.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 
 	resp, err := client.Do(request)
 	if err != nil {
 		return "", errors.New("[HTTP ERROR]: " + err.Error())
 	}
+	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
 		msg := []string{
@@ -58,13 +59,13 @@ func GetAccessToken(credentials common.Creds) (string, error) {
 
 	respData, err := io.ReadAll(resp.Body)
 	if err != nil {
-		return "", err
+		return "", errors.New(err.Error())
 	}
 
-	err = json.Unmarshal([]byte(respData), &result)
+	err = json.Unmarshal([]byte(respData), &Result)
 	if err != nil {
 		return "", err
 	}
 
-	return result.AccessToken, nil
+	return Result.AccessToken, nil
 }
