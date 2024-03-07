@@ -24,11 +24,10 @@ func TestGetHTTPJSONResultSuccess(t *testing.T) {
 	request, _ := http.NewRequest(http.MethodGet, server.URL, nil)
 	model := make(map[string]string)
 
-	result, err := utils.GetHTTPJSONResult(httpClient, request, "token", &model)
+	err := utils.GetHTTPJSONResult(httpClient, request, "token", &model)
 	require.NoError(t, err)
 
-	resultModel := result.(*map[string]string)
-	assert.Equal(t, "value", (*resultModel)["key"])
+	assert.Equal(t, "value", model["key"])
 }
 
 func TestGetHTTPJSONResultNon200StatusCode(t *testing.T) {
@@ -42,7 +41,7 @@ func TestGetHTTPJSONResultNon200StatusCode(t *testing.T) {
 	request, _ := http.NewRequest(http.MethodGet, server.URL, nil)
 	model := make(map[string]string)
 
-	_, err := utils.GetHTTPJSONResult(httpClient, request, "token", &model)
+	err := utils.GetHTTPJSONResult(httpClient, request, "token", &model)
 	require.Error(t, err)
 	assert.Contains(t, err.Error(), "[HTTP ERROR]: Status Code: 404")
 }
@@ -61,7 +60,7 @@ func TestGetHTTPJSONResultDecodeError(t *testing.T) {
 	request, _ := http.NewRequest(http.MethodGet, server.URL, nil)
 	model := make(map[string]string)
 
-	_, err := utils.GetHTTPJSONResult(httpClient, request, "token", &model)
+	err := utils.GetHTTPJSONResult(httpClient, request, "token", &model)
 	require.Error(t, err)
 	assert.Contains(t, err.Error(), "invalid character")
 }

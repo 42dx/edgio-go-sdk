@@ -2,11 +2,11 @@ package token
 
 import (
 	"edgio/common"
+	"edgio/internal/utils"
 	"encoding/json"
 	"errors"
 	"io"
 	"net/http"
-	"net/url"
 	"strconv"
 	"strings"
 )
@@ -25,19 +25,22 @@ var Result struct {
 // Returns an access token and an error if any of the mandatory parameters are missing.
 func GetAccessToken(credentials common.Creds) (string, error) {
 	client := &http.Client{}
-	data := url.Values{}
 
 	if credentials.Key == "" || credentials.Secret == "" || credentials.Scopes == "" || credentials.AuthURL == "" {
 		return "", errors.New("[AUTH ERROR]: Edgio client credentials are missing")
 	}
 
-	data.Set("client_id", credentials.Key)
-	data.Set("client_secret", credentials.Secret)
-	data.Set("grant_type", "client_credentials")
-	data.Set("scope", credentials.Scopes)
+	queryString, err := utils.ToQueryString(map[string]string{
+		"client_id":     credentials.Key,
+		"client_secret": credentials.Secret,
+		"grant_type":    "client_credentials",
+		"scope":         credentials.Scopes,
+	})
+	if err != nil {
+		return "", errors.New(err.Error())
+	}
 
-	urlString, _ := url.QueryUnescape(data.Encode())
-	request, _ := http.NewRequest(http.MethodPost, credentials.AuthURL, strings.NewReader(urlString))
+	request, _ := http.NewRequest(http.MethodPost, credentials.AuthURL, strings.NewReader(queryString))
 	request.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 
 	resp, err := client.Do(request)

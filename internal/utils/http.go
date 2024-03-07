@@ -15,13 +15,9 @@ import (
 // token string
 // model interface{}
 // Returns the result of an HTTP request in JSON format and an error if the request fails.
-func GetHTTPJSONResult(
-	httpClient *http.Client,
-	request *http.Request,
-	token string,
-	model interface{},
-) (interface{}, error) {
-	request.Header.Add("Authorization", token)
+func GetHTTPJSONResult(httpClient *http.Client, request *http.Request, token string, model interface{}) error {
+	request.Header.Add("Authorization", "Bearer "+token)
+	request.Header.Add("content-type", "application/json")
 
 	resp, err := httpClient.Do(request)
 	if err != nil || resp.StatusCode != http.StatusOK {
@@ -32,14 +28,14 @@ func GetHTTPJSONResult(
 			http.StatusText(resp.StatusCode),
 		}
 
-		return nil, errors.New(strings.Join(msg, ""))
+		return errors.New(strings.Join(msg, ""))
 	}
 	defer resp.Body.Close()
 
 	err = json.NewDecoder(resp.Body).Decode(model)
 	if err != nil {
-		return nil, err
+		return errors.New(err.Error())
 	}
 
-	return model, nil
+	return nil
 }
