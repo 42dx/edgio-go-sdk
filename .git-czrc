@@ -107,6 +107,10 @@
                         "desc": "common:     Common packages"
                     },
                     {
+                        "name": "config",
+                        "desc": "config:     Repo configuration files"
+                    },
+                    {
                         "name": "deployment",
                         "desc": "deployment: Deployment API"
                     },
