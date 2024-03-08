@@ -34,6 +34,8 @@ func main() {
 	fmt.Println(properties.Total)
 	for _, item := range properties.Items {
 		fmt.Printf("Property slug: " + item.Slug + "\n")
+		fmt.Printf("UpdatedAt: " + item.CreatedAt.String() + "\n")
+		fmt.Printf("UpdatedAt: " + item.UpdatedAt.String() + "\n")
 	}
 	fmt.Println("main.go")
 }

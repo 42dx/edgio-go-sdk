@@ -44,9 +44,9 @@ jobs:
       - name: Linting check
         uses: golangci/golangci-lint-action@v4
         with:
-          install-mode: goinstall
           version: latest
           args: --out-format=checkstyle:lint-report.out
+          only-new-issues: true
 
       - name: Run Unit Tests and get Coverage
         run: make coverage

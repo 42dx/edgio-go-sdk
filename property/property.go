@@ -4,6 +4,7 @@ import (
 	"edgio/common"
 	"edgio/internal/client"
 	"errors"
+	"time"
 )
 
 type ClientStruct struct {
@@ -11,10 +12,10 @@ type ClientStruct struct {
 }
 
 type Property struct {
-	Id         string
-	Slug       string
-	Created_at string
-	Updated_at string
+	ID        string    `json:"id"`
+	Slug      string    `json:"slug"`
+	CreatedAt time.Time `json:"create_at"`
+	UpdatedAt time.Time `json:"updated_at"`
 }
 
 type ClientParams struct {
