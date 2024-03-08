@@ -7,7 +7,7 @@ import (
 )
 
 type ClientStruct struct {
-	client client.Client
+	Client client.Client
 }
 
 type ClientParams struct {

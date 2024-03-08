@@ -22,7 +22,7 @@ func main() {
 
 	propertyClient, err := property.NewClient(property.ClientParams{
 		Credentials: credentials,
-		Config:      common.ClientConfig{OrgID: org.ID},
+		Config:      common.ClientConfig{OrgID: org.ID, AccessToken: orgClient.Client.AccessToken},
 	})
 	if err != nil {
 		fmt.Println(err)

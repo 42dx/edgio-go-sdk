@@ -5,6 +5,7 @@ import (
 	"edgio/internal/utils"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io"
 	"net/http"
 	"strconv"
@@ -24,6 +25,7 @@ var Result struct {
 // common.Creds.AuthURL
 // Returns an access token and an error if any of the mandatory parameters are missing.
 func GetAccessToken(credentials common.Creds) (string, error) {
+	fmt.Println("CalledGetAccessToken")
 	client := &http.Client{}
 
 	if credentials.Key == "" || credentials.Secret == "" || credentials.Scopes == "" || credentials.AuthURL == "" {

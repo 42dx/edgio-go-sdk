@@ -83,6 +83,8 @@ func evalConfig(config common.ClientConfig) (common.ClientConfig, error) {
 // common.ClientConfig.URL
 // Returns a Client instance and an error if any of the mandatory parameters are missing.
 func New(creds common.Creds, config common.ClientConfig) (Client, error) {
+	accessToken := ""
+
 	credentials, err := evalCreds(creds)
 	if err != nil {
 		return Client{}, err
@@ -93,9 +95,13 @@ func New(creds common.Creds, config common.ClientConfig) (Client, error) {
 		return Client{}, err
 	}
 
-	accessToken, err := token.GetAccessToken(credentials)
-	if err != nil {
-		return Client{}, err
+	if config.AccessToken != "" {
+		accessToken = config.AccessToken
+	} else {
+		accessToken, err = token.GetAccessToken(credentials)
+		if err != nil {
+			return Client{}, err
+		}
 	}
 
 	return Client{
