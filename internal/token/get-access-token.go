@@ -32,15 +32,12 @@ func GetAccessToken(credentials common.Creds) (string, error) {
 		return "", errors.New("[AUTH ERROR]: Edgio client credentials are missing")
 	}
 
-	queryString, err := utils.ToQueryString(map[string]string{
+	queryString := utils.ToQueryString(map[string]string{
 		"client_id":     credentials.Key,
 		"client_secret": credentials.Secret,
 		"grant_type":    "client_credentials",
 		"scope":         credentials.Scopes,
 	})
-	if err != nil {
-		return "", errors.New(err.Error())
-	}
 
 	request, _ := http.NewRequest(http.MethodPost, credentials.AuthURL, strings.NewReader(queryString))
 	request.Header.Add("Content-Type", "application/x-www-form-urlencoded")

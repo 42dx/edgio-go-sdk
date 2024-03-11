@@ -2,6 +2,7 @@ package utils_test
 
 import (
 	"edgio/internal/utils"
+	"errors"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -9,6 +10,12 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
+
+type MockRoundTripper struct{}
+
+func (m *MockRoundTripper) RoundTrip(req *http.Request) (*http.Response, error) {
+	return nil, errors.New("mock error")
+}
 
 func TestGetHTTPJSONResultSuccess(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, _ *http.Request) {
@@ -63,4 +70,17 @@ func TestGetHTTPJSONResultDecodeError(t *testing.T) {
 	err := utils.GetHTTPJSONResult(httpClient, request, "token", &model)
 	require.Error(t, err)
 	assert.Contains(t, err.Error(), "invalid character")
+}
+
+func TestGetHTTPJSONResultHTTPClientError(t *testing.T) {
+	mockTransport := &MockRoundTripper{}
+	mockClient := &http.Client{Transport: mockTransport}
+	request, _ := http.NewRequest("GET", "http://example.com", nil)
+	token := "testToken"
+	var model interface{}
+
+	err := utils.GetHTTPJSONResult(mockClient, request, token, &model)
+
+	require.Error(t, err)
+	require.Contains(t, err.Error(), "mock error")
 }

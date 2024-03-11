@@ -3,7 +3,6 @@ package utils
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
 	"net/http"
 	"strconv"
 	"strings"
@@ -22,7 +21,6 @@ func GetHTTPJSONResult(httpClient *http.Client, request *http.Request, token str
 
 	resp, err := httpClient.Do(request)
 	if err != nil {
-		fmt.Println(err.Error())
 		return errors.New(err.Error())
 	}
 

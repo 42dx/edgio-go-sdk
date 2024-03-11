@@ -27,7 +27,7 @@ func (c ClientStruct) List() (ListResultType, error) {
 		return ListResultType{}, errors.New(err.Error())
 	}
 
-	rawQueryString, err := utils.ToQueryString(queryStringMap)
+	rawQueryString := utils.ToQueryString(queryStringMap)
 	if err != nil {
 		return ListResultType{}, errors.New(err.Error())
 	}

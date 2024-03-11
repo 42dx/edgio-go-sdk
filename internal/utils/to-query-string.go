@@ -1,21 +1,15 @@
 package utils
 
-import (
-	"errors"
-	"net/url"
-)
+import "net/url"
 
-func ToQueryString(params map[string]string) (string, error) {
+func ToQueryString(params map[string]string) string {
 	queryParams := url.Values{}
 
 	for key, value := range params {
 		queryParams.Set(key, value)
 	}
 
-	urlString, err := url.QueryUnescape(queryParams.Encode())
-	if err != nil {
-		return "", errors.New(err.Error())
-	}
+	urlString, _ := url.QueryUnescape(queryParams.Encode())
 
-	return urlString, nil
+	return urlString
 }

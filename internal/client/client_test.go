@@ -292,3 +292,23 @@ func TestGetServiceURLPathEmpty(t *testing.T) {
 
 	assert.Equal(t, "http://example.com/service/v1/scope", client.GetServiceURL(params))
 }
+
+func TestNew_WithAccessToken(t *testing.T) {
+	creds := common.Creds{
+		Key:    "key",
+		Secret: "secret",
+		Scopes: "scopes",
+	}
+	config := common.ClientConfig{
+		AccessToken: "testToken",
+		URL:         "http://example.com",
+		APIVersion:  "v1",
+		Service:     "service",
+		Scope:       "scope",
+	}
+
+	client, err := client.New(creds, config)
+
+	require.NoError(t, err)
+	require.Equal(t, "testToken", client.AccessToken)
+}
