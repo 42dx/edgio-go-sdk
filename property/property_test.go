@@ -21,7 +21,10 @@ func (m *MockRoundTripper) RoundTrip(req *http.Request) (*http.Response, error) 
 
 func TestNewClient(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, _ *http.Request) {
-		rw.Write([]byte(`{"access_token": "test_token"}`))
+		_, err := rw.Write([]byte(`{"access_token": "test_token"}`))
+		if err != nil {
+			t.Fatal(err)
+		}
 	}))
 
 	defer server.Close()
@@ -48,7 +51,10 @@ func TestNewClient(t *testing.T) {
 
 func TestNewMissingOrdIDError(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, _ *http.Request) {
-		rw.Write([]byte(`{"access_token": "test_token"}`))
+		_, err := rw.Write([]byte(`{"access_token": "test_token"}`))
+		if err != nil {
+			t.Fatal(err)
+		}
 	}))
 
 	defer server.Close()

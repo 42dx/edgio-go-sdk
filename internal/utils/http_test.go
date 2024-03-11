@@ -13,7 +13,7 @@ import (
 
 type MockRoundTripper struct{}
 
-func (m *MockRoundTripper) RoundTrip(req *http.Request) (*http.Response, error) {
+func (m *MockRoundTripper) RoundTrip(_ *http.Request) (*http.Response, error) {
 	return nil, errors.New("mock error")
 }
 
@@ -75,8 +75,9 @@ func TestGetHTTPJSONResultDecodeError(t *testing.T) {
 func TestGetHTTPJSONResultHTTPClientError(t *testing.T) {
 	mockTransport := &MockRoundTripper{}
 	mockClient := &http.Client{Transport: mockTransport}
-	request, _ := http.NewRequest("GET", "http://example.com", nil)
+	request, _ := http.NewRequest(http.MethodGet, "http://example.com", nil)
 	token := "testToken"
+
 	var model interface{}
 
 	err := utils.GetHTTPJSONResult(mockClient, request, token, &model)

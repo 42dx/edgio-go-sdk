@@ -4,7 +4,6 @@ import (
 	"edgio/common"
 	"edgio/internal/token"
 	"errors"
-	"fmt"
 )
 
 type Client struct {
@@ -123,8 +122,6 @@ func (c Client) GetServiceURL(params common.URLParams) string {
 	if params.Path != "" {
 		params.Path = "/" + params.Path
 	}
-
-	fmt.Println(c.Config)
 
 	return c.Config.URL + "/" + c.Config.Service + "/" + c.Config.APIVersion + "/" + c.Config.Scope + params.Path
 }

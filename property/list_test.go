@@ -62,8 +62,8 @@ func TestGet(t *testing.T) {
 	result, _ := client.List()
 
 	assert.Len(t, result.Items, 2)
-	assert.Equal(t, result.Items[0].Slug, "some-slug")
-	assert.Equal(t, result.Items[1].Slug, "another-slug")
+	assert.Equal(t, "some-slug", result.Items[0].Slug)
+	assert.Equal(t, "another-slug", result.Items[1].Slug)
 }
 
 func TestListParseURLError(t *testing.T) {
