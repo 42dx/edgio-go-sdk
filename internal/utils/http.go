@@ -3,6 +3,7 @@ package utils
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"net/http"
 	"strconv"
 	"strings"
@@ -20,7 +21,12 @@ func GetHTTPJSONResult(httpClient *http.Client, request *http.Request, token str
 	request.Header.Add("content-type", "application/json")
 
 	resp, err := httpClient.Do(request)
-	if err != nil || resp.StatusCode != http.StatusOK {
+	if err != nil {
+		fmt.Println(err.Error())
+		return errors.New(err.Error())
+	}
+
+	if resp.StatusCode != http.StatusOK {
 		msg := []string{
 			"[HTTP ERROR]: Status Code: ",
 			strconv.Itoa(resp.StatusCode),
