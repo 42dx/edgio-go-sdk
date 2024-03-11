@@ -127,6 +127,10 @@
                         "desc": "env:        Environment API"
                     },
                     {
+                        "name": "internal",
+                        "desc": "internal:   Internal tools and utilities"
+                    },
+                    {
                         "name": "m-role",
                         "desc": "m-role:     Managed Rules (profiles) API"
                     },

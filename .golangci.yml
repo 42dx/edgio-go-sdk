@@ -28,3 +28,4 @@ linters:
     - gochecknoglobals
     - forcetypeassert
     - paralleltest
+    - wastedassign

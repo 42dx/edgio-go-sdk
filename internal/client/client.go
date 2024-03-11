@@ -93,7 +93,14 @@ func New(creds common.Creds, config common.ClientConfig) (Client, error) {
 		return Client{}, err
 	}
 
-	accessToken, err := token.GetAccessToken(credentials)
+	if config.AccessToken != "" {
+		return Client{
+			AccessToken: config.AccessToken,
+			Config:      configurations,
+		}, nil
+	}
+
+	accessToken, err := token.Retrieve(credentials)
 	if err != nil {
 		return Client{}, err
 	}

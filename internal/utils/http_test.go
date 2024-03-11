@@ -2,6 +2,7 @@ package utils_test
 
 import (
 	"edgio/internal/utils"
+	"errors"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -9,6 +10,12 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
+
+type MockRoundTripper struct{}
+
+func (m *MockRoundTripper) RoundTrip(_ *http.Request) (*http.Response, error) {
+	return nil, errors.New("mock error")
+}
 
 func TestGetHTTPJSONResultSuccess(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, _ *http.Request) {
@@ -24,11 +31,10 @@ func TestGetHTTPJSONResultSuccess(t *testing.T) {
 	request, _ := http.NewRequest(http.MethodGet, server.URL, nil)
 	model := make(map[string]string)
 
-	result, err := utils.GetHTTPJSONResult(httpClient, request, "token", &model)
+	err := utils.GetHTTPJSONResult(httpClient, request, "token", &model)
 	require.NoError(t, err)
 
-	resultModel := result.(*map[string]string)
-	assert.Equal(t, "value", (*resultModel)["key"])
+	assert.Equal(t, "value", model["key"])
 }
 
 func TestGetHTTPJSONResultNon200StatusCode(t *testing.T) {
@@ -42,7 +48,7 @@ func TestGetHTTPJSONResultNon200StatusCode(t *testing.T) {
 	request, _ := http.NewRequest(http.MethodGet, server.URL, nil)
 	model := make(map[string]string)
 
-	_, err := utils.GetHTTPJSONResult(httpClient, request, "token", &model)
+	err := utils.GetHTTPJSONResult(httpClient, request, "token", &model)
 	require.Error(t, err)
 	assert.Contains(t, err.Error(), "[HTTP ERROR]: Status Code: 404")
 }
@@ -61,7 +67,21 @@ func TestGetHTTPJSONResultDecodeError(t *testing.T) {
 	request, _ := http.NewRequest(http.MethodGet, server.URL, nil)
 	model := make(map[string]string)
 
-	_, err := utils.GetHTTPJSONResult(httpClient, request, "token", &model)
+	err := utils.GetHTTPJSONResult(httpClient, request, "token", &model)
 	require.Error(t, err)
 	assert.Contains(t, err.Error(), "invalid character")
+}
+
+func TestGetHTTPJSONResultHTTPClientError(t *testing.T) {
+	mockTransport := &MockRoundTripper{}
+	mockClient := &http.Client{Transport: mockTransport}
+	request, _ := http.NewRequest(http.MethodGet, "http://example.com", nil)
+	token := "testToken"
+
+	var model interface{}
+
+	err := utils.GetHTTPJSONResult(mockClient, request, token, &model)
+
+	require.Error(t, err)
+	require.Contains(t, err.Error(), "mock error")
 }

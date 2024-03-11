@@ -1,13 +1,21 @@
-package org
+package property
 
 import (
 	"edgio/common"
 	"edgio/internal/client"
 	"errors"
+	"time"
 )
 
 type ClientStruct struct {
 	*client.Client
+}
+
+type Property struct {
+	ID        string    `json:"id"`
+	Slug      string    `json:"slug"`
+	CreatedAt time.Time `json:"create_at"`
+	UpdatedAt time.Time `json:"updated_at"`
 }
 
 type ClientParams struct {
@@ -18,7 +26,7 @@ type ClientParams struct {
 var baseConfig = common.ClientConfig{
 	APIVersion: "v0.1",
 	Service:    "accounts",
-	Scope:      "organizations",
+	Scope:      "properties",
 	OrgID:      "",
 }
 
@@ -26,6 +34,7 @@ var baseConfig = common.ClientConfig{
 // Mandatory params:
 // common.Creds.Key
 // common.Creds.Secret
+// common.ClientConfig.OrgID
 // Optional params:
 // common.Creds.Scopes
 // common.Creds.AuthURL
@@ -35,6 +44,10 @@ var baseConfig = common.ClientConfig{
 // common.ClientConfig.URL
 // Returns a new client and an error if any of the mandatory parameters are missing.
 func NewClient(params ClientParams) (ClientStruct, error) {
+	if params.Config.OrgID == "" {
+		return ClientStruct{}, errors.New("OrgID is missing")
+	}
+
 	client, err := client.New(params.Credentials, baseConfig.Merge(params.Config))
 	if err != nil {
 		return ClientStruct{}, errors.New(err.Error())

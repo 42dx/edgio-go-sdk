@@ -37,36 +37,36 @@ This project goal is to implement a GO SDK wrapper for the [Edgio's REST API](ht
 ## Table of Contents
 
 - [Internal Packages](#internal-packages)
-  - [Client](#client)
-  - [Token](#token)
-  - [Utils](#utils)
+  - [internal/client](#internalclient)
+  - [internal/token](#internaltoken)
+  - [internal/utils](#internalutils)
 - [Public Packages](#public-packages)
-  - [Edgio Common Lib](#edgio-common-lib)
+  - [edgio/common](#edgiocommon)
   - Cache APIs
-    - [Edgio Cache API](#edgio-cache-api)
+    - [edgio/cache](#edgiocache)
   - Deployments APIs
-    - [Edgio CDN API](#edgio-cdn-api)
-    - [Edgio Environment Variables API](#edgio-environment-variables-api)
-    - [Edgio Deployment API](#edgio-deployment-api)
+    - [edgio/cdn](#edgiocdn)
+    - [edgio/variables](#edgiovariables)
+    - [edgio/deployment](#edgiodeployment)
   - Organizations APIs
-    - [Edgio Organizations API](#edgio-organizations-api)
+    - [edgio/org](#edgioorg)
   - Properties APIs
-    - [Edgio Properties API](#edgio-properties-api)
-    - [Edgio Environments API](#edgio-environments-api)
+    - [edgio/property](#edgioproperty)
+    - [edgio/environment](#edgioenvironment)
   - TSL Certificates APIs
-    - [Edgio TSL Certificates API](#edgio-tsl-certificates-api)
+    - [edgio/tsl](#edgiotsl)
   - WAF (Security) APIs
-    - [Edgio ACL API](#edgio-acl-api)
-    - [Edgio Secure Ruleset API](#edgio-security-ruleset-api)
-    - [Edgio Schemas API](#edgio-schemas-api)
-    - [Rate Rules API](#rate-rules-api)
-    - [Bot Config API](#bot-managers-config-api)
-    - [Bot Ruleset API](#bot-ruleset-api)
-    - [Known Bots API](#known-bots-api)
-    - [Custom Rules API](#custom-rules-api)
-    - [Managed Rules API](#managed-rules-api)
-    - [Edgio Ruleset API](#edgio-ruleset-api)
-    - [Security API](#security-apps-api)
+    - [edgio/acl](#edgioacl)
+    - [edgio/security_ruleset](#edgiosecurity_ruleset)
+    - [edgio/schemas](#edgioschemas)
+    - [edgio/rate](#edgiorate)
+    - [edgio/bot_manager](#edgiobot_manager)
+    - [edgio/bot_ruleset](#edgiobot_ruleset)
+    - [edgio/bot_known](#edgiobot_known)
+    - [edgio/custom_rule](#edgiocustom_rule)
+    - [edgio/managed_rule](#edgiomanaged_rule)
+    - [edgio/ruleset](#edgioruleset)
+    - [edgio/security_app](#edgiosecurity_app)
 - [Tooling](#tooling)
 - [Contributors](#contributors)
 - [Changelog](#changelog)
@@ -134,6 +134,8 @@ Check a more in-depth documentation of the edgio/common package [here](common/RE
 
 ### edgio/org
 
+[WIP]
+
 This package groups Edgio Organization specific funcs.
 
 #### `org.NewClient(params ClientParams) (ClientStruct, error)`
@@ -150,15 +152,27 @@ Check a more in-depth documentation of the `edgio/org` package [here](org/README
 
 <p align="right"><em><a href="#table-of-contents">back to top</a></em></p>
 
-### Edgio Properties API
+### edgio/property
 
 [WIP]
 
-[Edgio Properties REST API documentation reference](https://docs.edg.io/rest_api/#tag/properties).
+This package groups Edgio Property specific funcs.
+
+#### `property.NewClient(params ClientParams) (ClientStruct, error)`
+
+This func returns a new client with the provided parameters, with an access token already set, and the default edgio params values for service, scope and API version (which can be overwritten if needed) to interact with your application's properties.
+
+#### `property.List() (ListResultType, error)`
+
+This func lists properties for a given Edgio Organization. Edgio's list page size was defaulted to 100 for now, which is the highest value. The idea is to return all properties until actual pagination is implemented. Returns a list of properties for a given Organization or an error if anything goes wrong.
+
+Check a more in-depth documentation of the `edgio/property` package [here](property/README.md).
+
+**Reference**: [Edgio Properties REST API documentation reference](https://docs.edg.io/rest_api/#tag/properties).
 
 <p align="right"><em><a href="#table-of-contents">back to top</a></em></p>
 
-### Edgio Environments API
+### edgio/environment
 
 [WIP]
 
@@ -166,7 +180,7 @@ Check a more in-depth documentation of the `edgio/org` package [here](org/README
 
 <p align="right"><em><a href="#table-of-contents">back to top</a></em></p>
 
-### Edgio Environment Variables API
+### edgio/variables
 
 [WIP]
 
@@ -174,7 +188,7 @@ Check a more in-depth documentation of the `edgio/org` package [here](org/README
 
 <p align="right"><em><a href="#table-of-contents">back to top</a></em></p>
 
-### Edgio Cache API
+### edgio/cache
 
 [WIP]
 
@@ -182,7 +196,7 @@ Check a more in-depth documentation of the `edgio/org` package [here](org/README
 
 <p align="right"><em><a href="#table-of-contents">back to top</a></em></p>
 
-### Edgio CDN API
+### edgio/cdn
 
 [WIP]
 
@@ -190,7 +204,7 @@ Check a more in-depth documentation of the `edgio/org` package [here](org/README
 
 <p align="right"><em><a href="#table-of-contents">back to top</a></em></p>
 
-### Edgio Deployment API
+### edgio/deployment
 
 [WIP]
 
@@ -198,7 +212,7 @@ Check a more in-depth documentation of the `edgio/org` package [here](org/README
 
 <p align="right"><em><a href="#table-of-contents">back to top</a></em></p>
 
-### Edgio TSL Certificates API
+### edgio/tsl
 
 [WIP]
 
@@ -206,7 +220,7 @@ Check a more in-depth documentation of the `edgio/org` package [here](org/README
 
 <p align="right"><em><a href="#table-of-contents">back to top</a></em></p>
 
-### Edgio ACL API
+### edgio/acl
 
 [WIP]
 
@@ -214,15 +228,15 @@ Check a more in-depth documentation of the `edgio/org` package [here](org/README
 
 <p align="right"><em><a href="#table-of-contents">back to top</a></em></p>
 
-### Edgio Security Ruleset API
+### edgio/security_ruleset
 
 [WIP]
 
-[Edgio Security RulesetREST API documentation reference](https://docs.edg.io/rest_api/#tag/API-Gateways).
+[Edgio Security Ruleset REST API documentation reference](https://docs.edg.io/rest_api/#tag/API-Gateways).
 
 <p align="right"><em><a href="#table-of-contents">back to top</a></em></p>
 
-### Edgio Schemas API
+### edgio/schemas
 
 [WIP]
 
@@ -230,7 +244,7 @@ Check a more in-depth documentation of the `edgio/org` package [here](org/README
 
 <p align="right"><em><a href="#table-of-contents">back to top</a></em></p>
 
-### Rate Rules API
+### edgio/rate
 
 [WIP]
 
@@ -238,7 +252,7 @@ Check a more in-depth documentation of the `edgio/org` package [here](org/README
 
 <p align="right"><em><a href="#table-of-contents">back to top</a></em></p>
 
-### Bot Managers Config API
+### edgio/bot_manager
 
 [WIP]
 
@@ -246,7 +260,7 @@ Check a more in-depth documentation of the `edgio/org` package [here](org/README
 
 <p align="right"><em><a href="#table-of-contents">back to top</a></em></p>
 
-### Bot Ruleset API
+### edgio/bot_ruleset
 
 [WIP]
 
@@ -254,7 +268,7 @@ Check a more in-depth documentation of the `edgio/org` package [here](org/README
 
 <p align="right"><em><a href="#table-of-contents">back to top</a></em></p>
 
-### Known Bots API
+### edgio/bot_known
 
 [WIP]
 
@@ -262,7 +276,7 @@ Check a more in-depth documentation of the `edgio/org` package [here](org/README
 
 <p align="right"><em><a href="#table-of-contents">back to top</a></em></p>
 
-### Custom Rules API
+### edgio/custom_rule
 
 [WIP]
 
@@ -270,7 +284,7 @@ Check a more in-depth documentation of the `edgio/org` package [here](org/README
 
 <p align="right"><em><a href="#table-of-contents">back to top</a></em></p>
 
-### Managed Rules API
+### edgio/managed_rule
 
 [WIP]
 
@@ -278,7 +292,7 @@ Check a more in-depth documentation of the `edgio/org` package [here](org/README
 
 <p align="right"><em><a href="#table-of-contents">back to top</a></em></p>
 
-### Edgio Ruleset API
+### edgio/ruleset
 
 [WIP]
 
@@ -286,7 +300,7 @@ Check a more in-depth documentation of the `edgio/org` package [here](org/README
 
 <p align="right"><em><a href="#table-of-contents">back to top</a></em></p>
 
-### Security Apps API
+### edgio/security_app
 
 [WIP]
 
