@@ -8,6 +8,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestGet(t *testing.T) {
@@ -63,4 +64,95 @@ func TestGet(t *testing.T) {
 	assert.Len(t, result.Items, 2)
 	assert.Equal(t, result.Items[0].Slug, "some-slug")
 	assert.Equal(t, result.Items[1].Slug, "another-slug")
+}
+
+func TestListParseURLError(t *testing.T) {
+	server := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, _ *http.Request) {
+		_, err := rw.Write([]byte(`{"access_token": "test_token"}`))
+		if err != nil {
+			t.Fatal(err)
+		}
+	}))
+	defer server.Close()
+
+	params := property.ClientParams{
+		Credentials: common.Creds{
+			Key:     "key",
+			Secret:  "secret",
+			Scopes:  "scopes",
+			AuthURL: server.URL,
+		},
+		Config: common.ClientConfig{URL: ":", OrgID: "some-org-id"},
+	}
+
+	client, _ := property.NewClient(params)
+
+	_, err := client.List()
+
+	require.Error(t, err)
+	assert.Contains(t, err.Error(), "parse \":/accounts/v0.1/properties\": missing protocol scheme")
+}
+
+func TestListNewRequestError(t *testing.T) {
+	server := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, _ *http.Request) {
+		_, err := rw.Write([]byte(`{"access_token": "test_token"}`))
+		if err != nil {
+			t.Fatal(err)
+		}
+	}))
+	defer server.Close()
+
+	params := property.ClientParams{
+		Credentials: common.Creds{
+			Key:     "key",
+			Secret:  "secret",
+			Scopes:  "scopes",
+			AuthURL: server.URL,
+		},
+		Config: common.ClientConfig{URL: server.URL, OrgID: "\n"},
+	}
+
+	client, _ := property.NewClient(params)
+	_, err := client.List()
+
+	require.Error(t, err)
+	assert.Contains(t, err.Error(), "invalid control character in URL")
+}
+
+func TestListGetHTTPJSONResultError(t *testing.T) {
+	mux := http.NewServeMux()
+
+	server := httptest.NewServer(mux)
+	defer server.Close()
+
+	server2 := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, _ *http.Request) {
+		_, err := rw.Write([]byte(`{"access_token": "test_token"}`))
+		if err != nil {
+			t.Fatal(err)
+		}
+	}))
+	defer server2.Close()
+
+	mux.HandleFunc("/accounts/v0.1/properties", func(rw http.ResponseWriter, _ *http.Request) {
+		_, err := rw.Write([]byte(`error`))
+		if err != nil {
+			t.Fatal(err)
+		}
+	})
+
+	params := property.ClientParams{
+		Credentials: common.Creds{
+			Key:     "key",
+			Secret:  "secret",
+			Scopes:  "scopes",
+			AuthURL: server2.URL,
+		},
+		Config: common.ClientConfig{URL: server.URL, OrgID: "some-org-id"},
+	}
+
+	client, _ := property.NewClient(params)
+	_, err := client.List()
+
+	require.Error(t, err)
+	assert.Equal(t, "invalid character 'e' looking for beginning of value", err.Error())
 }

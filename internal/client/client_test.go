@@ -293,7 +293,7 @@ func TestGetServiceURLPathEmpty(t *testing.T) {
 	assert.Equal(t, "http://example.com/service/v1/scope", client.GetServiceURL(params))
 }
 
-func TestNew_WithAccessToken(t *testing.T) {
+func TestNewWithProvidedAccessToken(t *testing.T) {
 	creds := common.Creds{
 		Key:    "key",
 		Secret: "secret",

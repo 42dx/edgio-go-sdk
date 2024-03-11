@@ -4,6 +4,7 @@ import (
 	"edgio/common"
 	"edgio/internal/utils"
 	"errors"
+	"fmt"
 	"net/http"
 	"net/url"
 )
@@ -28,14 +29,12 @@ func (c ClientStruct) List() (ListResultType, error) {
 	}
 
 	rawQueryString := utils.ToQueryString(queryStringMap)
-	if err != nil {
-		return ListResultType{}, errors.New(err.Error())
-	}
 
 	parsedURL.RawQuery = rawQueryString
 
 	request, err := http.NewRequest(http.MethodGet, parsedURL.String(), nil)
 	if err != nil {
+		fmt.Println("HERE!!!")
 		return ListResultType{}, errors.New(err.Error())
 	}
 
