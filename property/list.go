@@ -22,8 +22,8 @@ var PropertyListResult = ListResultType{}
 // Returns a list of properties for a given Organization or an error if anything goes wrong.
 func (c ClientStruct) List() (ListResultType, error) {
 	httpClient := &http.Client{}
-	queryStringMap := map[string]string{"organization_id": c.client.Config.OrgID}
-	serviceURL := c.client.GetServiceURL(common.URLParams{Query: map[string]string{"page_size": "100"}})
+	queryStringMap := map[string]string{"organization_id": c.Config.OrgID}
+	serviceURL := c.GetServiceURL(common.URLParams{Query: map[string]string{"page_size": "100"}})
 
 	parsedURL, err := url.Parse(serviceURL)
 	if err != nil {
@@ -39,7 +39,7 @@ func (c ClientStruct) List() (ListResultType, error) {
 		return ListResultType{}, errors.New(err.Error())
 	}
 
-	err = utils.GetHTTPJSONResult(httpClient, request, c.client.AccessToken, &PropertyListResult)
+	err = utils.GetHTTPJSONResult(httpClient, request, c.AccessToken, &PropertyListResult)
 	if err != nil {
 		return ListResultType{}, errors.New(err.Error())
 	}

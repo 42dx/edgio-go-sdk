@@ -27,7 +27,7 @@ func (e *errorReader) Read(_ []byte) (int, error) {
 	return 0, errors.New("mocked read error")
 }
 
-func TestGetAccessTokenMissingKey(t *testing.T) {
+func TestTokenRetrieveMissingKey(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, _ *http.Request) {
 		_, err := rw.Write([]byte(`{"access_token": "test_token"}`))
 		if err != nil {
@@ -52,12 +52,12 @@ func TestGetAccessTokenMissingKey(t *testing.T) {
 		AuthURL: server.URL,
 	}
 
-	_, err := token.GetAccessToken(creds)
+	_, err := token.Retrieve(creds)
 	require.Error(t, err)
 	assert.Equal(t, "[AUTH ERROR]: Edgio client credentials are missing", err.Error())
 }
 
-func TestGetAccessTokenMissingSecret(t *testing.T) {
+func TestTokenRetrieveMissingSecret(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, _ *http.Request) {
 		_, err := rw.Write([]byte(`{"access_token": "test_token"}`))
 		if err != nil {
@@ -82,12 +82,12 @@ func TestGetAccessTokenMissingSecret(t *testing.T) {
 		AuthURL: server.URL,
 	}
 
-	_, err := token.GetAccessToken(creds)
+	_, err := token.Retrieve(creds)
 	require.Error(t, err)
 	assert.Equal(t, "[AUTH ERROR]: Edgio client credentials are missing", err.Error())
 }
 
-func TestGetAccessTokenInvalidAuthURL(t *testing.T) {
+func TestTokenRetrieveInvalidAuthURL(t *testing.T) {
 	httpmock.Activate()
 
 	httpmock.RegisterResponder(
@@ -105,12 +105,12 @@ func TestGetAccessTokenInvalidAuthURL(t *testing.T) {
 		AuthURL: "https://id.edgio.app/invalid",
 	}
 
-	_, err := token.GetAccessToken(creds)
+	_, err := token.Retrieve(creds)
 	require.Error(t, err)
 	assert.Equal(t, "[HTTP ERROR]: Status Code: 404 - Not Found", err.Error())
 }
 
-func TestGetAccessTokenJsonUnmarshalError(t *testing.T) {
+func TestTokenRetrieveJsonUnmarshalError(t *testing.T) {
 	server := httptest.NewUnstartedServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
 		w.WriteHeader(http.StatusOK)
 	}))
@@ -126,12 +126,12 @@ func TestGetAccessTokenJsonUnmarshalError(t *testing.T) {
 		AuthURL: server.URL,
 	}
 
-	_, err := token.GetAccessToken(creds)
+	_, err := token.Retrieve(creds)
 	require.Error(t, err)
 	assert.Equal(t, "unexpected end of JSON input", err.Error())
 }
 
-func TestGetAccessToken(t *testing.T) {
+func TestTokenRetrieve(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, _ *http.Request) {
 		_, err := rw.Write([]byte(`{"access_token": "test_token"}`))
 		require.NoError(t, err)
@@ -152,7 +152,7 @@ func TestGetAccessToken(t *testing.T) {
 		AuthURL: server.URL,
 	}
 
-	token, _ := token.GetAccessToken(creds)
+	token, _ := token.Retrieve(creds)
 
 	assert.Equal(t, "test_token", token, "wrong test token")
 
@@ -160,7 +160,7 @@ func TestGetAccessToken(t *testing.T) {
 	defer httpmock.DeactivateAndReset()
 }
 
-func TestGetAccessTokenHttpError(t *testing.T) {
+func TestTokenRetrieveHttpError(t *testing.T) {
 	httpmock.Activate()
 
 	defer httpmock.DeactivateAndReset()
@@ -180,12 +180,12 @@ func TestGetAccessTokenHttpError(t *testing.T) {
 		AuthURL: "https://id.edgio.app/connect/token",
 	}
 
-	_, err := token.GetAccessToken(creds)
+	_, err := token.Retrieve(creds)
 	require.Error(t, err)
 	assert.Contains(t, err.Error(), "mocked network error")
 }
 
-func TestGetAccessTokenReadBodyError(t *testing.T) {
+func TestTokenRetrieveReadBodyError(t *testing.T) {
 	httpmock.Activate()
 
 	defer httpmock.DeactivateAndReset()
@@ -209,7 +209,7 @@ func TestGetAccessTokenReadBodyError(t *testing.T) {
 		AuthURL: "https://id.edgio.app/connect/token",
 	}
 
-	_, err := token.GetAccessToken(creds)
+	_, err := token.Retrieve(creds)
 	require.Error(t, err)
 	assert.Contains(t, err.Error(), "mocked read error")
 }

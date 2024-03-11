@@ -8,7 +8,7 @@ import (
 )
 
 type ClientStruct struct {
-	client client.Client
+	*client.Client
 }
 
 type Property struct {
@@ -53,5 +53,5 @@ func NewClient(params ClientParams) (ClientStruct, error) {
 		return ClientStruct{}, errors.New(err.Error())
 	}
 
-	return ClientStruct{client}, nil
+	return ClientStruct{&client}, nil
 }

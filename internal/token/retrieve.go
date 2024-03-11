@@ -15,7 +15,7 @@ var Result struct {
 	AccessToken string `json:"access_token"`
 }
 
-// GetAccessToken returns an access token for the provided credentials.
+// Retrieve returns an access token for the provided credentials.
 // Mandatory params:
 // common.Creds.Key
 // common.Creds.Secret
@@ -23,7 +23,7 @@ var Result struct {
 // common.Creds.Scopes
 // common.Creds.AuthURL
 // Returns an access token and an error if any of the mandatory parameters are missing.
-func GetAccessToken(credentials common.Creds) (string, error) {
+func Retrieve(credentials common.Creds) (string, error) {
 	client := &http.Client{}
 
 	if credentials.Key == "" || credentials.Secret == "" || credentials.Scopes == "" || credentials.AuthURL == "" {
