@@ -37,6 +37,10 @@ jobs:
           delete_user_name: sonarcloud[bot]
           issue_number: ${{ github.event.number }}
 
+      - name: Validate Commit Messages
+        if: ${{ github.event.number  }}
+        run: ./tools/scripts/validate-commit-msgs.sh
+
       - name: Install go
         uses: actions/setup-go@v5
         with:
