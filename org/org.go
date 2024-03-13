@@ -10,11 +10,6 @@ type ClientStruct struct {
 	*client.Client
 }
 
-type ClientParams struct {
-	Credentials common.Creds
-	Config      common.ClientConfig
-}
-
 var baseConfig = common.ClientConfig{
 	APIVersion: "v0.1",
 	Service:    "accounts",
@@ -34,7 +29,7 @@ var baseConfig = common.ClientConfig{
 // common.ClientConfig.Scope
 // common.ClientConfig.URL
 // Returns a new client and an error if any of the mandatory parameters are missing.
-func NewClient(params ClientParams) (ClientStruct, error) {
+func NewClient(params common.ClientParams) (ClientStruct, error) {
 	client, err := client.New(params.Credentials, baseConfig.Merge(params.Config))
 	if err != nil {
 		return ClientStruct{}, errors.New(err.Error())

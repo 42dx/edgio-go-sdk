@@ -32,7 +32,7 @@ func TestGet(t *testing.T) {
 		}
 	})
 
-	params := org.ClientParams{
+	params := common.ClientParams{
 		Credentials: common.Creds{
 			Key:     "key",
 			Secret:  "secret",
@@ -71,7 +71,7 @@ func TestGetError(t *testing.T) {
 
 	defer server2.Close()
 
-	params := org.ClientParams{
+	params := common.ClientParams{
 		Credentials: common.Creds{
 			Key:     "key",
 			Secret:  "secret",
