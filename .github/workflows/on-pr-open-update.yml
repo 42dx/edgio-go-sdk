@@ -10,6 +10,8 @@ on:
       - main
       - beta
   pull_request:
+    types:
+      - ready_for_review
     branches:
       - main
       - beta
