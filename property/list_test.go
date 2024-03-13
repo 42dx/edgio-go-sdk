@@ -48,7 +48,7 @@ func TestGet(t *testing.T) {
 		}
 	})
 
-	params := property.ClientParams{
+	params := common.ClientParams{
 		Credentials: common.Creds{
 			Key:     "key",
 			Secret:  "secret",
@@ -75,7 +75,7 @@ func TestListParseURLError(t *testing.T) {
 	}))
 	defer server.Close()
 
-	params := property.ClientParams{
+	params := common.ClientParams{
 		Credentials: common.Creds{
 			Key:     "key",
 			Secret:  "secret",
@@ -102,7 +102,7 @@ func TestListNewRequestError(t *testing.T) {
 	}))
 	defer server.Close()
 
-	params := property.ClientParams{
+	params := common.ClientParams{
 		Credentials: common.Creds{
 			Key:     "key",
 			Secret:  "secret",
@@ -140,7 +140,7 @@ func TestListGetHTTPJSONResultError(t *testing.T) {
 		}
 	})
 
-	params := property.ClientParams{
+	params := common.ClientParams{
 		Credentials: common.Creds{
 			Key:     "key",
 			Secret:  "secret",
