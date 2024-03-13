@@ -15,22 +15,23 @@ type ListResultType struct {
 
 var PropertyListResult = ListResultType{}
 
-// List list of properties for a given Organization.
+// List lists the properties from a given Organization.
 // Edgio's list page size was defaulted to 100 for now,
 // which is the highest value. The idea is to return all properties
 // until actual pagination is implemented.
-// Returns a list of properties for a given Organization or an error if anything goes wrong.
+// Returns a list of properties for a given Organization, or an error if anything goes wrong.
 func (c ClientStruct) List() (ListResultType, error) {
 	httpClient := &http.Client{}
-	queryStringMap := map[string]string{"organization_id": c.Config.OrgID}
-	serviceURL := c.GetServiceURL(common.URLParams{Query: map[string]string{"page_size": "100"}})
+	serviceURL := c.GetServiceURL(common.URLParams{})
 
 	parsedURL, err := url.Parse(serviceURL)
 	if err != nil {
 		return ListResultType{}, errors.New(err.Error())
 	}
 
-	rawQueryString := utils.ToQueryString(queryStringMap)
+	rawQueryString := utils.ToQueryString(
+		map[string]string{"organization_id": c.Config.OrgID, "page_size": "100"},
+	)
 
 	parsedURL.RawQuery = rawQueryString
 
