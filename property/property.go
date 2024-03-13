@@ -18,11 +18,6 @@ type Property struct {
 	UpdatedAt time.Time `json:"updated_at"`
 }
 
-type ClientParams struct {
-	Credentials common.Creds
-	Config      common.ClientConfig
-}
-
 var baseConfig = common.ClientConfig{
 	APIVersion: "v0.1",
 	Service:    "accounts",
@@ -43,7 +38,7 @@ var baseConfig = common.ClientConfig{
 // common.ClientConfig.Scope
 // common.ClientConfig.URL
 // Returns a new client and an error if any of the mandatory parameters are missing.
-func NewClient(params ClientParams) (ClientStruct, error) {
+func NewClient(params common.ClientParams) (ClientStruct, error) {
 	if params.Config.OrgID == "" {
 		return ClientStruct{}, errors.New("OrgID is missing")
 	}

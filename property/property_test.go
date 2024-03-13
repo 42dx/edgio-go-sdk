@@ -29,7 +29,7 @@ func TestNewClient(t *testing.T) {
 
 	defer server.Close()
 
-	params := property.ClientParams{
+	params := common.ClientParams{
 		Credentials: common.Creds{
 			Key:     "key",
 			Secret:  "secret",
@@ -59,7 +59,7 @@ func TestNewMissingOrdIDError(t *testing.T) {
 
 	defer server.Close()
 
-	params := property.ClientParams{
+	params := common.ClientParams{
 		Credentials: common.Creds{
 			Key:     "key",
 			Secret:  "secret",
@@ -78,7 +78,7 @@ func TestNewMissingOrdIDError(t *testing.T) {
 }
 
 func TestNewClientError(t *testing.T) {
-	params := property.ClientParams{
+	params := common.ClientParams{
 		Credentials: common.Creds{Key: "testKey"},
 		Config:      common.ClientConfig{OrgID: "some-org"},
 	}
