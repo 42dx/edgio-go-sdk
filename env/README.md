@@ -37,7 +37,7 @@ This func returns a new client with the provided parameters, with an access toke
   - `params.Config.Service`: Intended REST API Service. Each one of the Edgio REST APIs has its own Service, that must be provided when creating the client.
     - Default value: `accounts`
   - `params.Config.Scope`: Intended REST API Scope. Each one of the Edgio REST APIs has its own Scope, that must be provided when creating the client.
-    - Default value: `properties`
+    - Default value: `environments`
   - `params.Config.Url`: Edgio REST API resources url. You will probably never need to change this, but we included the option just in case (e. g.: future enterprise self-hosted option).
     - Default value: `https://edgioapis.com` (Edgio's default resources API url).
 
@@ -54,7 +54,7 @@ client, err := env.NewClient(env.ClientParams{
   Config:      common.ClientConfig{},
 })
 
-client.List("some-property-id") // [{ "id": "some-id", "name": "some-env-name", "legacy_account_number": "", "default_domain_name": "", "dns_domain_name": "", "can_members_deploy": true, "only_maintainers_can_deploy": true, "http_request_logging": true, "pci_compliance": true, "created_at": "2019-08-24T14:15:22Z", "updated_at": "2019-08-24T14:15:22Z" }]
+envs, err := client.List("some-property-id") // [{ "ID": "some-id", "Name": "some-env-name", "LegacyAccNumber": "some-acc-number", "DefaultDomainName": "some-domain-name", "DNSDomainName": "some-dns", "CanMembersDeploy": true, "OnlyMaintainersCanDeploy": true, "HTTPRequestLogging": true, "PciCompliance": true, "CreatedAt": "2019-08-24T14:15:22Z", "UpdatedAt": "2019-08-24T14:15:22Z" }]
 ```
 
 This func list environments for a given Edgio Property. Edgio's list page size was defaulted to 100 for now, which is the highest value. The idea is to return all environments until actual pagination is implemented. Returns a list of environments for a given Property or an error if anything goes wrong.

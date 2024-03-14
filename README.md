@@ -196,7 +196,19 @@ Check a more in-depth documentation of the `edgio/property` package [here](env/R
 
 [WIP]
 
-[Edgio Environment Variables REST API documentation reference](https://docs.edg.io/rest_api/#tag/environment-variables).
+This package groups Edgio Environment Variables specific funcs.
+
+#### `variable.NewClient(params common.ClientParams) (ClientStruct, error)`
+
+This func returns a new client with the provided parameters, with an access token already set, and the default edgio params values for service, scope and API version (which can be overwritten if needed) to interact with your application's environments.
+
+#### `variable.List(environmentID string) (ListResultType, error)`
+
+This func list environment variables for a given Edgio Environment. Edgio's list page size was defaulted to 100 for now, which is the highest value. The idea is to return all environment variables until actual pagination is implemented. Returns a list of environment variables for a given Property or an error if anything goes wrong.
+
+Check a more in-depth documentation of the `edgio/variables` package [here](variables/README.md).
+
+**Reference**: [Edgio Environment Variables REST API documentation reference](https://docs.edg.io/rest_api/#tag/environment-variables).
 
 <p align="right"><em><a href="#table-of-contents">back to top</a></em></p>
 

@@ -56,7 +56,7 @@ client, err := property.NewClient(common.ClientParams{
   Config:      common.ClientConfig{OrgID: "some-org-id"},
 })
 
-client.List(common.URLParams{Path: "some-org-id"}) // [{ "ID": "prop-id", "Slug": "prop-slug", "CreatedAt": "2019-08-24T14:15:22Z", "UpdatedAt": "2019-08-24T14:15:22Z" }]
+properties, err := client.List(common.URLParams{Path: "some-org-id"}) // [{ "ID": "prop-id", "Slug": "prop-slug", "CreatedAt": "2019-08-24T14:15:22Z", "UpdatedAt": "2019-08-24T14:15:22Z" }]
 ```
 
 This func lists properties for a given Edgio Organization. Edgio's list page size was defaulted to 100 for now, which is the highest value. The idea is to return all properties until actual pagination is implemented. Returns a list of properties for a given Organization or an error if anything goes wrong.
