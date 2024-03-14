@@ -5,7 +5,7 @@ import (
 	"edgio/env"
 	"edgio/org"
 	"edgio/property"
-	Variavle "edgio/variables"
+	"edgio/variable"
 	"fmt"
 	"os"
 )
@@ -42,7 +42,7 @@ func main() {
 		return
 	}
 
-	VariavleClient, err := Variavle.NewClient(common.ClientParams{
+	VariavleClient, err := variable.NewClient(common.ClientParams{
 		Credentials: credentials,
 		Config:      common.ClientConfig{AccessToken: orgClient.Client.AccessToken},
 	})
