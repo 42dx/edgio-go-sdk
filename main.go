@@ -3,6 +3,7 @@ package main
 import (
 	"edgio/common"
 	"edgio/env"
+	envVar "edgio/env_var"
 	"edgio/org"
 	"edgio/property"
 	"fmt"
@@ -41,6 +42,15 @@ func main() {
 		return
 	}
 
+	envVarClient, err := envVar.NewClient(common.ClientParams{
+		Credentials: credentials,
+		Config:      common.ClientConfig{AccessToken: orgClient.Client.AccessToken},
+	})
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
 	for _, property := range properties.Items {
 		fmt.Println("Property: " + property.Slug)
 
@@ -52,6 +62,16 @@ func main() {
 
 		for _, env := range envs.Items {
 			fmt.Println("Env: " + env.Name)
+
+			envVars, err := envVarClient.List(env.ID)
+			if err != nil {
+				fmt.Println(err)
+				return
+			}
+
+			for _, envVar := range envVars.Items {
+				fmt.Println("EnvVar: " + envVar.Key)
+			}
 		}
 	}
 	fmt.Println("main.go")
