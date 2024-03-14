@@ -1,17 +1,17 @@
 package variables_test
 
 import (
-	common "edgio/common"
-	envVar "edgio/variables"
-	http "net/http"
-	httptest "net/http/httptest"
-	testing "testing"
+	"edgio/common"
+	"edgio/variables"
+	"net/http"
+	"net/http/httptest"
+	"testing"
 
-	assert "github.com/stretchr/testify/assert"
-	require "github.com/stretchr/testify/require"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
-var envVarsResponse = `{
+var variablesResponse = `{
     "total_items": 2,
     "items": [
         {
@@ -48,7 +48,7 @@ func TestList(t *testing.T) {
 	defer server2.Close()
 
 	mux.HandleFunc("/config/v0.1/environment-variables", func(rw http.ResponseWriter, _ *http.Request) {
-		_, err := rw.Write([]byte(envVarsResponse))
+		_, err := rw.Write([]byte(variablesResponse))
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -64,7 +64,7 @@ func TestList(t *testing.T) {
 		Config: common.ClientConfig{URL: server.URL},
 	}
 
-	client, _ := envVar.NewClient(params)
+	client, _ := variables.NewClient(params)
 	result, _ := client.List("some-environment-id")
 
 	assert.Len(t, result.Items, 2)
@@ -91,7 +91,7 @@ func TestListParseURLError(t *testing.T) {
 		Config: common.ClientConfig{URL: ":"},
 	}
 
-	client, _ := envVar.NewClient(params)
+	client, _ := variables.NewClient(params)
 
 	_, err := client.List("some-environment-id")
 
@@ -118,7 +118,7 @@ func TestListNewRequestError(t *testing.T) {
 		Config: common.ClientConfig{URL: server.URL},
 	}
 
-	client, _ := envVar.NewClient(params)
+	client, _ := variables.NewClient(params)
 	_, err := client.List("\n")
 
 	require.Error(t, err)
@@ -156,7 +156,7 @@ func TestListGetHTTPJSONResultError(t *testing.T) {
 		Config: common.ClientConfig{URL: server.URL},
 	}
 
-	client, _ := envVar.NewClient(params)
+	client, _ := variables.NewClient(params)
 	_, err := client.List("some-environment-id")
 
 	require.Error(t, err)
