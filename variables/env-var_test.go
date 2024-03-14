@@ -1,14 +1,14 @@
 package variables_test
 
 import (
-	common "edgio/common"
-	envVar "edgio/variables"
-	http "net/http"
-	httptest "net/http/httptest"
-	testing "testing"
+	"edgio/common"
+	"edgio/variables"
+	"net/http"
+	"net/http/httptest"
+	"testing"
 
-	assert "github.com/stretchr/testify/assert"
-	require "github.com/stretchr/testify/require"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 type MockRoundTripper struct {
@@ -42,7 +42,7 @@ func TestNewClient(t *testing.T) {
 		},
 	}
 
-	client, err := envVar.NewClient(params)
+	client, err := variables.NewClient(params)
 
 	require.NoError(t, err)
 	assert.NotNil(t, client)
@@ -54,7 +54,7 @@ func TestNewClientError(t *testing.T) {
 		Config:      common.ClientConfig{},
 	}
 
-	_, err := envVar.NewClient(params)
+	_, err := variables.NewClient(params)
 	require.Error(t, err)
 	assert.Contains(t, err.Error(), "edgio client secret is missing")
 }
