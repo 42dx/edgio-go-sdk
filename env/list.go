@@ -20,7 +20,7 @@ var PropertyListResult = ListResultType{}
 // which is the highest value. The idea is to return all environments
 // until actual pagination is implemented.
 // Returns a list of environments for a given Property, or an error if anything goes wrong.
-func (c ClientStruct) List(propertyId string) (ListResultType, error) {
+func (c ClientStruct) List(propertyID string) (ListResultType, error) {
 	httpClient := &http.Client{}
 	serviceURL := c.GetServiceURL(common.URLParams{})
 
@@ -30,7 +30,7 @@ func (c ClientStruct) List(propertyId string) (ListResultType, error) {
 	}
 
 	rawQueryString := utils.ToQueryString(
-		map[string]string{"page_size": "100", "property_id": propertyId},
+		map[string]string{"page_size": "100", "property_id": propertyID},
 	)
 
 	parsedURL.RawQuery = rawQueryString
