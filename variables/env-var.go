@@ -1,4 +1,4 @@
-package env_var
+package variables
 
 import (
 	"edgio/common"

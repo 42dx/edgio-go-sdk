@@ -1,8 +1,8 @@
-package env_var_test
+package variables_test
 
 import (
 	common "edgio/common"
-	envVar "edgio/env_var"
+	envVar "edgio/variables"
 	http "net/http"
 	httptest "net/http/httptest"
 	testing "testing"
