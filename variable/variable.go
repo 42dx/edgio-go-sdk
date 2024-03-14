@@ -1,4 +1,4 @@
-package variables
+package variable
 
 import (
 	"edgio/common"
@@ -11,7 +11,7 @@ type ClientStruct struct {
 	*client.Client
 }
 
-type EnvVar struct {
+type Variavle struct {
 	ID        string    `json:"id"`
 	Key       string    `json:"key"`
 	Value     string    `json:"value"`

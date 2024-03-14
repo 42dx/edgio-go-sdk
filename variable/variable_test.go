@@ -1,8 +1,8 @@
-package variables_test
+package variable_test
 
 import (
 	"edgio/common"
-	"edgio/variables"
+	"edgio/variable"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -42,7 +42,7 @@ func TestNewClient(t *testing.T) {
 		},
 	}
 
-	client, err := variables.NewClient(params)
+	client, err := variable.NewClient(params)
 
 	require.NoError(t, err)
 	assert.NotNil(t, client)
@@ -54,7 +54,7 @@ func TestNewClientError(t *testing.T) {
 		Config:      common.ClientConfig{},
 	}
 
-	_, err := variables.NewClient(params)
+	_, err := variable.NewClient(params)
 	require.Error(t, err)
 	assert.Contains(t, err.Error(), "edgio client secret is missing")
 }

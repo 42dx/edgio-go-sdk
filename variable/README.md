@@ -1,8 +1,8 @@
 # edgio/variables
 
-This package groups Edgio Environment specific funcs.
+This package groups Edgio Environment Variables specific funcs.
 
-## `env.NewClient(params common.ClientParams) (ClientStruct, error)`
+## `variable.NewClient(params common.ClientParams) (ClientStruct, error)`
 
 ```go
 credentials := common.Creds{

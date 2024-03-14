@@ -1,4 +1,4 @@
-package variables
+package variable
 
 import (
 	"edgio/common"
@@ -10,10 +10,10 @@ import (
 
 type ListResultType struct {
 	common.BaseListResultType
-	Items []EnvVar `json:"items"`
+	Items []Variavle `json:"items"`
 }
 
-var EnvVarListResult = ListResultType{}
+var VariavleListResult = ListResultType{}
 
 // List Lists the environment variables for a given Environment.
 // Edgio's list page size was defaulted to 100 for now,
@@ -40,10 +40,10 @@ func (c ClientStruct) List(EnvironmentID string) (ListResultType, error) {
 		return ListResultType{}, errors.New(err.Error())
 	}
 
-	err = utils.GetHTTPJSONResult(httpClient, request, c.AccessToken, &EnvVarListResult)
+	err = utils.GetHTTPJSONResult(httpClient, request, c.AccessToken, &VariavleListResult)
 	if err != nil {
 		return ListResultType{}, errors.New(err.Error())
 	}
 
-	return EnvVarListResult, nil
+	return VariavleListResult, nil
 }

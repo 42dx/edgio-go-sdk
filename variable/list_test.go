@@ -1,8 +1,8 @@
-package variables_test
+package variable_test
 
 import (
 	"edgio/common"
-	"edgio/variables"
+	"edgio/variable"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -64,7 +64,7 @@ func TestList(t *testing.T) {
 		Config: common.ClientConfig{URL: server.URL},
 	}
 
-	client, _ := variables.NewClient(params)
+	client, _ := variable.NewClient(params)
 	result, _ := client.List("some-environment-id")
 
 	assert.Len(t, result.Items, 2)
@@ -91,7 +91,7 @@ func TestListParseURLError(t *testing.T) {
 		Config: common.ClientConfig{URL: ":"},
 	}
 
-	client, _ := variables.NewClient(params)
+	client, _ := variable.NewClient(params)
 
 	_, err := client.List("some-environment-id")
 
@@ -118,7 +118,7 @@ func TestListNewRequestError(t *testing.T) {
 		Config: common.ClientConfig{URL: server.URL},
 	}
 
-	client, _ := variables.NewClient(params)
+	client, _ := variable.NewClient(params)
 	_, err := client.List("\n")
 
 	require.Error(t, err)
@@ -156,7 +156,7 @@ func TestListGetHTTPJSONResultError(t *testing.T) {
 		Config: common.ClientConfig{URL: server.URL},
 	}
 
-	client, _ := variables.NewClient(params)
+	client, _ := variable.NewClient(params)
 	_, err := client.List("some-environment-id")
 
 	require.Error(t, err)
