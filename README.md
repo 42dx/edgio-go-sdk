@@ -176,7 +176,19 @@ Check a more in-depth documentation of the `edgio/property` package [here](prope
 
 [WIP]
 
-[Edgio Environments REST API documentation reference](https://docs.edg.io/rest_api/#tag/environments).
+This package groups Edgio Environment specific funcs.
+
+#### `env.NewClient(params common.ClientParams) (ClientStruct, error)`
+
+This func returns a new client with the provided parameters, with an access token already set, and the default edgio params values for service, scope and API version (which can be overwritten if needed) to interact with your application's environments.
+
+#### `env.List(propertyID string) (ListResultType, error)`
+
+This func list environments for a given Edgio Property. Edgio's list page size was defaulted to 100 for now, which is the highest value. The idea is to return all environments until actual pagination is implemented. Returns a list of environments for a given Property or an error if anything goes wrong.
+
+Check a more in-depth documentation of the `edgio/property` package [here](env/README.md).
+
+**Reference**: [Edgio Environments REST API documentation reference](https://docs.edg.io/rest_api/#tag/environments).
 
 <p align="right"><em><a href="#table-of-contents">back to top</a></em></p>
 
