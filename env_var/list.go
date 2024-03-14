@@ -1,4 +1,4 @@
-package env
+package env_var
 
 import (
 	"edgio/common"
@@ -10,17 +10,17 @@ import (
 
 type ListResultType struct {
 	common.BaseListResultType
-	Items []Env `json:"items"`
+	Items []EnvVar `json:"items"`
 }
 
-var EnvListResult = ListResultType{}
+var EnvVarListResult = ListResultType{}
 
-// List Lists the environments for a given Property.
+// List Lists the environment variables for a given Environment.
 // Edgio's list page size was defaulted to 100 for now,
-// which is the highest value. The idea is to return all environments
+// which is the highest value. The idea is to return all environment variables
 // until actual pagination is implemented.
-// Returns a list of environments for a given Property, or an error if anything goes wrong.
-func (c ClientStruct) List(propertyID string) (ListResultType, error) {
+// Returns a list of environment variables for a given Environment, or an error if anything goes wrong.
+func (c ClientStruct) List(EnvironmentID string) (ListResultType, error) {
 	httpClient := &http.Client{}
 	serviceURL := c.GetServiceURL(common.URLParams{})
 
@@ -30,7 +30,7 @@ func (c ClientStruct) List(propertyID string) (ListResultType, error) {
 	}
 
 	rawQueryString := utils.ToQueryString(
-		map[string]string{"page_size": "100", "property_id": propertyID},
+		map[string]string{"page_size": "100", "environment_id": EnvironmentID},
 	)
 
 	parsedURL.RawQuery = rawQueryString
@@ -40,10 +40,10 @@ func (c ClientStruct) List(propertyID string) (ListResultType, error) {
 		return ListResultType{}, errors.New(err.Error())
 	}
 
-	err = utils.GetHTTPJSONResult(httpClient, request, c.AccessToken, &EnvListResult)
+	err = utils.GetHTTPJSONResult(httpClient, request, c.AccessToken, &EnvVarListResult)
 	if err != nil {
 		return ListResultType{}, errors.New(err.Error())
 	}
 
-	return EnvListResult, nil
+	return EnvVarListResult, nil
 }
