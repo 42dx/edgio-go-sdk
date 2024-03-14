@@ -13,7 +13,7 @@ type ListResultType struct {
 	Items []Variavle `json:"items"`
 }
 
-var VariavleListResult = ListResultType{}
+var VariableListResult = ListResultType{}
 
 // List Lists the environment variables for a given Environment.
 // Edgio's list page size was defaulted to 100 for now,
@@ -40,10 +40,10 @@ func (c ClientStruct) List(EnvironmentID string) (ListResultType, error) {
 		return ListResultType{}, errors.New(err.Error())
 	}
 
-	err = utils.GetHTTPJSONResult(httpClient, request, c.AccessToken, &VariavleListResult)
+	err = utils.GetHTTPJSONResult(httpClient, request, c.AccessToken, &VariableListResult)
 	if err != nil {
 		return ListResultType{}, errors.New(err.Error())
 	}
 
-	return VariavleListResult, nil
+	return VariableListResult, nil
 }
