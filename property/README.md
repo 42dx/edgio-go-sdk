@@ -2,7 +2,7 @@
 
 This package groups Edgio Property specific funcs.
 
-## `property.NewClient(params ClientParams) (ClientStruct, error)`
+## `property.NewClient(params common.ClientParams) (ClientStruct, error)`
 
 ```go
 credentials := common.Creds{
@@ -10,7 +10,7 @@ credentials := common.Creds{
   Secret: "some-api-secret",
 }
 
-propertyClient, err := property.NewClient(property.ClientParams{
+propertyClient, err := property.NewClient(common.ClientParams{
   Credentials: credentials,
   Config:      common.ClientConfig{OrgID: "some-org-id", AccessToken: "some-access-token"},
 })
@@ -51,7 +51,7 @@ credentials := common.Creds{
   Secret: "some-api-secret",
 }
 
-client, err := property.NewClient(property.ClientParams{
+client, err := property.NewClient(common.ClientParams{
   Credentials: credentials,
   Config:      common.ClientConfig{OrgID: "some-org-id"},
 })
