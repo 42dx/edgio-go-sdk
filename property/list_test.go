@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestGet(t *testing.T) {
+func TestList(t *testing.T) {
 	mux := http.NewServeMux()
 
 	server := httptest.NewServer(mux)
