@@ -3,9 +3,9 @@ package main
 import (
 	"edgio/common"
 	"edgio/env"
-	envVar "edgio/env_var"
 	"edgio/org"
 	"edgio/property"
+	envVar "edgio/variables"
 	"fmt"
 	"os"
 )
