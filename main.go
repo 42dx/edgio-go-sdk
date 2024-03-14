@@ -5,7 +5,7 @@ import (
 	"edgio/env"
 	"edgio/org"
 	"edgio/property"
-	envVar "edgio/variables"
+	Variavle "edgio/variables"
 	"fmt"
 	"os"
 )
@@ -42,7 +42,7 @@ func main() {
 		return
 	}
 
-	envVarClient, err := envVar.NewClient(common.ClientParams{
+	VariavleClient, err := Variavle.NewClient(common.ClientParams{
 		Credentials: credentials,
 		Config:      common.ClientConfig{AccessToken: orgClient.Client.AccessToken},
 	})
@@ -63,14 +63,14 @@ func main() {
 		for _, env := range envs.Items {
 			fmt.Println("Env: " + env.Name)
 
-			envVars, err := envVarClient.List(env.ID)
+			Variavles, err := VariavleClient.List(env.ID)
 			if err != nil {
 				fmt.Println(err)
 				return
 			}
 
-			for _, envVar := range envVars.Items {
-				fmt.Println("EnvVar: " + envVar.Key)
+			for _, Variavle := range Variavles.Items {
+				fmt.Println("Variavle: " + Variavle.Key)
 			}
 		}
 	}
