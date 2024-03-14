@@ -158,14 +158,6 @@ plugins:
   - - '@semantic-release/changelog'
     - changelogFile: 'CHANGELOG.md'
       changelogTitle: '# Changelog'
-  - - '@semantic-release/git'
-    - message: |
-        chore(release): ${nextRelease.version} [skip ci]
-        
-        ${nextRelease.notes}
-      assets:
-        - CHANGELOG.md
-        - README.md
   - - '@semantic-release/github'
     - assets:
         - path: CHANGELOG.md
