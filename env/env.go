@@ -16,10 +16,10 @@ type Env struct {
 	Name                     string    `json:"name"`
 	LegacyAccNumber          string    `json:"legacy_account_number"`
 	DefaultDomainName        string    `json:"default_domain_name"`
-	DnsDomainName            string    `json:"dns_domain_name"`
+	DNSDomainName            string    `json:"dns_domain_name"`
 	CanMembersDeploy         bool      `json:"can_members_deploy"`
 	OnlyMaintainersCanDeploy bool      `json:"only_maintainers_can_deploy"`
-	HttpRequestLogging       bool      `json:"http_request_logging"`
+	HTTPRequestLogging       bool      `json:"http_request_logging"`
 	PciCompliance            bool      `json:"pci_compliance"`
 	CreatedAt                time.Time `json:"create_at"`
 	UpdatedAt                time.Time `json:"updated_at"`
