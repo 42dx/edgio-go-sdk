@@ -20,7 +20,7 @@ var VariableListResult = ListResultType{}
 // which is the highest value. The idea is to return all environment variables
 // until actual pagination is implemented.
 // Returns a list of environment variables for a given Environment, or an error if anything goes wrong.
-func (c ClientStruct) List(EnvironmentID string) (ListResultType, error) {
+func (c ClientStruct) List(environmentID string) (ListResultType, error) {
 	httpClient := &http.Client{}
 	serviceURL := c.GetServiceURL(common.URLParams{})
 
@@ -30,7 +30,7 @@ func (c ClientStruct) List(EnvironmentID string) (ListResultType, error) {
 	}
 
 	rawQueryString := utils.ToQueryString(
-		map[string]string{"page_size": "100", "environment_id": EnvironmentID},
+		map[string]string{"page_size": "100", "environment_id": environmentID},
 	)
 
 	parsedURL.RawQuery = rawQueryString
