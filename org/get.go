@@ -20,12 +20,12 @@ func (c ClientStruct) Get(params common.URLParams) (Org, error) {
 	httpClient := &http.Client{}
 	request, _ := http.NewRequest(http.MethodGet, c.Client.GetServiceURL(params), nil)
 
-	JSONmap, err := utils.GetHTTPJSONResult(httpClient, request, c.Client.AccessToken)
+	orgJSONmap, err := utils.GetHTTPJSONResult(httpClient, request, c.Client.AccessToken)
 	if err != nil {
 		return Org{}, errors.New(err.Error())
 	}
 
-	err = mapstructure.Decode(JSONmap, &getResult)
+	err = mapstructure.Decode(orgJSONmap, &getResult)
 	if err != nil {
 		return Org{}, errors.New(err.Error())
 	}

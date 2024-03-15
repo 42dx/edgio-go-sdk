@@ -15,7 +15,7 @@ type ListResultType struct {
 	Items []Variable `mapstructure:"items"`
 }
 
-var listResult ListResultType
+var variableListResult ListResultType
 
 // List Lists the environment variables for a given Environment.
 // Edgio's list page size was defaulted to 100 for now,
@@ -42,15 +42,15 @@ func (c ClientStruct) List(environmentID string) (ListResultType, error) {
 		return ListResultType{}, errors.New(err.Error())
 	}
 
-	JSONmap, err := utils.GetHTTPJSONResult(httpClient, request, c.AccessToken)
+	variableJSONmap, err := utils.GetHTTPJSONResult(httpClient, request, c.AccessToken)
 	if err != nil {
 		return ListResultType{}, errors.New(err.Error())
 	}
 
-	err = mapstructure.Decode(JSONmap, &listResult)
+	err = mapstructure.Decode(variableJSONmap, &variableListResult)
 	if err != nil {
 		return ListResultType{}, errors.New(err.Error())
 	}
 
-	return listResult, nil
+	return variableListResult, nil
 }
