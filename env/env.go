@@ -12,17 +12,17 @@ type ClientStruct struct {
 }
 
 type Env struct {
-	ID                       string    `json:"id"`
-	Name                     string    `json:"name"`
-	LegacyAccNumber          string    `json:"legacy_account_number"`
-	DefaultDomainName        string    `json:"default_domain_name"`
-	DNSDomainName            string    `json:"dns_domain_name"`
-	CanMembersDeploy         bool      `json:"can_members_deploy"`
-	OnlyMaintainersCanDeploy bool      `json:"only_maintainers_can_deploy"`
-	HTTPRequestLogging       bool      `json:"http_request_logging"`
-	PciCompliance            bool      `json:"pci_compliance"`
-	CreatedAt                time.Time `json:"create_at"`
-	UpdatedAt                time.Time `json:"updated_at"`
+	ID                       string    `mapstructure:"id"`
+	Name                     string    `mapstructure:"name"`
+	LegacyAccNumber          string    `mapstructure:"legacy_account_number"`
+	DefaultDomainName        string    `mapstructure:"default_domain_name"`
+	DNSDomainName            string    `mapstructure:"dns_domain_name"`
+	CanMembersDeploy         bool      `mapstructure:"can_members_deploy"`
+	OnlyMaintainersCanDeploy bool      `mapstructure:"only_maintainers_can_deploy"`
+	HTTPRequestLogging       bool      `mapstructure:"http_request_logging"`
+	PciCompliance            bool      `mapstructure:"pci_compliance"`
+	CreatedAt                time.Time `mapstructure:"create_at"`
+	UpdatedAt                time.Time `mapstructure:"updated_at"`
 }
 
 var baseConfig = common.ClientConfig{

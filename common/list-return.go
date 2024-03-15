@@ -1,6 +1,6 @@
 package common
 
 type BaseListResultType struct {
-	Total int           `json:"total_items"`
-	Items []interface{} `json:"items"`
+	Total int   `mapstructure:"total_items"`
+	Items []any `mapstructure:"items"`
 }
