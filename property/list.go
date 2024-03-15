@@ -6,6 +6,8 @@ import (
 	"errors"
 	"net/http"
 	"net/url"
+
+	"github.com/mitchellh/mapstructure"
 )
 
 type ListResultType struct {
@@ -13,7 +15,7 @@ type ListResultType struct {
 	Items []Property `json:"items"`
 }
 
-var PropertyListResult = ListResultType{}
+var propertyListResult = ListResultType{}
 
 // List lists the properties from a given Organization.
 // Edgio's list page size was defaulted to 100 for now,
@@ -40,10 +42,12 @@ func (c ClientStruct) List() (ListResultType, error) {
 		return ListResultType{}, errors.New(err.Error())
 	}
 
-	err = utils.GetHTTPJSONResult(httpClient, request, c.AccessToken, &PropertyListResult)
+	properties, err := utils.GetHTTPJSONResult(httpClient, request, c.AccessToken)
 	if err != nil {
 		return ListResultType{}, errors.New(err.Error())
 	}
 
-	return PropertyListResult, nil
+	mapstructure.Decode(properties, &propertyListResult)
+
+	return propertyListResult, nil
 }
