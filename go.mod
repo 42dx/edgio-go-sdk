@@ -4,6 +4,7 @@ go 1.22
 
 require (
 	github.com/jarcoal/httpmock v1.3.1
+	github.com/mitchellh/mapstructure v1.5.0
 	github.com/stretchr/testify v1.8.4
 )
 
