@@ -87,3 +87,41 @@ func TestGetError(t *testing.T) {
 	require.Error(t, err)
 	assert.Contains(t, err.Error(), "invalid character")
 }
+
+func TestGetMapstructureDecodeError(t *testing.T) {
+	mux := http.NewServeMux()
+
+	server := httptest.NewServer(mux)
+	defer server.Close()
+
+	server2 := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, _ *http.Request) {
+		_, err := rw.Write([]byte(`{"access_token": "test_token"}`))
+		if err != nil {
+			t.Fatal(err)
+		}
+	}))
+	defer server2.Close()
+
+	mux.HandleFunc("/accounts/v0.1/organizations/some-id", func(rw http.ResponseWriter, _ *http.Request) {
+		_, err := rw.Write([]byte(`{"name": 123}`))
+		if err != nil {
+			t.Fatal(err)
+		}
+	})
+
+	params := common.ClientParams{
+		Credentials: common.Creds{
+			Key:     "key",
+			Secret:  "secret",
+			Scopes:  "scopes",
+			AuthURL: server2.URL,
+		},
+		Config: common.ClientConfig{URL: server.URL},
+	}
+
+	client, _ := org.NewClient(params)
+	_, err := client.Get(common.URLParams{Path: "some-id"})
+
+	assert.NotNil(t, err)
+	assert.Equal(t, "1 error(s) decoding:\n\n* 'name' expected type 'string', got unconvertible type 'float64', value: '123'", err.Error())
+}

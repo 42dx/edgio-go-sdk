@@ -156,3 +156,44 @@ func TestListGetHTTPJSONResultError(t *testing.T) {
 	require.Error(t, err)
 	assert.Equal(t, "invalid character 'e' looking for beginning of value", err.Error())
 }
+
+func TestListMapstructureDecodeError(t *testing.T) {
+	mux := http.NewServeMux()
+
+	server := httptest.NewServer(mux)
+	defer server.Close()
+
+	server2 := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, _ *http.Request) {
+		_, err := rw.Write([]byte(`{"access_token": "test_token"}`))
+		if err != nil {
+			t.Fatal(err)
+		}
+	}))
+	defer server2.Close()
+
+	mux.HandleFunc("/accounts/v0.1/properties", func(rw http.ResponseWriter, _ *http.Request) {
+		_, err := rw.Write([]byte(`{"items": "invalid"}`))
+		if err != nil {
+			t.Fatal(err)
+		}
+	})
+
+	params := common.ClientParams{
+		Credentials: common.Creds{
+			Key:     "key",
+			Secret:  "secret",
+			Scopes:  "scopes",
+			AuthURL: server2.URL,
+		},
+		Config: common.ClientConfig{
+			URL:   server.URL,
+			OrgID: "some-org",
+		},
+	}
+
+	client, _ := property.NewClient(params)
+	_, err := client.List()
+
+	assert.NotNil(t, err)
+	assert.Equal(t, "1 error(s) decoding:\n\n* 'items': source data must be an array or slice, got string", err.Error())
+}

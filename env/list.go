@@ -4,6 +4,7 @@ import (
 	"edgio/common"
 	"edgio/internal/utils"
 	"errors"
+	"fmt"
 	"net/http"
 	"net/url"
 
@@ -15,7 +16,7 @@ type ListResultType struct {
 	Items []Env `mapstructure:"items"`
 }
 
-var listResult ListResultType
+var ListResult ListResultType
 
 // List Lists the environments for a given Property.
 // Edgio's list page size was defaulted to 100 for now,
@@ -47,10 +48,12 @@ func (c ClientStruct) List(propertyID string) (ListResultType, error) {
 		return ListResultType{}, errors.New(err.Error())
 	}
 
-	err = mapstructure.Decode(JSONmap, &listResult)
+	fmt.Println(JSONmap)
+
+	err = mapstructure.Decode(JSONmap, &ListResult)
 	if err != nil {
 		return ListResultType{}, errors.New(err.Error())
 	}
 
-	return listResult, nil
+	return ListResult, nil
 }
