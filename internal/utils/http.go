@@ -13,16 +13,19 @@ import (
 // httpClient *http.Client
 // request *http.Request
 // token string
-// model interface{}
 // Returns the result of an HTTP request in JSON format and an error if the request fails.
-func GetHTTPJSONResult(httpClient *http.Client, request *http.Request, token string, model interface{}) error {
+func GetHTTPJSONResult(httpClient *http.Client, request *http.Request, token string) (map[string]any, error) {
+	var mappedJSONResult map[string]any
+
 	request.Header.Add("Authorization", "Bearer "+token)
 	request.Header.Add("content-type", "application/json")
 
 	resp, err := httpClient.Do(request)
 	if err != nil {
-		return errors.New(err.Error())
+		return nil, errors.New(err.Error())
 	}
+
+	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
 		msg := []string{
@@ -32,14 +35,13 @@ func GetHTTPJSONResult(httpClient *http.Client, request *http.Request, token str
 			http.StatusText(resp.StatusCode),
 		}
 
-		return errors.New(strings.Join(msg, ""))
+		return nil, errors.New(strings.Join(msg, ""))
 	}
-	defer resp.Body.Close()
 
-	err = json.NewDecoder(resp.Body).Decode(model)
+	err = json.NewDecoder(resp.Body).Decode(&mappedJSONResult)
 	if err != nil {
-		return errors.New(err.Error())
+		return nil, errors.New(err.Error())
 	}
 
-	return nil
+	return mappedJSONResult, nil
 }
