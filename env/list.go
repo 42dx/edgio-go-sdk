@@ -6,6 +6,8 @@ import (
 	"errors"
 	"net/http"
 	"net/url"
+
+	"github.com/mitchellh/mapstructure"
 )
 
 type ListResultType struct {
@@ -13,7 +15,7 @@ type ListResultType struct {
 	Items []Env `json:"items"`
 }
 
-var EnvListResult = ListResultType{}
+var listResult = ListResultType{}
 
 // List Lists the environments for a given Property.
 // Edgio's list page size was defaulted to 100 for now,
@@ -40,10 +42,12 @@ func (c ClientStruct) List(propertyID string) (ListResultType, error) {
 		return ListResultType{}, errors.New(err.Error())
 	}
 
-	err = utils.GetHTTPJSONResult(httpClient, request, c.AccessToken, &EnvListResult)
+	envs, err := utils.GetHTTPJSONResult(httpClient, request, c.AccessToken)
 	if err != nil {
 		return ListResultType{}, errors.New(err.Error())
 	}
 
-	return EnvListResult, nil
+	mapstructure.Decode(envs, &listResult)
+
+	return listResult, nil
 }
