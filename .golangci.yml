@@ -29,3 +29,4 @@ linters:
     - forcetypeassert
     - paralleltest
     - wastedassign
+    - gofumpt

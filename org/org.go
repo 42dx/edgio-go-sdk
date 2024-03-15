@@ -10,6 +10,11 @@ type ClientStruct struct {
 	*client.Client
 }
 
+type Org struct {
+	ID   string `mapstructure:"id"`
+	Name string `mapstructure:"name"`
+}
+
 var baseConfig = common.ClientConfig{
 	APIVersion: "v0.1",
 	Service:    "accounts",

@@ -12,12 +12,12 @@ type ClientStruct struct {
 }
 
 type Variable struct {
-	ID        string    `json:"id"`
-	Key       string    `json:"key"`
-	Value     string    `json:"value"`
-	Secret    bool      `json:"secret"`
-	CreatedAt time.Time `json:"create_at"`
-	UpdatedAt time.Time `json:"updated_at"`
+	ID        string    `mapstructure:"id"`
+	Key       string    `mapstructure:"key"`
+	Value     string    `mapstructure:"value"`
+	Secret    bool      `mapstructure:"secret"`
+	CreatedAt time.Time `mapstructure:"create_at"`
+	UpdatedAt time.Time `mapstructure:"updated_at"`
 }
 
 var baseConfig = common.ClientConfig{
