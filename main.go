@@ -2,6 +2,7 @@ package main
 
 import (
 	"edgio/common"
+	"edgio/env"
 	"edgio/org"
 	"edgio/property"
 	"fmt"
@@ -36,14 +37,14 @@ func main() {
 
 	properties, _ := propertyClient.List()
 
-	// envClient, err := env.NewClient(common.ClientParams{
-	// 	Credentials: credentials,
-	// 	Config:      common.ClientConfig{AccessToken: orgClient.Client.AccessToken},
-	// })
-	// if err != nil {
-	// 	fmt.Println(err)
-	// 	return
-	// }
+	envClient, err := env.NewClient(common.ClientParams{
+		Credentials: credentials,
+		Config:      common.ClientConfig{AccessToken: orgClient.Client.AccessToken},
+	})
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 
 	// VariavleClient, err := variable.NewClient(common.ClientParams{
 	// 	Credentials: credentials,
@@ -57,25 +58,25 @@ func main() {
 	for _, property := range properties.Items {
 		fmt.Println("Property: " + property.Slug)
 
-		// 	envs, err := envClient.List(property.ID)
-		// 	if err != nil {
-		// 		fmt.Println(err)
-		// 		return
-		// 	}
+		envs, err := envClient.List(property.ID)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
 
-		// 	for _, env := range envs.Items {
-		// 		fmt.Println("Env: " + env.Name)
+		for _, env := range envs.Items {
+			fmt.Println("Env: " + env.Name)
 
-		// 		Variavles, err := VariavleClient.List(env.ID)
-		// 		if err != nil {
-		// 			fmt.Println(err)
-		// 			return
-		// 		}
+			// 		Variavles, err := VariavleClient.List(env.ID)
+			// 		if err != nil {
+			// 			fmt.Println(err)
+			// 			return
+			// 		}
 
-		// 		for _, Variavle := range Variavles.Items {
-		// 			fmt.Println("Variavle: " + Variavle.Key)
-		// 		}
-		// 	}
+			// 		for _, Variavle := range Variavles.Items {
+			// 			fmt.Println("Variavle: " + Variavle.Key)
+			// 		}
+		}
 	}
 	fmt.Println("main.go")
 }
