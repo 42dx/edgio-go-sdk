@@ -12,10 +12,10 @@ type ClientStruct struct {
 }
 
 type Property struct {
-	ID        string    `mapstructure:"id"`
-	Slug      string    `mapstructure:"slug"`
-	CreatedAt time.Time `mapstructure:"create_at"`
-	UpdatedAt time.Time `mapstructure:"updated_at"`
+	ID        string
+	Slug      string
+	CreatedAt time.Time
+	UpdatedAt time.Time
 }
 
 var baseConfig = common.ClientConfig{
