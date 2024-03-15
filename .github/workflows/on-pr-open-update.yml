@@ -11,7 +11,10 @@ on:
       - beta
   pull_request:
     types:
+      - opened
       - ready_for_review
+      - reopened
+      - synchronize
     branches:
       - main
       - beta
