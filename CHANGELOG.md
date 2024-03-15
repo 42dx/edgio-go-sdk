@@ -7,7 +7,7 @@
 - **env**: added list method to env client [[#15](https://github.com/42dx/edgio-go-sdk/issues/15)] ([4d0b5b6](https://github.com/42dx/edgio-go-sdk/commit/4d0b5b6b74897d599a2782f46a553105b63607a7))
 - **env**: added env client and base structs [[#15](https://github.com/42dx/edgio-go-sdk/issues/15)] ([5c8d186](https://github.com/42dx/edgio-go-sdk/commit/5c8d1869322682b5491322895801a145cd2b1bea))
 - **property**: added list method to property client [[#10](https://github.com/42dx/edgio-go-sdk/issues/10)] ([0dfae98](https://github.com/42dx/edgio-go-sdk/commit/0dfae98410a6c3a8b009247eb883e7c564d22ac4))
-- **property**: added property client amd base structs [[#10](https://github.com/42dx/edgio-go-sdk/issues/10)] ([0dfae98](https://github.com/42dx/edgio-go-sdk/commit/0dfae98410a6c3a8b009247eb883e7c564d22ac4))
+- **property**: added property client and base structs [[#10](https://github.com/42dx/edgio-go-sdk/issues/10)] ([0dfae98](https://github.com/42dx/edgio-go-sdk/commit/0dfae98410a6c3a8b009247eb883e7c564d22ac4))
 
 ## 1.0.0-beta.1 (2024-03-01)
 
