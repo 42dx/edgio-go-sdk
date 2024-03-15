@@ -110,7 +110,11 @@ This package package holds some utility functions that are used to outsource som
 
 #### `utils.GetHttpJsonResult(httpClient *http.Client, request *http.Request, token string, model interface{}) (interface{}, error)`
 
-This function has mainly three related goals: 1- Process http requests; 2- treat HTTP errors in a standardized way, and; 3- Process and decode returned json data from the endpoints.
+This function has mainly three related goals:
+
+1. Process http requests;
+2. treat HTTP errors in a standardized way, and;
+3. Process and decode returned json data from the endpoints.
 
 Check a more in-depth documentation of the `internal/utils` package [here](internal/utils/README.md).
 
