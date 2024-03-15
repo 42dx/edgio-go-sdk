@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.0.0-beta.3](https://github.com/42dx/edgio-go-sdk/compare/v1.0.0-beta.2...v1.0.0-beta.3) (2024-03-15)
+
+### ⚙️ New Features
+
+* **env-var**: added env-var client and List method [[#20](https://github.com/42dx/edgio-go-sdk/issues/20)] ([d75f9c6](https://github.com/42dx/edgio-go-sdk/commit/d75f9c6e74a7be61457e1a6db76e54b15768927b))
+
 ## [1.0.0-beta.2](https://github.com/42dx/edgio-go-sdk/compare/v1.0.0-beta.1...v1.0.0-beta.2) (2024-03-14)
 
 ### ⚙️ New Features
