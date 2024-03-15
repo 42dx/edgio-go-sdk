@@ -4,7 +4,6 @@ import (
 	"edgio/common"
 	"edgio/internal/utils"
 	"errors"
-	"fmt"
 	"net/http"
 	"net/url"
 
@@ -47,8 +46,6 @@ func (c ClientStruct) List(propertyID string) (ListResultType, error) {
 	if err != nil {
 		return ListResultType{}, errors.New(err.Error())
 	}
-
-	fmt.Println(JSONmap)
 
 	err = mapstructure.Decode(JSONmap, &ListResult)
 	if err != nil {

@@ -122,6 +122,10 @@ func TestGetMapstructureDecodeError(t *testing.T) {
 	client, _ := org.NewClient(params)
 	_, err := client.Get(common.URLParams{Path: "some-id"})
 
-	assert.NotNil(t, err)
-	assert.Equal(t, "1 error(s) decoding:\n\n* 'name' expected type 'string', got unconvertible type 'float64', value: '123'", err.Error())
+	require.Error(t, err)
+	assert.Equal(
+		t,
+		"1 error(s) decoding:\n\n* 'name' expected type 'string', got unconvertible type 'float64', value: '123'",
+		err.Error(),
+	)
 }
