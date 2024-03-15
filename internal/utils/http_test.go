@@ -29,9 +29,8 @@ func TestGetHTTPJSONResultSuccess(t *testing.T) {
 
 	httpClient := server.Client()
 	request, _ := http.NewRequest(http.MethodGet, server.URL, nil)
-	model := make(map[string]string)
 
-	err := utils.GetHTTPJSONResult(httpClient, request, "token", &model)
+	model, err := utils.GetHTTPJSONResult(httpClient, request, "token")
 	require.NoError(t, err)
 
 	assert.Equal(t, "value", model["key"])
@@ -46,9 +45,8 @@ func TestGetHTTPJSONResultNon200StatusCode(t *testing.T) {
 
 	httpClient := server.Client()
 	request, _ := http.NewRequest(http.MethodGet, server.URL, nil)
-	model := make(map[string]string)
 
-	err := utils.GetHTTPJSONResult(httpClient, request, "token", &model)
+	_, err := utils.GetHTTPJSONResult(httpClient, request, "token")
 	require.Error(t, err)
 	assert.Contains(t, err.Error(), "[HTTP ERROR]: Status Code: 404")
 }
@@ -65,9 +63,8 @@ func TestGetHTTPJSONResultDecodeError(t *testing.T) {
 
 	httpClient := server.Client()
 	request, _ := http.NewRequest(http.MethodGet, server.URL, nil)
-	model := make(map[string]string)
 
-	err := utils.GetHTTPJSONResult(httpClient, request, "token", &model)
+	_, err := utils.GetHTTPJSONResult(httpClient, request, "token")
 	require.Error(t, err)
 	assert.Contains(t, err.Error(), "invalid character")
 }
@@ -78,9 +75,7 @@ func TestGetHTTPJSONResultHTTPClientError(t *testing.T) {
 	request, _ := http.NewRequest(http.MethodGet, "http://example.com", nil)
 	token := "testToken"
 
-	var model interface{}
-
-	err := utils.GetHTTPJSONResult(mockClient, request, token, &model)
+	_, err := utils.GetHTTPJSONResult(mockClient, request, token)
 
 	require.Error(t, err)
 	require.Contains(t, err.Error(), "mock error")
