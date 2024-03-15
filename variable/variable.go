@@ -11,7 +11,7 @@ type ClientStruct struct {
 	*client.Client
 }
 
-type Variavle struct {
+type Variable struct {
 	ID        string    `json:"id"`
 	Key       string    `json:"key"`
 	Value     string    `json:"value"`
