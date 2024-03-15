@@ -11,13 +11,6 @@ jobs:
   release:
     runs-on: ubuntu-latest
     steps:
-      - name: Obtain a GitHub App Installation Access Token
-        id: app-token
-        run: |
-          TOKEN="$(npx obtain-github-app-installation-access-token ci ${{ secrets.BOT_PRIVATE_KEY }})"
-          echo "::add-mask::$TOKEN"
-          echo "token=$TOKEN" >> $GITHUB_OUTPUT
-
       - name: Checkout
         uses: actions/checkout@v4
         with:
@@ -32,6 +25,7 @@ jobs:
       - name: Install node dependencies
         run: |
           npm i -g \
+            obtain-github-app-installation-access-token \
             semantic-release@23 \
             conventional-changelog-conventionalcommits \
             @semantic-release/commit-analyzer \
@@ -40,6 +34,13 @@ jobs:
             @semantic-release/git \
             @semantic-release/github \
             conventional-changelog-conventionalcommits
+
+      - name: Obtain a GitHub App Installation Access Token
+        id: app-token
+        run: |
+          TOKEN="$(obtain-github-app-installation-access-token ci ${{ secrets.BOT_PRIVATE_KEY }})"
+          echo "::add-mask::$TOKEN"
+          echo "token=$TOKEN" >> $GITHUB_OUTPUT
 
       - name: Release
         env:
