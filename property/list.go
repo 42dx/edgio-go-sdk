@@ -15,7 +15,7 @@ type ListResultType struct {
 	Items []Property `mapstructure:"items"`
 }
 
-var listResult ListResultType
+var propertyListResult ListResultType
 
 // List lists the properties from a given Organization.
 // Edgio's list page size was defaulted to 100 for now,
@@ -42,15 +42,15 @@ func (c ClientStruct) List() (ListResultType, error) {
 		return ListResultType{}, errors.New(err.Error())
 	}
 
-	JSONmap, err := utils.GetHTTPJSONResult(httpClient, request, c.AccessToken)
+	propertiesJSONmap, err := utils.GetHTTPJSONResult(httpClient, request, c.AccessToken)
 	if err != nil {
 		return ListResultType{}, errors.New(err.Error())
 	}
 
-	err = mapstructure.Decode(JSONmap, &listResult)
+	err = mapstructure.Decode(propertiesJSONmap, &propertyListResult)
 	if err != nil {
 		return ListResultType{}, errors.New(err.Error())
 	}
 
-	return listResult, nil
+	return propertyListResult, nil
 }
