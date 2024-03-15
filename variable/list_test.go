@@ -11,7 +11,9 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-var variablesResponse = `{
+const envVarURL = "/config/v0.1/environment-variables"
+const tokenReturn = `{"access_token": "test_token"}`
+const variablesResponse = `{
     "total_items": 2,
     "items": [
         {
@@ -40,14 +42,14 @@ func TestList(t *testing.T) {
 	defer server.Close()
 
 	server2 := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, _ *http.Request) {
-		_, err := rw.Write([]byte(`{"access_token": "test_token"}`))
+		_, err := rw.Write([]byte(tokenReturn))
 		if err != nil {
 			t.Fatal(err)
 		}
 	}))
 	defer server2.Close()
 
-	mux.HandleFunc("/config/v0.1/environment-variables", func(rw http.ResponseWriter, _ *http.Request) {
+	mux.HandleFunc(envVarURL, func(rw http.ResponseWriter, _ *http.Request) {
 		_, err := rw.Write([]byte(variablesResponse))
 		if err != nil {
 			t.Fatal(err)
@@ -74,7 +76,7 @@ func TestList(t *testing.T) {
 
 func TestListParseURLError(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, _ *http.Request) {
-		_, err := rw.Write([]byte(`{"access_token": "test_token"}`))
+		_, err := rw.Write([]byte(tokenReturn))
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -101,7 +103,7 @@ func TestListParseURLError(t *testing.T) {
 
 func TestListNewRequestError(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, _ *http.Request) {
-		_, err := rw.Write([]byte(`{"access_token": "test_token"}`))
+		_, err := rw.Write([]byte(tokenReturn))
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -132,14 +134,14 @@ func TestListGetHTTPJSONResultError(t *testing.T) {
 	defer server.Close()
 
 	server2 := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, _ *http.Request) {
-		_, err := rw.Write([]byte(`{"access_token": "test_token"}`))
+		_, err := rw.Write([]byte(tokenReturn))
 		if err != nil {
 			t.Fatal(err)
 		}
 	}))
 	defer server2.Close()
 
-	mux.HandleFunc("/config/v0.1/environment-variables", func(rw http.ResponseWriter, _ *http.Request) {
+	mux.HandleFunc(envVarURL, func(rw http.ResponseWriter, _ *http.Request) {
 		_, err := rw.Write([]byte(`error`))
 		if err != nil {
 			t.Fatal(err)
@@ -170,19 +172,12 @@ func TestListMapstructureDecodeError(t *testing.T) {
 	defer server.Close()
 
 	server2 := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, _ *http.Request) {
-		_, err := rw.Write([]byte(`{"access_token": "test_token"}`))
+		_, err := rw.Write([]byte(tokenReturn))
 		if err != nil {
 			t.Fatal(err)
 		}
 	}))
 	defer server2.Close()
-
-	mux.HandleFunc("/config/v0.1/environment-variables", func(rw http.ResponseWriter, _ *http.Request) {
-		_, err := rw.Write([]byte(`{"items": "invalid"}`))
-		if err != nil {
-			t.Fatal(err)
-		}
-	})
 
 	params := common.ClientParams{
 		Credentials: common.Creds{
@@ -194,9 +189,16 @@ func TestListMapstructureDecodeError(t *testing.T) {
 		Config: common.ClientConfig{URL: server.URL},
 	}
 
+	mux.HandleFunc(envVarURL, func(rw http.ResponseWriter, _ *http.Request) {
+		_, err := rw.Write([]byte(`{"items": "invalid"}`))
+		if err != nil {
+			t.Fatal(err)
+		}
+	})
+
 	client, _ := variable.NewClient(params)
 	_, err := client.List("some-env-id")
 
-	assert.NotNil(t, err)
+	require.Error(t, err)
 	assert.Equal(t, "1 error(s) decoding:\n\n* 'items': source data must be an array or slice, got string", err.Error())
 }
