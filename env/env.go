@@ -4,25 +4,10 @@ import (
 	"edgio/common"
 	"edgio/internal/client"
 	"errors"
-	"time"
 )
 
 type ClientStruct struct {
 	*client.Client
-}
-
-type Env struct {
-	ID                       string
-	Name                     string
-	LegacyAccNumber          string
-	DefaultDomainName        string
-	DNSDomainName            string
-	CanMembersDeploy         bool
-	OnlyMaintainersCanDeploy bool
-	HTTPRequestLogging       bool
-	PciCompliance            bool
-	CreatedAt                time.Time
-	UpdatedAt                time.Time
 }
 
 var baseConfig = common.ClientConfig{
