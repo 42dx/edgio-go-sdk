@@ -29,6 +29,8 @@ jobs:
       pull-requests: write
       issues: write
     steps:
+      - run: echo ${{ github.event.action }}
+
       - name: Checkout Code
         uses: actions/checkout@v4
         with:
