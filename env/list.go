@@ -75,7 +75,9 @@ func (c ClientStruct) FilterList(params FilterParams) (common.FilteredListResult
 		return common.FilteredListResultType[common.Env]{}, errors.New(err.Error())
 	}
 
-	filteredProperties := utils.FilterList[common.Env](utils.FilterListParams[common.Env]{Needle: params.Name, Haystack: fullEnvList.Items})
+	filteredProperties := utils.FilterList[common.Env](
+		utils.FilterListParams[common.Env]{Needle: params.Name, Haystack: fullEnvList.Items},
+	)
 
 	return common.FilteredListResultType[common.Env]{
 		BaseListResultType: common.BaseListResultType[common.Env]{

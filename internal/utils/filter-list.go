@@ -19,7 +19,9 @@ func FilterList[T Filterable](params FilterListParams[T]) []T {
 	result := []T{}
 
 	for _, item := range params.Haystack {
-		if strings.Contains(item.GetKey(), params.Needle) || strings.Contains(item.GetName(), params.Needle) || strings.Contains(item.GetSlug(), params.Needle) {
+		if strings.Contains(item.GetKey(), params.Needle) ||
+			strings.Contains(item.GetName(), params.Needle) ||
+			strings.Contains(item.GetSlug(), params.Needle) {
 			result = append(result, item)
 		}
 	}
