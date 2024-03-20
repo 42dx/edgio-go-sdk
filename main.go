@@ -2,10 +2,8 @@ package main
 
 import (
 	"edgio/common"
-	"edgio/env"
 	"edgio/org"
 	"edgio/property"
-	"edgio/variable"
 	"fmt"
 	"os"
 )
@@ -24,7 +22,6 @@ func main() {
 		return
 	}
 
-	fmt.Println(org)
 	fmt.Println("Org ID: " + org.ID)
 
 	propertyClient, err := property.NewClient(common.ClientParams{
@@ -36,48 +33,48 @@ func main() {
 		return
 	}
 
-	properties, _ := propertyClient.List()
+	properties, _ := propertyClient.FilterList("-ca")
 
-	envClient, err := env.NewClient(common.ClientParams{
-		Credentials: credentials,
-		Config:      common.ClientConfig{AccessToken: orgClient.Client.AccessToken},
-	})
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
+	// envClient, err := env.NewClient(common.ClientParams{
+	// 	Credentials: credentials,
+	// 	Config:      common.ClientConfig{AccessToken: orgClient.Client.AccessToken},
+	// })
+	// if err != nil {
+	// 	fmt.Println(err)
+	// 	return
+	// }
 
-	variableClient, err := variable.NewClient(common.ClientParams{
-		Credentials: credentials,
-		Config:      common.ClientConfig{AccessToken: orgClient.Client.AccessToken},
-	})
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
+	// variableClient, err := variable.NewClient(common.ClientParams{
+	// 	Credentials: credentials,
+	// 	Config:      common.ClientConfig{AccessToken: orgClient.Client.AccessToken},
+	// })
+	// if err != nil {
+	// 	fmt.Println(err)
+	// 	return
+	// }
 
 	for _, property := range properties.Items {
 		fmt.Println("Property: " + property.Slug)
 
-		envs, err := envClient.List(property.ID)
-		if err != nil {
-			fmt.Println(err)
-			return
-		}
+		// envs, err := envClient.List(property.ID)
+		// if err != nil {
+		// 	fmt.Println(err)
+		// 	return
+		// }
 
-		for _, env := range envs.Items {
-			fmt.Println("Env: " + env.Name)
+		// for _, env := range envs.Items {
+		// 	fmt.Println("Env: " + env.Name)
 
-			variables, err := variableClient.List(env.ID)
-			if err != nil {
-				fmt.Println(err)
-				return
-			}
+		// 	variables, err := variableClient.List(env.ID)
+		// 	if err != nil {
+		// 		fmt.Println(err)
+		// 		return
+		// 	}
 
-			for _, variable := range variables.Items {
-				fmt.Println("Variable: " + variable.Key)
-			}
-		}
+		// 	for _, variable := range variables.Items {
+		// 		fmt.Println("Variable: " + variable.Key)
+		// 	}
+		// }
 	}
 	fmt.Println("main.go")
 }
