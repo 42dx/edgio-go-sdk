@@ -60,6 +60,9 @@ func (c ClientStruct) FilterList(params FilterParams) (common.FilteredListResult
 	}
 
 	fullEnvList, err := c.List(params.PropertyID)
+	if err != nil {
+		return common.FilteredListResultType[common.Env]{}, errors.New(err.Error())
+	}
 
 	if params.Name == "" {
 		return common.FilteredListResultType[common.Env]{
@@ -69,10 +72,6 @@ func (c ClientStruct) FilterList(params FilterParams) (common.FilteredListResult
 			},
 			FilteredTotal: fullEnvList.Total,
 		}, nil
-	}
-
-	if err != nil {
-		return common.FilteredListResultType[common.Env]{}, errors.New(err.Error())
 	}
 
 	filteredProperties := utils.FilterList[common.Env](
