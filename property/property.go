@@ -4,18 +4,10 @@ import (
 	"edgio/common"
 	"edgio/internal/client"
 	"errors"
-	"time"
 )
 
 type ClientStruct struct {
 	*client.Client
-}
-
-type Property struct {
-	ID        string
-	Slug      string
-	CreatedAt time.Time
-	UpdatedAt time.Time
 }
 
 var baseConfig = common.ClientConfig{

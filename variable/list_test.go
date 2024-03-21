@@ -202,3 +202,90 @@ func TestListMapstructureDecodeError(t *testing.T) {
 	require.Error(t, err)
 	assert.Equal(t, "1 error(s) decoding:\n\n* 'items': source data must be an array or slice, got string", err.Error())
 }
+
+func TestFilterList(t *testing.T) {
+	server2 := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, _ *http.Request) {
+		_, err := rw.Write([]byte(tokenReturn))
+		if err != nil {
+			t.Fatal(err)
+		}
+	}))
+	defer server2.Close()
+
+	params := common.ClientParams{
+		Credentials: common.Creds{
+			Key:     "key",
+			Secret:  "secret",
+			Scopes:  "scopes",
+			AuthURL: server2.URL,
+		},
+	}
+
+	t.Run("returns error when List fails", func(t *testing.T) {
+		mux := http.NewServeMux()
+		server := httptest.NewServer(mux)
+		params.Config.URL = server.URL
+
+		defer server.Close()
+
+		mux.HandleFunc(envVarURL, func(rw http.ResponseWriter, _ *http.Request) {
+			http.Error(rw, "Internal Server Error", http.StatusInternalServerError)
+		})
+
+		client, _ := variable.NewClient(params)
+		_, err := client.FilterList(variable.FilterParams{EnvID: "some-environment-id"})
+
+		assert.Equal(t, "[HTTP ERROR]: Status Code: 500 - Internal Server Error", err.Error())
+		require.Error(t, err)
+	})
+
+	t.Run("returns error when EnvID is not provided", func(t *testing.T) {
+		mux := http.NewServeMux()
+		server := httptest.NewServer(mux)
+		defer server.Close()
+		params.Config.URL = server.URL
+
+		client, _ := variable.NewClient(params)
+		_, err := client.FilterList(variable.FilterParams{})
+
+		assert.Error(t, err)
+		assert.Equal(t, "EnvID is required", err.Error())
+	})
+
+	t.Run("returns full list when no key is provided", func(t *testing.T) {
+		mux := http.NewServeMux()
+		server := httptest.NewServer(mux)
+		defer server.Close()
+		params.Config.URL = server.URL
+
+		mux.HandleFunc(envVarURL, func(rw http.ResponseWriter, _ *http.Request) {
+			rw.Write([]byte(variablesResponse))
+		})
+
+		client, _ := variable.NewClient(params)
+		result, err := client.FilterList(variable.FilterParams{EnvID: "some-environment-id"})
+
+		assert.NoError(t, err)
+		assert.Equal(t, 2, result.Total)
+		assert.Equal(t, 2, result.FilteredTotal)
+	})
+
+	t.Run("returns filtered list when key is provided", func(t *testing.T) {
+		mux := http.NewServeMux()
+		server := httptest.NewServer(mux)
+		defer server.Close()
+		params.Config.URL = server.URL
+
+		mux.HandleFunc(envVarURL, func(rw http.ResponseWriter, _ *http.Request) {
+			rw.Write([]byte(variablesResponse))
+		})
+
+		client, _ := variable.NewClient(params)
+		result, err := client.FilterList(variable.FilterParams{EnvID: "some-environment-id", Key: "another-env-var-key"})
+
+		assert.NoError(t, err)
+		assert.Equal(t, 2, result.Total)
+		assert.Equal(t, 1, result.FilteredTotal)
+		assert.Equal(t, "another-env-var-key", result.Items[0].Key)
+	})
+}

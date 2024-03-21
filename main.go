@@ -24,7 +24,6 @@ func main() {
 		return
 	}
 
-	fmt.Println(org)
 	fmt.Println("Org ID: " + org.ID)
 
 	propertyClient, err := property.NewClient(common.ClientParams{
@@ -36,7 +35,7 @@ func main() {
 		return
 	}
 
-	properties, _ := propertyClient.List()
+	properties, _ := propertyClient.FilterList(property.FilterParams{Slug: "-ca"})
 
 	envClient, err := env.NewClient(common.ClientParams{
 		Credentials: credentials,
@@ -59,7 +58,7 @@ func main() {
 	for _, property := range properties.Items {
 		fmt.Println("Property: " + property.Slug)
 
-		envs, err := envClient.List(property.ID)
+		envs, err := envClient.FilterList(env.FilterParams{PropertyID: property.ID, Name: "prod"})
 		if err != nil {
 			fmt.Println(err)
 			return
@@ -68,7 +67,7 @@ func main() {
 		for _, env := range envs.Items {
 			fmt.Println("Env: " + env.Name)
 
-			variables, err := variableClient.List(env.ID)
+			variables, err := variableClient.FilterList(variable.FilterParams{EnvID: env.ID, Key: "KEY"})
 			if err != nil {
 				fmt.Println(err)
 				return
