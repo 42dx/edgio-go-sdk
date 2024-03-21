@@ -201,3 +201,80 @@ func TestListMapstructureDecodeError(t *testing.T) {
 	require.Error(t, err)
 	assert.Equal(t, "1 error(s) decoding:\n\n* 'items': source data must be an array or slice, got string", err.Error())
 }
+
+func TestFilterList(t *testing.T) {
+	server2 := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, _ *http.Request) {
+		_, err := rw.Write([]byte(accessTokenResult))
+		if err != nil {
+			t.Fatal(err)
+		}
+	}))
+	defer server2.Close()
+
+	params := common.ClientParams{
+		Credentials: common.Creds{
+			Key:     "key",
+			Secret:  "secret",
+			Scopes:  "scopes",
+			AuthURL: server2.URL,
+		},
+		Config: common.ClientConfig{OrgID: "some-org-id"},
+	}
+
+	t.Run("returns error when List fails", func(t *testing.T) {
+		mux := http.NewServeMux()
+		server := httptest.NewServer(mux)
+		params.Config.URL = server.URL
+
+		defer server.Close()
+
+		mux.HandleFunc(propertiesURL, func(rw http.ResponseWriter, _ *http.Request) {
+			http.Error(rw, "Internal Server Error", http.StatusInternalServerError)
+		})
+
+		client, _ := property.NewClient(params)
+		_, err := client.FilterList(property.FilterParams{})
+
+		assert.Equal(t, "[HTTP ERROR]: Status Code: 500 - Internal Server Error", err.Error())
+		require.Error(t, err)
+	})
+
+	t.Run("returns full list when no slug is provided", func(t *testing.T) {
+		mux := http.NewServeMux()
+		server := httptest.NewServer(mux)
+		params.Config.URL = server.URL
+
+		defer server.Close()
+
+		mux.HandleFunc(propertiesURL, func(rw http.ResponseWriter, _ *http.Request) {
+			rw.Write([]byte(listResult))
+		})
+
+		client, _ := property.NewClient(params)
+		result, err := client.FilterList(property.FilterParams{})
+
+		require.NoError(t, err)
+		assert.Equal(t, 2, result.Total)
+		assert.Equal(t, 2, result.FilteredTotal)
+	})
+
+	t.Run("returns filtered list when slug is provided", func(t *testing.T) {
+		mux := http.NewServeMux()
+		server := httptest.NewServer(mux)
+		params.Config.URL = server.URL
+
+		defer server.Close()
+
+		mux.HandleFunc(propertiesURL, func(rw http.ResponseWriter, _ *http.Request) {
+			rw.Write([]byte(listResult))
+		})
+
+		client, _ := property.NewClient(params)
+		result, err := client.FilterList(property.FilterParams{Slug: "another-slug"})
+
+		assert.NoError(t, err)
+		assert.Equal(t, 2, result.Total)
+		assert.Equal(t, 1, result.FilteredTotal)
+		assert.Equal(t, "another-slug", result.Items[0].Slug)
+	})
+}
